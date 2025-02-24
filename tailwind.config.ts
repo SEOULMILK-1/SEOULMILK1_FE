@@ -77,7 +77,7 @@ module.exports = {
         },
 
         '.font-3xl-regular': {
-          '@apply font-default font-regular': {},
+          '@apply font-default font-normal': {},
           fontSize: '28px',
           lineHeight: '42px',
           letterSpacing: '-0.02em'
@@ -105,7 +105,7 @@ module.exports = {
         },
 
         '.font-2xl-regular': {
-          '@apply font-default font-regular': {},
+          '@apply font-default font-normal': {},
           fontSize: '20px',
           lineHeight: '30px',
           letterSpacing: '-0.02em'
@@ -133,7 +133,7 @@ module.exports = {
         },
 
         '.font-xl-regular': {
-          '@apply font-default font-regular': {},
+          '@apply font-default font-normal': {},
           fontSize: '18px',
           lineHeight: '27px',
           letterSpacing: '-0.02em'
@@ -161,7 +161,7 @@ module.exports = {
         },
 
         '.font-md-regular': {
-          '@apply font-default font-regular': {},
+          '@apply font-default font-normal': {},
           fontSize: '16px',
           lineHeight: '24px',
           letterSpacing: '-0.01em'
@@ -189,7 +189,7 @@ module.exports = {
         },
 
         '.font-sm-regular': {
-          '@apply font-default font-regular': {},
+          '@apply font-default font-normal': {},
           fontSize: '14px',
           lineHeight: '21px',
           letterSpacing: '0'
@@ -217,7 +217,7 @@ module.exports = {
         },
 
         '.font-xs-regular': {
-          '@apply font-default font-regular': {},
+          '@apply font-default font-normal': {},
           fontSize: '12px',
           lineHeight: '18px',
           letterSpacing: '0'
