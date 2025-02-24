@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Pretendard: ['Pretendard', 'sans-serif']
+        Pretendard: ['Pretendard']
       },
       colors: {
         /** Primary **/
@@ -34,12 +34,18 @@ module.exports = {
         'black': '#000000',
 
         /** Warning **/
-        'warning-50': '#faeae8',
-        'warning-100': '#fecebe',
-        'warning-200': '#feae95',
-        'warning-300': '#fe8f6a',
-        'warning-400': '#ff7e52',
-        'warning-500': '#f95620'
+        'warning-100': '#FFCBCE',
+        'warning-200': '#FD9691',
+        'warning-300': '#F76A65',
+        'warning-400': '#FF433C',
+        'warning-500': '#FF2B15',
+        'warning-600': '#F81B19',
+        'warning-700': '#E60012'
+      },
+      dropShadow: {
+        'elevation1': '0 4px 24px rgba(0, 0, 0, 4)',
+        'elevation2': '0 4px 24px rgba(0, 0, 0, 6)',
+        'elevation3': '0 4px 24px rgba(0, 0, 0, 8)'
       }
     }
   },
@@ -47,7 +53,7 @@ module.exports = {
     ({ addUtilities }: any) => {
       addUtilities({
         '.font-default': {
-          'font-family': 'Pretendard, sans-serif'
+          'font-family': 'Pretendard'
         },
         '.font-3xl-bold': {
           '@apply font-default font-bold': {},
