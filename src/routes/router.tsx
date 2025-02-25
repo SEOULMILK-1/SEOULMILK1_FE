@@ -1,7 +1,13 @@
-import React from "react";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Login from '../pages/login';
 
-const router = () => {
-  return <div>router</div>;
-};
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Login />
+  }
+]);
 
-export default router;
+export default function Router() {
+  return <RouterProvider router={router} />;
+}
