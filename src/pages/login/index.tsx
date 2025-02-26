@@ -1,20 +1,28 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import FloatingLabelInput from '../../common/LabelInput';
 import Logo from './components/Logo';
 import Button from './components/Button';
-import { useState } from 'react';
+import ErrorMessage from './components/ErrorMessage';
+import LoginFooter from './components/LoginFooter';
 
 export default function Login() {
-  const navigate = useNavigate();
-
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const isButtonDisabled = !id || !password;
+
+  const handleLogin = () => {
+    // api연결 전 임시 오류 메시지
+    setError(
+      '아이디(로그인 전화번호, 로그인 전용 아이디) 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.'
+    );
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center ">
-      <div className="w-[456px] h-[446px] px-[32px] bg-white rounded-[32px] drop-shadow-elevation1">
-        <div className="flex justify-center mt-[42px] mb-[40px]">
+      <div className="w-[456px] px-[32px] py-[42px] bg-white rounded-[32px] drop-shadow-elevation1">
+        <div className="flex justify-center mb-[40px]">
           <Logo />
         </div>
 
@@ -26,41 +34,27 @@ export default function Login() {
           />
           <FloatingLabelInput
             placeholder="비밀번호"
-            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
+        {error ? (
+          <ErrorMessage message={error} />
+        ) : (
+          <div className="mt-[32px]" />
+        )}
+
         <Button
           size="lg"
           className={isButtonDisabled ? 'bg-gray-200 text-gray-400' : ''}
           disabled={isButtonDisabled}
+          onClick={handleLogin}
         >
           로그인
         </Button>
 
-        <div className="font-md-medium text-gray-500 flex justify-between items-center mt-[16px]">
-          <div className="flex space-x-[6px]">
-            <span
-              className="cursor-pointer"
-              onClick={() => navigate('/아이디찾기')}
-            >
-              아이디 찾기
-            </span>
-            <span>|</span>
-            <span
-              className="cursor-pointer"
-              onClick={() => navigate('/비밀번호찾기')}
-            >
-              비밀번호 찾기
-            </span>
-          </div>
-
-          <div className="cursor-pointer" onClick={() => navigate('/회원가입')}>
-            회원가입
-          </div>
-        </div>
+        <LoginFooter />
       </div>
     </div>
   );

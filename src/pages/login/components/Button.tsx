@@ -23,7 +23,7 @@ const Button = ({
   return (
     <button
       onClick={onClick}
-      className={`w-full h-[56px] mt-[32px] rounded-[12px] transition-all text-white bg-primary-700  ${sizeStyles[size]} ${className}`}
+      className={`w-full h-[56px] rounded-[12px] transition-all text-white bg-primary-700  ${sizeStyles[size]} ${className}`}
       disabled={disabled}
     >
       {children}
