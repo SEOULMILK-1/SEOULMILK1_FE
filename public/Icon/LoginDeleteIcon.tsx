@@ -1,4 +1,3 @@
-
 export const LoginDeleteIcon = () => {
   return (
     <svg

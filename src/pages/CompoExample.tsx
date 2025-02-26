@@ -1,6 +1,6 @@
 import Button from '../common/Button';
-import SearchIcon from '../../public/Icon/Search';
-import Reset from '../../public/Icon/Reset';
+import SearchIcon from '../../public/Icon/SearchIcon';
+import Reset from '../../public/Icon/ResetIcon';
 
 export function CompoExample() {
   return (

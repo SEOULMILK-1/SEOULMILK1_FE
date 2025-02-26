@@ -22,10 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": [
-    "src",
-    "public/Icon/LoginDeleteIcon.tsx",
-    "public/Icon/WarningIcon.tsx",
-    "public/Icon/RedLogo.tsx"
-  ]
+  "include": ["src"]
 }
