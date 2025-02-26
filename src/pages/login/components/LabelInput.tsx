@@ -1,5 +1,5 @@
 import { useState, useId } from 'react';
-import { LoginDeleteIcon } from './LoginDeleteIcon';
+import { LoginDeleteIcon } from '../../../../public/Icon/LoginDeleteIcon';
 
 interface LabelInputProps {
   placeholder: string;

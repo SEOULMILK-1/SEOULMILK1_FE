@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FloatingLabelInput from './components/LabelInput';
-import RedLogo from './components/RedLogo';
+import RedLogo from '../../../public/Icon/RedLogo';
 import Button from '../../common/Button';
 import ErrorMessage from './components/ErrorMessage';
 import LoginFooter from './components/LoginFooter';

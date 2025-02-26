@@ -3,7 +3,7 @@ import { LoginPage, CompoExample } from '../pages';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/login',
     element: <LoginPage />
   },
   {
