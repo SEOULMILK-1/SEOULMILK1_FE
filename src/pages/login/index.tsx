@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import FloatingLabelInput from '../../common/LabelInput';
+import FloatingLabelInput from './components/LabelInput';
 import RedLogo from './components/RedLogo';
 import Button from '../../common/Button';
 import ErrorMessage from './components/ErrorMessage';

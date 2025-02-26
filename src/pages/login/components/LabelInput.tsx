@@ -1,4 +1,5 @@
 import { useState, useId } from 'react';
+import { LoginDeleteIcon } from './LoginDeleteIcon';
 
 interface LabelInputProps {
   placeholder: string;
@@ -23,6 +24,15 @@ const LabelInput = ({
     if (!value) {
       setIsFocused(false);
     }
+  };
+
+  const handleClear = () => {
+    if (onChange) {
+      onChange({
+        target: { value: '' }
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
+    setIsFocused(false);
   };
 
   return (
@@ -54,6 +64,15 @@ const LabelInput = ({
       >
         {placeholder}
       </label>
+      {value && value.length > 0 && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="absolute right-[16px] top-[50%] transform -translate-y-1/2"
+        >
+          <LoginDeleteIcon />
+        </button>
+      )}
     </div>
   );
 };
