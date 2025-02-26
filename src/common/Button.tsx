@@ -16,14 +16,14 @@ const Button = ({
   disabled = false
 }: ButtonProps) => {
   const sizeStyles = {
-    sm: 'w-[128px] h-[48px] font-md-semibold',
+    sm: 'w-[128px] h-[48px] font-md-medium',
     lg: 'w-[392px] h-[56px] font-xl-semibold'
   };
 
   return (
     <button
       onClick={onClick}
-      className={`w-full h-[56px] rounded-[12px] transition-all text-white bg-primary-700  ${sizeStyles[size]} ${className}`}
+      className={`flex items-center justify-center gap-2 h-[56px] rounded-[12px] transition-all text-white bg-primary-700  ${sizeStyles[size]} ${className}`}
       disabled={disabled}
     >
       {children}

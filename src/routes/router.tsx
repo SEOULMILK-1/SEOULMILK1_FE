@@ -1,10 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Login from '../pages/login';
+import { LoginPage, CompoExample } from '../pages';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />
+    element: <LoginPage />
+  },
+  {
+    path: '/example',
+    element: <CompoExample /> //개발용
   }
 ]);
 

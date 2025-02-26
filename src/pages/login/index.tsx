@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import FloatingLabelInput from '../../common/LabelInput';
-import Logo from './components/Logo';
-import Button from './components/Button';
+import RedLogo from './components/RedLogo';
+import Button from '../../common/Button';
 import ErrorMessage from './components/ErrorMessage';
 import LoginFooter from './components/LoginFooter';
 
-export default function Login() {
+export function LoginPage() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,9 +23,8 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center ">
       <div className="w-[456px] px-[32px] py-[42px] bg-white rounded-[32px] drop-shadow-elevation1">
         <div className="flex justify-center mb-[40px]">
-          <Logo />
+          <RedLogo />
         </div>
-
         <div className="space-y-[20px]">
           <FloatingLabelInput
             placeholder="사번 또는 아이디"
@@ -38,13 +37,11 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
         {error ? (
           <ErrorMessage message={error} />
         ) : (
           <div className="mt-[32px]" />
         )}
-
         <Button
           size="lg"
           className={isButtonDisabled ? 'bg-gray-200 text-gray-400' : ''}
