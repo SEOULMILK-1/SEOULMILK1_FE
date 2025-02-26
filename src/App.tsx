@@ -1,9 +1,5 @@
-function App() {
-  return (
-    <>
-      <div className="text-primary-600 font-3xl-semibold">테스트</div>
-    </>
-  );
-}
+import Router from './routes/router';
 
-export default App;
+export default function App() {
+  return <Router />;
+}

@@ -43,9 +43,9 @@ module.exports = {
         'warning-700': '#E60012'
       },
       dropShadow: {
-        'elevation1': '0 4px 24px rgba(0, 0, 0, 4)',
-        'elevation2': '0 4px 24px rgba(0, 0, 0, 6)',
-        'elevation3': '0 4px 24px rgba(0, 0, 0, 8)'
+        'elevation1': '0 4px 24px rgba(0, 0, 0, 0.04)',
+        'elevation2': '0 4px 24px rgba(0, 0, 0, 0.06)',
+        'elevation3': '0 4px 24px rgba(0, 0, 0, 0.08)'
       }
     }
   },

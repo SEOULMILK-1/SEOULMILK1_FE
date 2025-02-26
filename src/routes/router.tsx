@@ -1,7 +1,17 @@
-import React from "react";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { LoginPage, CompoExample } from '../pages';
 
-const router = () => {
-  return <div>router</div>;
-};
+const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/example',
+    element: <CompoExample /> //개발용
+  }
+]);
 
-export default router;
+export default function Router() {
+  return <RouterProvider router={router} />;
+}
