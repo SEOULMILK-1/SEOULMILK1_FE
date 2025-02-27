@@ -1,20 +1,18 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage, CompoExample } from '../pages';
 import DashBoard from '../pages/home/DashBoard';
+import RootLayout from '../outlet/RootLayout';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <DashBoard />
+    element: <RootLayout />,
+    children: [
+      { path: '', element: <DashBoard /> },
+      { path: 'example', element: <CompoExample /> }
+    ]
   },
-  {
-    path: '/login',
-    element: <LoginPage />
-  },
-  {
-    path: '/example',
-    element: <CompoExample /> //개발용
-  }
+  { path: '/login', element: <LoginPage /> } //sidebar 필요없을때
 ]);
 
 export default function Router() {
