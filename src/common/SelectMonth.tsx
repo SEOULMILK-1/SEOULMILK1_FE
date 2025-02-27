@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function SubscriptionToggle() {
+export default function SelectMonth() {
   const [selected, setSelected] = useState('1개월');
   const options = ['1개월', '3개월', '6개월'];
 

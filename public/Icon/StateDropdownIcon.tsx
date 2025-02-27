@@ -1,4 +1,6 @@
-const StateDropdown = ({ selected }: any) => {
+import React from 'react';
+
+const StateDropdownIcon = ({ selected }: any) => {
   return (
     <svg
       className={selected === '선택' ? 'text-gray-500' : 'text-primary-700'}
@@ -16,4 +18,4 @@ const StateDropdown = ({ selected }: any) => {
   );
 };
 
-export default StateDropdown;
+export default StateDropdownIcon;

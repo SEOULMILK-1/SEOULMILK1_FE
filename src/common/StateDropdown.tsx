@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import StateDropdown from '../../public/Icon/StateDropdown';
+import StateDropdownIcon from '../../public/Icon/StateDropdownIcon';
 
-export default function StatusDropdown() {
+export default function StateDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('선택');
   const options = ['승인', '승인대기', '반려됨', '지급결의'];
@@ -35,7 +35,7 @@ export default function StatusDropdown() {
         }`}
       >
         {selected}
-        <StateDropdown selected={selected} />
+        <StateDropdownIcon selected={selected} />
       </button>
       {isOpen && (
         <div className="absolute mt-[16px] w-[114px] px-[8px] py-[12px] font-md-medium bg-white border border-gray-100 rounded-[12px] drop-shadow-elevation2">

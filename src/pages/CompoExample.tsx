@@ -1,8 +1,9 @@
 import Button from '../common/Button';
 import SearchIcon from '../../public/Icon/SearchIcon';
 import Reset from '../../public/Icon/ResetIcon';
-import SubscriptionToggle from '../common/SelectMonth';
 import StateDropdown from '../common/StateDropdown';
+import SelectMonth from '../common/SelectMonth';
+
 export function CompoExample() {
   return (
     <div>
@@ -16,14 +17,14 @@ export function CompoExample() {
       <br />
       <Button
         size="sm"
-        className="bg-transparent border border-primary-600 text-primary-500"
+        className="bg-transparent border border-primary-600 text-primary-400"
       >
         <Reset />
         초기화
       </Button>
       <br />
       {/* 기간 컴포넌트 추가예정 */}
-      <SubscriptionToggle />
+      <SelectMonth />
       <br />
       <StateDropdown />
     </div>
