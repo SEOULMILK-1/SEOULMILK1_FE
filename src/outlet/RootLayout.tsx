@@ -1,8 +1,7 @@
-import React from 'react';
 import Sidebar from '../common/Sidebar';
 import { Outlet } from 'react-router-dom';
 
-const RootLayout: React.FC = () => {
+const RootLayout = () => {
   return (
     <div className="flex h-256 w-360 bg-gray-50 p-4">
       <Sidebar />

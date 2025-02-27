@@ -1,9 +1,8 @@
-import React from 'react';
 import Speaker from '../../public/Icon/Speaker';
 import Line from '../../public/Icon/Line';
 import Pin from '../../public/Icon/Pin';
 
-const NoticeBoard: React.FC = () => {
+const NoticeBoard = () => {
   return (
     <aside className="h-[275px] bg-white px-5 py-6 flex flex-col items-start gap-4 rounded-3xl">
       <div className="flex flex-row gap-1">

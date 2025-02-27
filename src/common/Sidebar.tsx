@@ -28,7 +28,7 @@ const menuItems: MenuItem[] = [
   { name: '지급 결의서 조회', icon: <ErrorGray />, selectedIcon: <Error /> }
 ];
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>('홈');
 
   return (
