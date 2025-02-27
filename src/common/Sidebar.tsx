@@ -3,18 +3,29 @@ import SettingIcon from '../../public/Icon/SettingIcon';
 import Error from '../../public/Icon/Error';
 import ErrorGray from '../../public/Icon/ErrorGray';
 import LogoGray from '../../public/Icon/LogoGray';
+import HomeGrayIcon from '../../public/Icon/HomeGrayIcon';
+import HomeIcon from '../../public/Icon/HomeIcon';
+import SpeakerGray from '../../public/Icon/SpeakerGray';
+import TaxIconGray from '../../public/Icon/TaxIconGray';
+import TaxIcon from '../../public/Icon/TaxIcon';
 import NoticeBoard from './NoticeBoard';
 
 type MenuItem = {
   name: string;
+  icon: React.ReactNode;
+  selectedIcon: React.ReactNode;
 };
 
 const menuItems: MenuItem[] = [
-  { name: '홈' },
-  { name: '게시판 관리' },
-  { name: '메뉴이름' },
-  { name: '세금계산서 조회' },
-  { name: '지급 결의서 조회' }
+  { name: '홈', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
+  { name: '게시판 관리', icon: <SpeakerGray />, selectedIcon: <SpeakerGray /> },
+  { name: '메뉴이름', icon: <ErrorGray />, selectedIcon: <Error /> },
+  {
+    name: '세금계산서 조회',
+    icon: <TaxIconGray />,
+    selectedIcon: <TaxIcon />
+  },
+  { name: '지급 결의서 조회', icon: <ErrorGray />, selectedIcon: <Error /> }
 ];
 
 const Sidebar: React.FC = () => {
@@ -46,7 +57,7 @@ const Sidebar: React.FC = () => {
               }`}
               onClick={() => setSelectedMenu(item.name)}
             >
-              {selectedMenu === item.name ? <Error /> : <ErrorGray />}
+              {selectedMenu === item.name ? item.selectedIcon : item.icon}
               <span className="font-md-medium">{item.name}</span>
             </div>
           ))}
