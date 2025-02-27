@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import StateDropdown from '../../public/Icon/StateDropdown';
 
 export default function StatusDropdown() {
@@ -6,11 +6,29 @@ export default function StatusDropdown() {
   const [selected, setSelected] = useState('선택');
   const options = ['승인', '승인대기', '반려됨', '지급결의'];
 
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-between w-[114px] px-4 py-2 border rounded-lg bg-white drop-shadow-elevation2 transition-all ${
+        className={`flex items-center justify-between w-[104px] px-3 py-2 border rounded-lg bg-white drop-shadow-elevation2 transition-all ${
           selected === '선택'
             ? 'border-gray-400 text-gray-500'
             : 'border-primary-700 text-primary-700'
