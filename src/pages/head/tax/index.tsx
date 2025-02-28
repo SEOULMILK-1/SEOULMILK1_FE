@@ -32,7 +32,10 @@ const Tax = () => {
             <ResetIcon />
             초기화
           </Button>
-          <Button size="sm" className="flex items-center gap-1">
+          <Button
+            size="sm"
+            className="flex items-center gap-1 text-white bg-primary-700"
+          >
             <SearchIcon />
             조회
           </Button>
