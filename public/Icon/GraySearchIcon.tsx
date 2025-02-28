@@ -1,5 +1,3 @@
-import React from 'react';
-
 const GraySearchIcon = ({ fillColor = '#949BA7' }) => {
   return (
     <svg
