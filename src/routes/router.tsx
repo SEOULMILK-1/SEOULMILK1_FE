@@ -2,13 +2,15 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage, CompoExample } from '../pages';
 import DashBoard from '../pages/home/DashBoard';
 import RootLayout from '../outlet/RootLayout';
+import HeadCustomer from '../pages/head/customer/HeadCustomer';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
     children: [
-      { path: '', element: <DashBoard /> },
+      { path: '/', element: <DashBoard /> },
+      { path: '/head-customer', element: <HeadCustomer /> },
       { path: 'example', element: <CompoExample /> }
     ]
   },
