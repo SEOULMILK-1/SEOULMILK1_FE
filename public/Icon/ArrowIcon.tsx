@@ -1,6 +1,5 @@
 // < 이 아이콘
-
-const ArrowIcon = () => {
+const ArrowIcon = ({ strokeColor = '#DADFE7' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,10 +10,10 @@ const ArrowIcon = () => {
     >
       <path
         d="M15 17L9 12L15 7"
-        stroke="#DADFE7"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke={strokeColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
