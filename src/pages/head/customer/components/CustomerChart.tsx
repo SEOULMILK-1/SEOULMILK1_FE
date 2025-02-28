@@ -1,3 +1,4 @@
+import ChartPagination from '../../../../common/ChartPagination';
 import CustomerChartContent from './CustomerChartContent';
 import CustomerChartHeader from './CustomerChartHeader';
 
@@ -9,6 +10,8 @@ const CustomerChart = () => {
       <div className="flex-grow">
         <CustomerChartContent />
       </div>
+
+      <ChartPagination />
     </div>
   );
 };
