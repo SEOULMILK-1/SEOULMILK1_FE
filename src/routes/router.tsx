@@ -6,7 +6,7 @@ import HeadCustomer from '../pages/head/customer/HeadCustomer';
 import AdminRootLayout from '../outlet/AdminRootLayout';
 
 const router = createBrowserRouter([
-  //관리자쪽 라우터
+  //관리자쪽 라우터 (관리자)
   {
     path: '/',
     element: <AdminRootLayout />,
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     ]
   },
 
-  //본사쪽 라우터
+  //본사쪽 라우터 (고객)
   {
     path: '/',
     element: <RootLayout />,
