@@ -1,5 +1,5 @@
-import ChartPagination from '../../../common/ChartPagination';
-import Check from '../../../../public/Icon/Check';
+import Check from '../../../../../public/Icon/Check';
+import ChartPagination from '../../../../common/ChartPagination';
 import DashTableHeader from './DashTableHeader';
 
 const data = Array(18).fill({

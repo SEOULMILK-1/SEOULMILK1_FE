@@ -1,4 +1,4 @@
-import ChartLine from '../../../../public/Icon/ChartLine';
+import ChartLine from '../../../../../public/Icon/ChartLine';
 
 const DashTableHeader = () => {
   return (

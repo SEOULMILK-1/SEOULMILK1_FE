@@ -1,11 +1,12 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage, CompoExample } from '../pages';
-import DashBoard from '../pages/home/DashBoard';
+
 import RootLayout from '../outlet/RootLayout';
 import HeadCustomer from '../pages/HQ/customer/HeadCustomer';
 import Tax from '../pages/HQ/tax';
 import AdminRootLayout from '../outlet/AdminRootLayout';
 import { CS_home } from '../pages/CS/home';
+import DashBoard from '../pages/ADMIN/home/DashBoard';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
