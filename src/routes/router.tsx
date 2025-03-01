@@ -14,8 +14,6 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <DashBoard /> },
       { path: '/head-customer', element: <HeadCustomer /> },
-      { path: '/tax', element: <Tax /> },
-
       { path: 'example', element: <CompoExample /> }
     ]
   },
@@ -24,7 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    children: [{ path: '/head-customer', element: <HeadCustomer /> }]
+    children: [
+      { path: '/head-customer', element: <HeadCustomer /> },
+      { path: '/tax', element: <Tax /> }
+    ]
   },
   { path: '/login', element: <LoginPage /> } //sidebar 필요없을때
 ]);
