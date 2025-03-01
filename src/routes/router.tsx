@@ -7,6 +7,7 @@ import Tax from '../pages/HQ/tax';
 import AdminRootLayout from '../outlet/AdminRootLayout';
 import { CS_home } from '../pages/CS/home';
 import DashBoard from '../pages/ADMIN/home/DashBoard';
+import UserManage from '../pages/ADMIN/user/UserManage';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     element: <AdminRootLayout />,
     children: [
       { path: '/', element: <DashBoard /> },
+      { path: '/user-manage', element: <UserManage /> },
       { path: 'example', element: <CompoExample /> }
     ]
   },
