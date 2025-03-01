@@ -3,6 +3,8 @@ import SearchIcon from '../../public/Icon/SearchIcon';
 import Reset from '../../public/Icon/ResetIcon';
 import StateDropdown from '../common/StateDropdown';
 import SelectMonth from '../common/SelectMonth';
+import AdminSideModal from '../common/AdminSideModal';
+import UserSideModal from '../common/UserSideModal';
 
 export function CompoExample() {
   return (
@@ -23,10 +25,11 @@ export function CompoExample() {
         초기화
       </Button>
       <br />
-      {/* 기간 컴포넌트 추가예정 */}
       <SelectMonth />
       <br />
       <StateDropdown />
+      <AdminSideModal />
+      <UserSideModal />
     </div>
   );
 }
