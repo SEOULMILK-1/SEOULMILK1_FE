@@ -16,22 +16,22 @@ const UserDataTable = () => {
             className={`flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer`}
           >
             <div
-              className={`w-[92px] pl-5 font-sm-regular ${
+              className={`w-[92px] pl-5 font-sm-medium ${
                 row.status === '미등록' ? 'text-warning-600' : 'text-gray-800'
               }`}
             >
               {row.status}
             </div>
-            <div className="w-[120px] pl-5 gap-5 text-gray-800 font-sm-regular">
+            <div className="w-[120px] pl-5 gap-5 text-gray-800 font-sm-medium">
               {row.name}
             </div>
-            <div className="w-[190px] pl-5 ml-1 text-gray-800 font-sm-regular">
+            <div className="w-[190px] pl-5 ml-1 text-gray-800 font-sm-medium">
               {row.center}
             </div>
-            <div className="w-[200px] pl-5 text-gray-800 font-sm-regular">
+            <div className="w-[200px] pl-5 text-gray-800 font-sm-medium">
               {row.phone}
             </div>
-            <div className="w-[170px] pl-5 ml-1  text-gray-800 font-sm-regular">
+            <div className="w-[170px] pl-5 ml-1  text-gray-800 font-sm-medium">
               {row.date}
             </div>
 
