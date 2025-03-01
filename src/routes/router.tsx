@@ -30,7 +30,7 @@ const router = createBrowserRouter([
   //대리점쪽 라우터(CS)
   {
     path: '/',
-    element: <RootLayout />,
+    element: <RootLayout />, //TODO: 변경필요
     children: [{ path: '/CS-home', element: <CS_home /> }]
   },
   { path: '/login', element: <LoginPage /> } //sidebar 필요없을때
