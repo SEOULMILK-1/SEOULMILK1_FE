@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage, CompoExample } from '../pages';
 import DashBoard from '../pages/home/DashBoard';
 import RootLayout from '../outlet/RootLayout';
-import HeadCustomer from '../pages/head/customer/HeadCustomer';
-import Tax from '../pages/head/tax';
+import HeadCustomer from '../pages/HQ/customer/HeadCustomer';
+import Tax from '../pages/HQ/tax';
 import AdminRootLayout from '../outlet/AdminRootLayout';
 import { CS_home } from '../pages/CS/home';
 
