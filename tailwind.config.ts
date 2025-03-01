@@ -34,6 +34,7 @@ module.exports = {
         'black': '#000000',
 
         /** Warning **/
+        'warning-50': '#FFEAED',
         'warning-100': '#FFCBCE',
         'warning-200': '#FD9691',
         'warning-300': '#F76A65',

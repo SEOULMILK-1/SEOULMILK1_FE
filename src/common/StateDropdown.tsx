@@ -32,7 +32,7 @@ export default function StateDropdown() {
           selected === '선택'
             ? 'border-gray-400 text-gray-500'
             : 'border-primary-700 text-primary-700'
-        }`}
+        } ${isOpen ? 'border-primary-700' : ''}`} 
       >
         {selected}
         <StateDropdownIcon selected={selected} />

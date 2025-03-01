@@ -3,6 +3,7 @@ import { LoginPage, CompoExample } from '../pages';
 import DashBoard from '../pages/home/DashBoard';
 import RootLayout from '../outlet/RootLayout';
 import HeadCustomer from '../pages/head/customer/HeadCustomer';
+import Tax from '../pages/head/tax';
 import AdminRootLayout from '../outlet/AdminRootLayout';
 
 const router = createBrowserRouter([
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
     element: <AdminRootLayout />,
     children: [
       { path: '/', element: <DashBoard /> },
+      { path: '/head-customer', element: <HeadCustomer /> },
       { path: 'example', element: <CompoExample /> }
     ]
   },
@@ -20,7 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    children: [{ path: '/head-customer', element: <HeadCustomer /> }]
+    children: [
+      { path: '/head-customer', element: <HeadCustomer /> },
+      { path: '/tax', element: <Tax /> }
+    ]
   },
   { path: '/login', element: <LoginPage /> } //sidebar 필요없을때
 ]);
