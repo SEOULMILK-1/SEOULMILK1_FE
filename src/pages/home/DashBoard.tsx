@@ -42,7 +42,7 @@ const DashBoard = () => {
             <div className="flex flex-row justify-center items-center gap-1">
               <Check />
               <span className="text-primary-700 text-center font-md-medium">
-                {selected.length} {selected.length === 1 ? '건 선택' : ''}
+                {selected.length} {selected.length === 0 ? ' ' : '건 선택'}
               </span>
             </div>
             <button className="flex px-4 py-2 justify-center items-center gap-1 rounded-xl bg-primary-700 text-white font-md-medium">
