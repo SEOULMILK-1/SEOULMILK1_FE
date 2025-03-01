@@ -2,12 +2,12 @@ import { useState } from 'react';
 import ArrowIcon from '../../public/Icon/ArrowIcon';
 import ConfirmModal from './ConfirmModal';
 import DeleteXIcon from '../../public/Icon/DeleteXIcon';
-interface AdminSideModalProps {
+interface HQSideModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-function AdminSideModal({ isOpen, onClose }: AdminSideModalProps) {
+function HQSideModal({ isOpen, onClose }: HQSideModalProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   if (!isOpen) return null;
@@ -73,4 +73,4 @@ function AdminSideModal({ isOpen, onClose }: AdminSideModalProps) {
   );
 }
 
-export default AdminSideModal;
+export default HQSideModal;

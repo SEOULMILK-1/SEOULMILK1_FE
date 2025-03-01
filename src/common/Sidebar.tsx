@@ -9,9 +9,11 @@ import SpeakerGray from '../../public/Icon/SpeakerGray';
 import TaxIconGray from '../../public/Icon/TaxIconGray';
 import TaxIcon from '../../public/Icon/TaxIcon';
 import NoticeBoard from './NoticeBoard';
-import CustomerIcon from '../../public/Icon/CustomerIcon';
+import HQIcon from '../../public/Icon/CustomerIcon';
 import UserIcon from '../../public/Icon/UserIcon';
-
+import AdminSideModal from './AdminSideModal';
+import HQSideModal from './HQSideModal';
+import CSSideModal from './CSSideModal';
 interface MenuItem {
   name: string;
   icon: React.ReactNode;
@@ -19,7 +21,7 @@ interface MenuItem {
 }
 
 interface RoleProps {
-  type: 'admin' | 'customer';
+  type: 'admin' | 'HQ' | 'CS';
 }
 
 //관리자
@@ -40,7 +42,7 @@ const adminMenuItems: MenuItem[] = [
 ];
 
 //본사-고객
-const customerMenuItems: MenuItem[] = [
+const HQMenuItems: MenuItem[] = [
   { name: '홈', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
   {
     name: '세금계산서 조회',
@@ -48,13 +50,56 @@ const customerMenuItems: MenuItem[] = [
     selectedIcon: <TaxIcon />
   },
   { name: '지급결의서 조회', icon: <ErrorGray />, selectedIcon: <Error /> },
-  { name: '고객센터', icon: <CustomerIcon />, selectedIcon: <CustomerIcon /> }
+  { name: '고객센터', icon: <HQIcon />, selectedIcon: <HQIcon /> }
+];
+
+const CSMenuItems: MenuItem[] = [
+  { name: '홈', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
+  {
+    name: '세금계산서 조회',
+    icon: <TaxIconGray />,
+    selectedIcon: <TaxIcon />
+  }
 ];
 
 const Sidebar = ({ type }: RoleProps) => {
   const [selectedMenu, setSelectedMenu] = useState<string>('홈');
-  const menuItems = type === 'admin' ? adminMenuItems : customerMenuItems;
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const menuItems =
+    type === 'admin'
+      ? adminMenuItems
+      : type === 'HQ'
+      ? HQMenuItems
+      : CSMenuItems;
+
+  const getModalComponent = () => {
+    switch (type) {
+      case 'admin':
+        return (
+          <AdminSideModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        );
+      case 'HQ':
+        return (
+          <HQSideModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        );
+      case 'CS':
+        return (
+          <CSSideModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        );
+      default:
+        return null;
+    }
+  };
   return (
     <div className="w-60 flex flex-col gap-4">
       <aside className="h-[685px] bg-white flex flex-col gap-4 py-2 rounded-3xl">
@@ -69,13 +114,17 @@ const Sidebar = ({ type }: RoleProps) => {
               </span>
             )}
 
-            {type === 'customer' && (
+            {type === 'HQ' && (
               <span className="flex px-2 py-[2px] justify-center items-center gap-[10px] rounded-3xl bg-primary-50 text-primary-600 font-xs-semibold">
                 직원
               </span>
             )}
           </div>
-          <SettingIcon />
+          <button onClick={() => setIsModalOpen(true)}>
+            {' '}
+            {/* 아이콘 클릭 시 모달 열기 */}
+            <SettingIcon />
+          </button>
         </div>
 
         <nav className="flex flex-col mx-2 my-1 gap-1">
@@ -102,6 +151,7 @@ const Sidebar = ({ type }: RoleProps) => {
 
       {/* 공지사항 */}
       <NoticeBoard />
+      {isModalOpen && getModalComponent()}
     </div>
   );
 };
