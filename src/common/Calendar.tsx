@@ -58,7 +58,7 @@ const Calendar = ({ onSelectDate }: CalendarProps) => {
           <ArrowIcon strokeColor="#3A404A" />
         </div>
         <div className="text-gray-800 font-xl-bold">
-          {year}. {month + 1}
+          {year}. {(month + 1).toString().padStart(2, '0')}
         </div>
         <div onClick={handleNextMonth} className="rotate-180 cursor-pointer">
           <ArrowIcon />
