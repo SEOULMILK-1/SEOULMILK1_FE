@@ -116,7 +116,7 @@ const UserSideModal = ({
           <div>
             <label className="font-md-medium text-gray-500">아이디</label>
             <input
-              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium border border-gray-300"
+              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
               value={user.userId}
               readOnly
             />
@@ -125,7 +125,7 @@ const UserSideModal = ({
             <div>
               <label className="font-md-medium text-gray-500">부서</label>
               <input
-                className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium border border-gray-300"
+                className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
                 value={user.department}
                 readOnly
               />
@@ -134,7 +134,7 @@ const UserSideModal = ({
           <div>
             <label className="font-md-medium text-gray-500">이메일</label>
             <input
-              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium border border-gray-300"
+              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
               value={user.email}
               readOnly
             />
@@ -142,7 +142,7 @@ const UserSideModal = ({
           <div>
             <label className="font-md-medium text-gray-500">연락처</label>
             <input
-              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium border border-gray-300"
+              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
               value={user.phone}
               readOnly
             />

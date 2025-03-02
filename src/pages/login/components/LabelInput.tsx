@@ -58,7 +58,7 @@ const LabelInput = ({
           ${
             isFocused || value
               ? 'mt-[8px] top-[8.5px] font-xs-medium text-gray-500'
-              : 'font-xl-medium'
+              : 'font-md-medium'
           }
         `}
       >
