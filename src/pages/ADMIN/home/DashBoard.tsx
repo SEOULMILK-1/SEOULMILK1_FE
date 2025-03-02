@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Header from '../../common/Header';
-import HomeGrayIcon from '../../../public/Icon/HomeGrayIcon';
+import HomeGrayIcon from '../../../../public/Icon/HomeGrayIcon';
 import DashDataTable from './components/DashDataTable';
-import Check from '../../../public/Icon/Check';
+import Check from '../../../../public/Icon/Check';
+import Header from '../../../common/Header';
 
 const data = Array(14).fill({
   status: '미등록',
