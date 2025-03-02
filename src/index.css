@@ -8,6 +8,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  @apply custom-scrollbar;
+}
+
 /* 커스텀 세로 스크롤바 */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;

@@ -11,9 +11,9 @@ import TaxIcon from '../../public/Icon/TaxIcon';
 import NoticeBoard from './NoticeBoard';
 import HQIcon from '../../public/Icon/CustomerIcon';
 import UserIcon from '../../public/Icon/UserIcon';
-import AdminSideModal from './AdminSideModal';
-import HQSideModal from './HQSideModal';
-import CSSideModal from './CSSideModal';
+import AdminSideModal from './SideModal/AdminSideModal';
+import HQSideModal from './SideModal/HQSideModal';
+import CSSideModal from './SideModal/CSSideModal';
 interface MenuItem {
   name: string;
   icon: React.ReactNode;
@@ -53,6 +53,7 @@ const HQMenuItems: MenuItem[] = [
   { name: '고객센터', icon: <HQIcon />, selectedIcon: <HQIcon /> }
 ];
 
+//대리점
 const CSMenuItems: MenuItem[] = [
   { name: '홈', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
   {
