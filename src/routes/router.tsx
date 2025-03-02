@@ -1,13 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage, CompoExample } from '../pages';
 
-import RootLayout from '../outlet/RootLayout';
 import HeadCustomer from '../pages/HQ/customer/HeadCustomer';
 import Tax from '../pages/HQ/tax';
 import AdminRootLayout from '../outlet/AdminRootLayout';
 import { CS_home } from '../pages/CS/home';
 import DashBoard from '../pages/ADMIN/home/DashBoard';
 import UserManage from '../pages/ADMIN/user/UserManage';
+import HQRootLayout from '../outlet/HQRootLayout';
+import CSRootLayout from '../outlet/CSRootLayout';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
   //본사쪽 라우터 (HQ - 직원)
   {
     path: '/',
-    element: <RootLayout />,
+    element: <HQRootLayout />,
     children: [
       { path: '/head-customer', element: <HeadCustomer /> },
       { path: '/tax', element: <Tax /> }
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
   //대리점쪽 라우터(CS)
   {
     path: '/',
-    element: <RootLayout />, //TODO: 변경필요
+    element: <CSRootLayout />,
     children: [{ path: '/CS-home', element: <CS_home /> }]
   },
   { path: '/login', element: <LoginPage /> } //sidebar 필요없을때

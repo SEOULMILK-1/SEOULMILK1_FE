@@ -1,10 +1,28 @@
+import { useState } from 'react';
+import UserSideModal from './UserSideModal';
 import ChartPagination from '../../../../common/ChartPagination';
 import { UserDummy } from '../../../../utils/UserDummy';
 import UserDataTableHeader from './UserDataTableHeader';
 import PlusIcon from '../../../../../public/Icon/PlusIcon';
 
 const UserDataTable = () => {
-  const data = UserDummy;
+  const [data, setData] = useState(UserDummy);
+  const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (user: any) => {
+    setSelectedUser(user);
+    setIsModalOpen(true);
+  };
+
+  const deleteUser = (_userId: any) => {
+    if (selectedUser) {
+      setData((prevData) =>
+        prevData.filter((user) => user.userId !== selectedUser.userId)
+      );
+    }
+  };
+
   return (
     <div className="mt-4 flex h-[778px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <UserDataTableHeader />
@@ -13,7 +31,8 @@ const UserDataTable = () => {
         {data.map((row, index) => (
           <div
             key={index}
-            className={`flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer`}
+            className="flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer"
+            onClick={() => openModal(row)}
           >
             <div
               className={`w-[92px] pl-5 font-sm-medium ${
@@ -31,15 +50,17 @@ const UserDataTable = () => {
             <div className="w-[200px] pl-5 text-gray-800 font-sm-medium">
               {row.phone}
             </div>
-            <div className="w-[170px] pl-5 ml-1  text-gray-800 font-sm-medium">
+            <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium">
               {row.date}
             </div>
-
             <div className="w-[140px] px-5 py-2 items-center">
               {row.status === '미등록' && (
                 <button
                   className="flex w-[85px] h-[26px] gap-1 pl-2 pr-3 items-center justify-center rounded-lg bg-[#E6F1F7] text-[#2C72FF] font-xs-regular"
-                  onClick={() => console.log('등록하기')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('등록하기');
+                  }}
                 >
                   <PlusIcon />
                   등록하기
@@ -50,6 +71,16 @@ const UserDataTable = () => {
         ))}
       </div>
       <ChartPagination />
+
+      {isModalOpen && selectedUser && (
+        <UserSideModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          user={selectedUser}
+          role="admin"
+          onDelete={() => deleteUser(selectedUser.userId)}
+        />
+      )}
     </div>
   );
 };

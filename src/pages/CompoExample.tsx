@@ -3,7 +3,6 @@ import SearchIcon from '../../public/Icon/SearchIcon';
 import Reset from '../../public/Icon/ResetIcon';
 import StateDropdown from '../common/StateDropdown';
 import SelectMonth from '../common/SelectMonth';
-import AdminSideModal from '../common/AdminSideModal';
 import UserSideModal from '../common/UserSideModal';
 import SelectCalendar from '../common/SelectCalendar';
 
@@ -32,7 +31,6 @@ export function CompoExample() {
       <SelectMonth />
       <br />
       <StateDropdown />
-      <AdminSideModal />
       <UserSideModal />
     </div>
   );
