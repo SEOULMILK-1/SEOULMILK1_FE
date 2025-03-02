@@ -1,7 +1,7 @@
 const SidebarUploadIcon = ({ className }: { className?: string }) => {
   return (
     <svg
-      className={className} // ✅ 여기 추가
+      className={className} 
       width="69"
       height="41"
       viewBox="0 0 69 41"
