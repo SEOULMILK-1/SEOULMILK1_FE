@@ -15,7 +15,7 @@ const UserDataTable = () => {
     setIsModalOpen(true);
   };
 
-  const deleteUser = (userId: string) => {
+  const deleteUser = (_userId: any) => {
     if (selectedUser) {
       setData((prevData) =>
         prevData.filter((user) => user.userId !== selectedUser.userId)

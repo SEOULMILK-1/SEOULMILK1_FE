@@ -1,78 +1,24 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SettingIcon from '../../public/Icon/SettingIcon';
-import Error from '../../public/Icon/Error';
-import ErrorGray from '../../public/Icon/ErrorGray';
 import LogoGray from '../../public/Icon/LogoGray';
-import HomeGrayIcon from '../../public/Icon/HomeGrayIcon';
-import HomeIcon from '../../public/Icon/HomeIcon';
-import SpeakerGray from '../../public/Icon/SpeakerGray';
-import TaxIconGray from '../../public/Icon/TaxIconGray';
-import TaxIcon from '../../public/Icon/TaxIcon';
 import NoticeBoard from './NoticeBoard';
-import HQIcon from '../../public/Icon/CustomerIcon';
-import UserIcon from '../../public/Icon/UserIcon';
 import AdminSideModal from './SideModal/AdminSideModal';
 import HQSideModal from './SideModal/HQSideModal';
 import CSSideModal from './SideModal/CSSideModal';
 import SidebarUploadIcon from '../../public/Icon/SidebarUploadIcon';
-interface MenuItem {
-  name: string;
-  icon: React.ReactNode;
-  selectedIcon: React.ReactNode;
-}
+import {
+  adminMenuItems,
+  CSMenuItems,
+  HQMenuItems
+} from '../routes/SidebarRouter';
 
 interface RoleProps {
   type: 'admin' | 'HQ' | 'CS';
 }
 
-//관리자
-const adminMenuItems: MenuItem[] = [
-  { name: '홈', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
-  {
-    name: '게시판 관리',
-    icon: <SpeakerGray />,
-    selectedIcon: <SpeakerGray color="#009856" />
-  },
-  {
-    name: '유저 관리',
-    icon: <UserIcon />,
-    selectedIcon: <UserIcon primaryColor="#009856" secondaryColor="#4CC584" />
-  },
-  {
-    name: '세금계산서 조회',
-    icon: <TaxIconGray />,
-    selectedIcon: <TaxIcon />
-  },
-  { name: '지급결의서 조회', icon: <ErrorGray />, selectedIcon: <Error /> }
-];
-
-//본사-고객
-const HQMenuItems: MenuItem[] = [
-  { name: '홈', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
-  {
-    name: '세금계산서 조회',
-    icon: <TaxIconGray />,
-    selectedIcon: <TaxIcon />
-  },
-  { name: '지급결의서 조회', icon: <ErrorGray />, selectedIcon: <Error /> },
-  {
-    name: '고객센터',
-    icon: <HQIcon />,
-    selectedIcon: <HQIcon primaryColor="#009856" secondaryColor="#4CC584" />
-  }
-];
-
-//대리점
-const CSMenuItems: MenuItem[] = [
-  { name: '홈', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
-  {
-    name: '세금계산서 조회',
-    icon: <TaxIconGray />,
-    selectedIcon: <TaxIcon />
-  }
-];
-
 const Sidebar = ({ type }: RoleProps) => {
+  const navigate = useNavigate();
   const [selectedMenu, setSelectedMenu] = useState<string>('홈');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -155,7 +101,10 @@ const Sidebar = ({ type }: RoleProps) => {
                   ? 'bg-primary-50 text-primary-700'
                   : 'text-gray-500 hover:bg-gray-100'
               }`}
-              onClick={() => setSelectedMenu(item.name)}
+              onClick={() => {
+                setSelectedMenu(item.name);
+                navigate(item.path);
+              }}
             >
               {selectedMenu === item.name ? item.selectedIcon : item.icon}
               <span className="font-md-medium">{item.name}</span>
