@@ -61,7 +61,6 @@ const UserSideModal = ({
 
   const handleCancelDelete = () => {
     setIsConfirmModalOpen(false);
-    handleClose();
   };
 
   if (!isOpen && !isOpening) return null;
@@ -116,7 +115,7 @@ const UserSideModal = ({
           <div>
             <label className="font-md-medium text-gray-500">아이디</label>
             <input
-              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
+              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium"
               value={user.userId}
               readOnly
             />
@@ -125,7 +124,7 @@ const UserSideModal = ({
             <div>
               <label className="font-md-medium text-gray-500">부서</label>
               <input
-                className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
+                className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium"
                 value={user.department}
                 readOnly
               />
@@ -134,7 +133,7 @@ const UserSideModal = ({
           <div>
             <label className="font-md-medium text-gray-500">이메일</label>
             <input
-              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
+              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium"
               value={user.email}
               readOnly
             />
@@ -142,7 +141,7 @@ const UserSideModal = ({
           <div>
             <label className="font-md-medium text-gray-500">연락처</label>
             <input
-              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium "
+              className="w-full mt-[8px] p-4 h-[56px] rounded-[12px] bg-gray-100 text-gray-600 font-md-medium"
               value={user.phone}
               readOnly
             />
@@ -151,7 +150,7 @@ const UserSideModal = ({
 
         <div className="flex justify-end space-x-2 mt-6">
           <button
-            className="w-[128px] px-[18px] py-[12px] justify-center flex items-center gap-[4px] border border-red-500 text-red-500 rounded-[12px] bg-white font-md-medium whitespace-nowrap"
+            className="w-[128px] px-[18px] py-[12px] flex items-center gap-[4px] border border-red-500 text-red-500 rounded-[12px] bg-white font-md-medium whitespace-nowrap"
             onClick={handleDeleteClick}
           >
             <DeleteXIcon />
@@ -160,12 +159,15 @@ const UserSideModal = ({
         </div>
       </div>
 
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          onClose={handleCancelDelete}
-          onDelete={handleConfirmDelete}
-        />
-      )}
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="회원을 삭제하시겠어요?"
+        description="삭제된 회원은 복구할 수 없어요."
+        confirmText="삭제"
+        cancelText="취소"
+      />
     </div>
   );
 };
