@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import UserSideModal from './UserSideModal';
 import ChartPagination from '../../../../common/ChartPagination';
 import { UserDummy } from '../../../../utils/UserDummy';
 import UserDataTableHeader from './UserDataTableHeader';
@@ -5,6 +7,14 @@ import PlusIcon from '../../../../../public/Icon/PlusIcon';
 
 const UserDataTable = () => {
   const data = UserDummy;
+  const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (user: any) => {
+    setSelectedUser(user);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="mt-4 flex h-[778px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <UserDataTableHeader />
@@ -13,7 +23,8 @@ const UserDataTable = () => {
         {data.map((row, index) => (
           <div
             key={index}
-            className={`flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer`}
+            className="flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer"
+            onClick={() => openModal(row)}
           >
             <div
               className={`w-[92px] pl-5 font-sm-medium ${
@@ -31,10 +42,9 @@ const UserDataTable = () => {
             <div className="w-[200px] pl-5 text-gray-800 font-sm-medium">
               {row.phone}
             </div>
-            <div className="w-[170px] pl-5 ml-1  text-gray-800 font-sm-medium">
+            <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium">
               {row.date}
             </div>
-
             <div className="w-[140px] px-5 py-2 items-center">
               {row.status === '미등록' && (
                 <button
@@ -45,11 +55,21 @@ const UserDataTable = () => {
                   등록하기
                 </button>
               )}
-            </div>
+            </div>{' '}
           </div>
         ))}
       </div>
       <ChartPagination />
+
+      {isModalOpen && selectedUser && (
+        <UserSideModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          user={selectedUser}
+          role="admin"
+          onDelete={() => console.log('회원 삭제')}
+        />
+      )}
     </div>
   );
 };
