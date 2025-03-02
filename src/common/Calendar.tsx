@@ -43,9 +43,9 @@ const Calendar = ({ onSelectDate }: CalendarProps) => {
 
   const handleDateClick = (day: number | null) => {
     if (day === null) return;
-    const selectedDate = `${year}-${(month + 1)
+    const selectedDate = `${year}.${(month + 1)
       .toString()
-      .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      .padStart(2, '0')}.${day.toString().padStart(2, '0')}`;
     onSelectDate(selectedDate);
   };
 
