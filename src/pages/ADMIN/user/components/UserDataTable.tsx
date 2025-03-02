@@ -6,13 +6,21 @@ import UserDataTableHeader from './UserDataTableHeader';
 import PlusIcon from '../../../../../public/Icon/PlusIcon';
 
 const UserDataTable = () => {
-  const data = UserDummy;
+  const [data, setData] = useState(UserDummy);
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = (user: any) => {
     setSelectedUser(user);
     setIsModalOpen(true);
+  };
+
+  const deleteUser = (userId: string) => {
+    if (selectedUser) {
+      setData((prevData) =>
+        prevData.filter((user) => user.userId !== selectedUser.userId)
+      );
+    }
   };
 
   return (
@@ -49,13 +57,16 @@ const UserDataTable = () => {
               {row.status === '미등록' && (
                 <button
                   className="flex w-[85px] h-[26px] gap-1 pl-2 pr-3 items-center justify-center rounded-lg bg-[#E6F1F7] text-[#2C72FF] font-xs-regular"
-                  onClick={() => console.log('등록하기')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('등록하기');
+                  }}
                 >
                   <PlusIcon />
                   등록하기
                 </button>
               )}
-            </div>{' '}
+            </div>
           </div>
         ))}
       </div>
@@ -67,7 +78,7 @@ const UserDataTable = () => {
           onClose={() => setIsModalOpen(false)}
           user={selectedUser}
           role="admin"
-          onDelete={() => console.log('회원 삭제')}
+          onDelete={() => deleteUser(selectedUser.userId)}
         />
       )}
     </div>

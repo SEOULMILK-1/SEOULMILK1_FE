@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import ArrowIcon from '../../../../../public/Icon/ArrowIcon';
 import DeleteXIcon from '../../../../../public/Icon/DeleteXIcon';
+import ConfirmModal from '../../../../common/ConfirmModal';
+
 interface UserSideModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -26,6 +28,7 @@ const UserSideModal = ({
 }: UserSideModalProps) => {
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -41,12 +44,24 @@ const UserSideModal = ({
   }, [isOpen]);
 
   const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsClosing(false);
-      setIsOpening(false);
-      onClose();
-    }, 300);
+    setIsClosing(false);
+    setIsOpening(false);
+    onClose();
+  };
+
+  const handleDeleteClick = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    onDelete();
+    setIsConfirmModalOpen(false);
+    handleClose();
+  };
+
+  const handleCancelDelete = () => {
+    setIsConfirmModalOpen(false);
+    handleClose();
   };
 
   if (!isOpen && !isOpening) return null;
@@ -137,13 +152,20 @@ const UserSideModal = ({
         <div className="flex justify-end space-x-2 mt-6">
           <button
             className="w-[128px] px-[18px] py-[12px] justify-center flex items-center gap-[4px] border border-red-500 text-red-500 rounded-[12px] bg-white font-md-medium whitespace-nowrap"
-            onClick={onDelete}
+            onClick={handleDeleteClick}
           >
             <DeleteXIcon />
             회원 삭제
           </button>
         </div>
       </div>
+
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          onClose={handleCancelDelete}
+          onDelete={handleConfirmDelete}
+        />
+      )}
     </div>
   );
 };
