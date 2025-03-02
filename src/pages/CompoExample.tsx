@@ -5,10 +5,14 @@ import StateDropdown from '../common/StateDropdown';
 import SelectMonth from '../common/SelectMonth';
 import AdminSideModal from '../common/AdminSideModal';
 import UserSideModal from '../common/UserSideModal';
+import SelectCalendar from '../common/SelectCalendar';
 
 export function CompoExample() {
   return (
     <div>
+      <br />
+      <SelectCalendar />
+      <br />
       <br />
       세금 계산서 버튼 컴포넌트
       <br />
