@@ -64,7 +64,6 @@ function SideModal({ isOpen, onClose, role }: SideModalProps) {
           </h2>
         </div>
 
-        {/* 사용자 정보 */}
         <div className="flex items-center gap-2 mt-4">
           <div className="font-2xl-bold text-gray-800">김구름</div>
           <span className="px-3 py-1 text-sm rounded-3xl bg-primary-50 text-primary-600">
@@ -72,7 +71,6 @@ function SideModal({ isOpen, onClose, role }: SideModalProps) {
           </span>
         </div>
 
-        {/* 공통 입력 필드 */}
         <div className="mt-6 space-y-4">
           {role === 'hq' && (
             <div>
