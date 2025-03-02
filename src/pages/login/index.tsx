@@ -32,11 +32,12 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center ">
-      <div className="w-[456px] px-[32px] py-[42px] bg-white rounded-[32px] drop-shadow-elevation2">
-        <div className="flex justify-center mb-[40px]">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="w-[456px] mx-auto px-6 py-[40px]  bg-white rounded-[32px] drop-shadow-elevation1 max-sm:min-h-screen flex flex-col justify-center">
+        <div className="flex justify-center mb-[32px]">
           <RedLogo />
         </div>
+
         <div className="space-y-[20px]">
           <FloatingLabelInput
             placeholder="사번 또는 아이디"
@@ -49,24 +50,25 @@ export function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+
         {error ? (
           <ErrorMessage message={error} />
         ) : (
           <div className="mt-[32px]" />
         )}
+
         <Button
           size="lg"
-          className={
+          className={`w-full mt-6 ${
             isButtonDisabled
               ? 'bg-gray-200 text-gray-400'
               : 'bg-primary-700 text-white'
-          }
+          }`}
           disabled={isButtonDisabled}
           onClick={handleLogin}
         >
           로그인
         </Button>
-
         <LoginFooter />
       </div>
       <ApprovalModal

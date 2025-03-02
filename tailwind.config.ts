@@ -20,7 +20,7 @@ module.exports = {
         'primary-900': '#00874a',
 
         /** Gray **/
-        'gray-50': '#f7f9fb',
+        'gray-50': '#FBFCFD',
         'gray-100': '#f3f5f9',
         'gray-200': '#ebeef3',
         'gray-300': '#dadfe7',
