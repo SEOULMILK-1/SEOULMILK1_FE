@@ -31,13 +31,15 @@ const SelectCalendar = () => {
     <div className="flex flex-row relative">
       <div className="relative">
         <div
-          className="flex w-[150px] h-12 p-4 justify-start items-center gap-2 rounded-xl border border-solid border-gray-300 cursor-pointer"
+          className={`flex w-[150px] h-12 p-4 justify-start items-center gap-2 rounded-xl cursor-pointer border border-solid ${
+            selectedStartDate ? 'border-primary-700' : 'border-gray-300'
+          }`}
           onClick={() => setIsStartCalendarOpen(!isStartCalendarOpen)}
         >
           <CalendarIcon fillcolor={selectedStartDate ? '#009856' : '#949BA7'} />
           <div
             className={`w-[122px] font-md-medium ${
-              selectedStartDate ? 'text-primary-700' : 'text-gray-500'
+              selectedStartDate ? 'text-primary-700' : 'text-gray-500 '
             }`}
           >
             {selectedStartDate || '시작일...'}
@@ -61,7 +63,9 @@ const SelectCalendar = () => {
 
       <div className="relative">
         <div
-          className="flex w-[150px] h-12 p-4 justify-start items-center gap-2 rounded-xl border border-solid border-gray-300 cursor-pointer"
+          className={`flex w-[150px] h-12 p-4 justify-start items-center gap-2 rounded-xl cursor-pointer border border-solid ${
+            selectedEndDate ? 'border-primary-700' : 'border-gray-300'
+          }`}
           onClick={() => setIsEndCalendarOpen(!isEndCalendarOpen)}
         >
           <CalendarIcon fillcolor={selectedEndDate ? '#009856' : '#949BA7'} />
