@@ -6,7 +6,7 @@ interface HQSideModalProps {
 }
 
 function HQSideModal({ isOpen, onClose }: HQSideModalProps) {
-  return <SideModal isOpen={isOpen} onClose={onClose} role="hq" />;
+  return <SideModal isOpen={isOpen} onClose={onClose} role="HQ" />;
 }
 
 export default HQSideModal;

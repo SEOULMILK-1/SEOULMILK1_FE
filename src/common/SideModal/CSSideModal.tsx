@@ -6,7 +6,7 @@ interface CSSideModalProps {
 }
 
 function CSSideModal({ isOpen, onClose }: CSSideModalProps) {
-  return <SideModal isOpen={isOpen} onClose={onClose} role="cs" />;
+  return <SideModal isOpen={isOpen} onClose={onClose} role="CS" />;
 }
 
 export default CSSideModal;

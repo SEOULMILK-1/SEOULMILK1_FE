@@ -27,3 +27,11 @@ body {
   background: transparent;
   border-radius: 10px;
 }
+
+/* 모든 input, select, textarea의 브라우저 기본 outline,그림자 제거 */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: none;
+}

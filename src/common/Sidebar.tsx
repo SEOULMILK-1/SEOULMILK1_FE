@@ -55,7 +55,11 @@ const HQMenuItems: MenuItem[] = [
     selectedIcon: <TaxIcon />
   },
   { name: '지급결의서 조회', icon: <ErrorGray />, selectedIcon: <Error /> },
-  { name: '고객센터', icon: <HQIcon />, selectedIcon: <HQIcon /> }
+  {
+    name: '고객센터',
+    icon: <HQIcon />,
+    selectedIcon: <HQIcon primaryColor="#009856" secondaryColor="#4CC584" />
+  }
 ];
 
 //대리점
