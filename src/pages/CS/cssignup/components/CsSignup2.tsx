@@ -8,6 +8,11 @@ import { useState } from 'react';
 const CsSignup2 = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [agency, setAgency] = useState('');
+  const [bank, setBank] = useState('');
+  const [account, setAccount] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -20,7 +25,12 @@ const CsSignup2 = () => {
           {/* 여기서부터 input */}
           <div className="flex flex-col gap-2 w-full">
             <label className="text-gray-600 font-md-semibold"> 대리점 </label>
-            <SignupInput placeholder="선택" />
+            <SignupInput
+              placeholder="선택"
+              type="text"
+              value={agency}
+              onChange={(e) => setAgency(e.target.value)}
+            />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
@@ -28,18 +38,38 @@ const CsSignup2 = () => {
               {' '}
               사업자 계좌 (지급 요청 계좌)
             </label>
-            <SignupInput placeholder="은행명 입력" />
-            <SignupInput placeholder="계좌번호 입력" />
+            <SignupInput
+              placeholder="은행명 입력"
+              type="text"
+              value={bank}
+              onChange={(e) => setBank(e.target.value)}
+            />
+            <SignupInput
+              placeholder="계좌번호 입력"
+              type="text"
+              value={account}
+              onChange={(e) => setAccount(e.target.value)}
+            />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
             <label className="text-gray-600 font-md-semibold"> 전화번호 </label>
-            <SignupInput placeholder="-없이 숫자만 입력" />
+            <SignupInput
+              placeholder="-없이 숫자만 입력"
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
             <label className="text-gray-600 font-md-semibold"> 이메일 </label>
-            <SignupInput placeholder="example@email.com" />
+            <SignupInput
+              placeholder="example@email.com"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           {/* <div className="flex justify-between items-center">

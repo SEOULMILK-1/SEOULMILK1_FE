@@ -7,7 +7,6 @@ const CircleNumber = ({ type }: NumberProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* 숫자 표시 */}
       <div className="flex flex-row gap-2">
         <div
           className={`flex w-6 h-6 items-center justify-center rounded-[18px] ${

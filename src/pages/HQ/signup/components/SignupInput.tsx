@@ -1,12 +1,18 @@
 interface InputProps {
   placeholder: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type: string;
 }
-const SignupInput = ({ placeholder }: InputProps) => {
+const SignupInput = ({ placeholder, value, onChange, type }: InputProps) => {
   return (
     <div className="w-full">
       <input
+        type={type}
+        value={value}
+        onChange={onChange}
         placeholder={placeholder}
-        className="placeholder:font-md-medium flex w-full h-14 p-4 justify-center items-center gap-[10px] rounded-xl border border-solid border-gray-300"
+        className="placeholder:font-md-medium flex w-full h-14 p-4 justify-center items-center gap-[10px] rounded-xl border border-solid border-gray-300 text-gray-800 focus:border-primary-500"
       />
     </div>
   );
