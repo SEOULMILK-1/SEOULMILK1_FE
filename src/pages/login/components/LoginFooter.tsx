@@ -21,7 +21,7 @@ export default function LoginFooter() {
         </span>
       </div>
 
-      <div className="cursor-pointer" onClick={() => navigate('/회원가입')}>
+      <div className="cursor-pointer" onClick={() => navigate('/signup')}>
         회원가입
       </div>
     </div>
