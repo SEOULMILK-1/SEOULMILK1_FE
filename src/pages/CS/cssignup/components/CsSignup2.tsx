@@ -1,6 +1,5 @@
 import CircleNumber from '../../../HQ/signup/components/CircleNumber';
 import SignupInput from '../../../HQ/signup/components/SignupInput';
-import Check from '../../../../../public/Icon/Check';
 import SignupButton from '../../../HQ/signup/components/SignupButton';
 import { useNavigate } from 'react-router-dom';
 import SignupModal from '../../../HQ/signup/components/SignupModal';

@@ -9,6 +9,11 @@ import DashBoard from '../pages/ADMIN/home/DashBoard';
 import UserManage from '../pages/ADMIN/user/UserManage';
 import HQRootLayout from '../outlet/HQRootLayout';
 import CSRootLayout from '../outlet/CSRootLayout';
+import CSSignup from '../pages/CS/cssignup/CSSignup';
+import HeadSignup from '../pages/HQ/signup/HeadSignup';
+import Signup from '../pages/HQ/signup';
+import Signup2 from '../pages/HQ/signup/components/Signup2';
+import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -37,7 +42,12 @@ const router = createBrowserRouter([
     element: <CSRootLayout />,
     children: [{ path: '/CS-home', element: <CS_home /> }]
   },
-  { path: '/login', element: <LoginPage /> } //sidebar 필요없을때
+  { path: '/login', element: <LoginPage /> },
+  { path: '/signup', element: <Signup /> },
+  { path: '/head/signup', element: <HeadSignup /> },
+  { path: '/head/signup2', element: <Signup2 /> },
+  { path: '/cs/signup', element: <CSSignup /> },
+  { path: '/cs/signup2', element: <CsSignup2 /> }
 ]);
 
 export default function Router() {
