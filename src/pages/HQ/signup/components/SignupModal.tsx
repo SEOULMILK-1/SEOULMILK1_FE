@@ -4,7 +4,7 @@ import SignupCheck from '../../../../../public/Icon/SignupCheck';
 const SignupModal = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div className="fixed inset-0 min-h-screen flex items-center justify-center bg-gray-50">
       <div className="flex flex-col w-[480px] px-8 py-[42px] justify-center items-center rounded-[32px] drop-shadow-elevation1 bg-white">
         <div className="flex w-16 h-16 justify-center items-center rounded-[48px] bg-primary-700">
           <SignupCheck />
