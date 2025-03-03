@@ -43,9 +43,9 @@ const CircleNumber = ({ type }: NumberProps) => {
       </div>
 
       <div className="text-gray-800 font-3xl-bold">
-        {isOne ? '가입 정보 입력' : '추가 정보 입력'}
+        {isOne ? '가입 정보 입력' : '회원 정보 입력'}
         <div className="text-gray-500 font-2xl-medium">
-          {isOne ? '아래 내용을 입력해주세요.' : '추가 정보를 입력해주세요.'}
+          {isOne ? '아래 내용을 입력해주세요.' : '아래 내용을 입력해주세요.'}
         </div>
       </div>
     </div>
