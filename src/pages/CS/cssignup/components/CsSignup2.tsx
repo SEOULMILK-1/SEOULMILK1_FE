@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SignupModal from '../../../HQ/signup/components/SignupModal';
 import { useState } from 'react';
 import Check from '../../../../../public/Icon/Check';
+import AgreeModal from '../../../../common/AgreeModal';
 
 const CsSignup2 = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const CsSignup2 = () => {
   const [account, setAccount] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [isAgreeModal, setIsAgreeModal] = useState(false);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -89,9 +91,12 @@ const CsSignup2 = () => {
               <span className="ml-2 text-center text-gray-800 font-md-medium">
                 개인 정보 수집 및 이용 동의
               </span>
-              <span className="text-gray-500 font-sm-medium underline ml-auto">
+              <div
+                className="text-gray-500 font-sm-medium underline ml-auto cursor-pointer"
+                onClick={() => setIsAgreeModal(true)}
+              >
                 전문 보기
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -99,10 +104,11 @@ const CsSignup2 = () => {
         <SignupButton
           text="회원가입"
           prevonClick={() => navigate('/cs/signup')}
+          onClick={() => setIsModalOpen(true)}
         />
-
-        {isModalOpen && <SignupModal />}
       </div>
+      {isModalOpen && <SignupModal />}
+      {isAgreeModal && <AgreeModal onClose={() => setIsAgreeModal(false)} />}
     </div>
   );
 };
