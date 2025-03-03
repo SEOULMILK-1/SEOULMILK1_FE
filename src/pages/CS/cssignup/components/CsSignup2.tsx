@@ -4,6 +4,7 @@ import SignupButton from '../../../HQ/signup/components/SignupButton';
 import { useNavigate } from 'react-router-dom';
 import SignupModal from '../../../HQ/signup/components/SignupModal';
 import { useState } from 'react';
+import Check from '../../../../../public/Icon/Check';
 
 const CsSignup2 = () => {
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const CsSignup2 = () => {
             />
           </div>
 
-          {/* <div className="flex justify-between items-center">
+          <div className="flex w-full items-center">
             <div className="relative items-center mt-1 ">
               <input
                 type="checkbox"
@@ -83,10 +84,16 @@ const CsSignup2 = () => {
                 <Check stroke="#fff" />
               </span>
             </div>
-            <span className="ml-2 text-center text-gray-800 font-md-medium">
-              개인 정보 수집 및 이용 동의
-            </span>
-          </div> */}
+
+            <div className="flex w-full items-center">
+              <span className="ml-2 text-center text-gray-800 font-md-medium">
+                개인 정보 수집 및 이용 동의
+              </span>
+              <span className="text-gray-500 font-sm-medium underline ml-auto">
+                전문 보기
+              </span>
+            </div>
+          </div>
         </div>
 
         <SignupButton

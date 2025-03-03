@@ -4,6 +4,7 @@ import SignupButton from './SignupButton';
 import SignupInput from './SignupInput';
 import { useState } from 'react';
 import SignupModal from './SignupModal';
+import Check from '../../../../../public/Icon/Check';
 
 const Signup2 = () => {
   const navigate = useNavigate();
@@ -36,6 +37,28 @@ const Signup2 = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+        </div>
+
+        <div className="flex w-full items-center">
+          <div className="relative items-center mt-1 ">
+            <input
+              type="checkbox"
+              className="appearance-none w-6 h-6 rounded-lg border border-solid border-gray-300 checked:bg-primary-700 checked:border-primary-700 
+    relative peer checked:cursor-pointer cursor-pointer"
+            />
+            <span className="absolute inset-0 bottom-[6px] left-1 right-1 items-center justify-center pointer-events-none hidden peer-checked:flex ">
+              <Check stroke="#fff" />
+            </span>
+          </div>
+
+          <div className="flex w-full items-center">
+            <span className="ml-2 text-center text-gray-800 font-md-medium">
+              개인 정보 수집 및 이용 동의
+            </span>
+            <span className="text-gray-500 font-sm-medium underline ml-auto">
+              전문 보기
+            </span>
+          </div>
         </div>
 
         <SignupButton
