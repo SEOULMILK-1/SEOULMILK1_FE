@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ImageCrop from './ImageCrop';
 import Header from '../../../common/Header';
+import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 
 const Step1 = () => {
   const navigate = useNavigate();
@@ -18,8 +19,14 @@ const Step1 = () => {
   }, [location.state]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <Header title="세금계산서 업로드" showStepProgress={true} />
+    <div className="px-[94px]  mx-auto ">
+      <Header
+        title="세금계산서 업로드"
+        showStepProgress={true}
+        Icon={() => (
+          <img src={uploadIcon} alt="세금계산서 업로드" className="w-6 h-6" />
+        )}
+      />
 
       <ImageCrop
         initialImage={selectedImage}
@@ -35,7 +42,7 @@ const Step1 = () => {
           onClick={() =>
             navigate('/upload-tax/step2', { state: { croppedImage } })
           }
-          disabled={!croppedImage}
+          // disabled={croppedImage}
         >
           다음
         </button>

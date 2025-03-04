@@ -104,12 +104,12 @@ const ImageCrop: React.FC<ImageCropProps> = ({
   };
   useEffect(() => {
     cropImage();
-  }, [completedCrop, rotation, flipX, flipY]); 
+  }, [completedCrop, rotation, flipX, flipY]);
 
   return (
     <div className="flex flex-col items-center">
       {selectedImage && (
-        <div className="relative w-[960px]">
+        <div className="relative w-[960px] pt-8">
           <h3 className="py-[12px] text-white bg-gray-800 text-center h-[54px] rounded-t-[32px]">
             세금계산서가 잘 보이도록 사진을 편집해주세요.
           </h3>

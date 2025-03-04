@@ -12,7 +12,7 @@ const StepProgress = () => {
     steps.findIndex((step) => step.path === location.pathname) + 1;
 
   return (
-    <div className="flex items-center w-[500px] h-[40px]">
+    <div className="flex items-center w-[500px] h-[40px] mr-[110px]">
       {steps.map(({ step, label }) => (
         <div key={step} className="flex items-center gap-[10px]">
           <div
