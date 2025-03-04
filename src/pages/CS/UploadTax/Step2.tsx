@@ -1,18 +1,26 @@
-import { useNavigate } from 'react-router-dom';
-import StepProgress from './StepProgress';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Header from '../../../common/Header';
 
 const Step2 = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const croppedImage = location.state?.croppedImage;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <StepProgress />
+      <Header title="데이터 확인 및 수정" showStepProgress={true} />
 
-      <h1 className="text-2xl font-bold mb-4">데이터 확인 및 수정</h1>
-
-      <div className="bg-gray-300 h-64 flex items-center justify-center rounded-md">
-        OCR 결과를 확인하고 수정해주세요.
-      </div>
+      {croppedImage ? (
+        <div className="overflow-auto">
+          <img
+            src={croppedImage}
+            alt="Cropped"
+            className="max-w-full max-h-[500px] w-auto h-auto rounded-md mx-auto"
+          />
+        </div>
+      ) : (
+        <p className="text-center text-red-500">이미지가 없습니다.</p>
+      )}
 
       <div className="mt-6 flex justify-between">
         <button
@@ -21,11 +29,8 @@ const Step2 = () => {
         >
           이전
         </button>
-        <button
-          className="bg-green-600 text-white px-6 py-2 rounded-md"
-          onClick={() => navigate('/upload-tax/step3')}
-        >
-          다음
+        <button className="bg-green-600 text-white px-6 py-2 rounded-md">
+          검증 시작
         </button>
       </div>
     </div>

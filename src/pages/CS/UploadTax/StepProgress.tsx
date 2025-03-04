@@ -12,17 +12,17 @@ const StepProgress = () => {
     steps.findIndex((step) => step.path === location.pathname) + 1;
 
   return (
-    <div className="absolute top-[50px] right-[110px] flex items-center ">
+    <div className="flex items-center w-[500px] h-[40px]">
       {steps.map(({ step, label }) => (
         <div key={step} className="flex items-center gap-[10px]">
           <div
             className={`w-[24px] h-[24px] flex items-center justify-center rounded-full font-md-semibold 
-              ${
-                currentStep >= step
-                  ? 'bg-primary-700 text-white'
-                  : ' text-gray-300 border-[1.6px] border-gray-300'
-              }
-            `}
+                ${
+                  currentStep >= step
+                    ? 'bg-primary-700 text-white'
+                    : ' text-gray-300 border-[1.6px] border-gray-300'
+                }
+              `}
           >
             {step}
           </div>

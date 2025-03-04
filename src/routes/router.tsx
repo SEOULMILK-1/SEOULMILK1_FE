@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { LoginPage, CompoExample } from '../pages';
 
 import HeadCustomer from '../pages/HQ/customer/HeadCustomer';
 import Tax from '../pages/HQ/tax';
@@ -11,6 +10,8 @@ import HQRootLayout from '../outlet/HQRootLayout';
 import CSRootLayout from '../outlet/CSRootLayout';
 import Step1 from '../pages/CS/UploadTax/Step1';
 import Step2 from '../pages/CS/UploadTax/Step2';
+import Step3 from '../pages/CS/UploadTax/Step3';
+import LoginPage from '../pages/login';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -20,7 +21,6 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <DashBoard /> },
       { path: '/user-manage', element: <UserManage /> },
-      { path: 'example', element: <CompoExample /> }
     ]
   },
 
@@ -40,7 +40,8 @@ const router = createBrowserRouter([
     children: [
       { path: '/CS-home', element: <CS_home /> },
       { path: '/upload-tax/step1', element: <Step1 /> },
-      { path: '/upload-tax/step2', element: <Step2 /> }
+      { path: '/upload-tax/step2', element: <Step2 /> },
+      { path: '/upload-tax/step3', element: <Step3 /> }
     ]
   },
   { path: '/login', element: <LoginPage /> } //sidebar 필요없을때
