@@ -25,14 +25,17 @@ const AgreeModal = ({ onClose }: ModalProps) => {
           <p>
             <p>
               서울우유협동조합(이하 '회사')은 자동화 프로그램 서비스 제공을 위해
-              아래와 같이 개인정보를 수집・이용하고자 합니다. 내용을 자세히
-              읽으신 후 동의 여부를 결정하여 주시기 바랍니다.
+              아래와 <br />
+              같이 개인정보를 수집・이용하고자 합니다.
+              <p>
+                내용을 자세히 읽으신 후 동의 여부를 결정하여 주시기 바랍니다.
+              </p>
             </p>
           </p>
           <br />
           <p>
-            <p>1. 수집하는 개인정보 항목</p>
-            필수항목
+            <strong>1. 수집하는 개인정보 항목</strong>
+            <p>필수항목 : </p>
             <li className="ml-1"> 기본정보</li>
             <li className="ml-10"> 이름</li>
             <li className="ml-10"> 아이디</li>
@@ -57,7 +60,7 @@ const AgreeModal = ({ onClose }: ModalProps) => {
           </p>
           <br />
           <p>
-            <p> 2. 개인정보의 수집 및 이용목적</p>
+            <strong> 2. 개인정보의 수집 및 이용목적</strong>
             <p className="ml-2">1. 서비스 제공 및 관리</p>
             <li className="ml-10"> 세금계산서 업로드/승인 서비스 제공</li>
             <li className="ml-10"> 지급결제서 처리 및 송부</li>
@@ -75,7 +78,7 @@ const AgreeModal = ({ onClose }: ModalProps) => {
           </p>
           <br />
           <p>
-            <p> 3. 개인정보의 보유 및 이용기간</p>
+            <strong> 3. 개인정보의 보유 및 이용기간</strong>
             <p className="ml-2">1. 회원 탈퇴 시까지 보관하는 정보</p>
             <li className="ml-10"> 기본 로그인 정보</li>
             <li className="ml-10"> 연락처 정보</li>
@@ -99,7 +102,7 @@ const AgreeModal = ({ onClose }: ModalProps) => {
 
           <br />
           <p>
-            <p> 4. 개인정보의 파기절차 및 방법</p>
+            <strong> 4. 개인정보의 파기절차 및 방법</strong>
             <p className="ml-2">1. 파기절차</p>
             <li className="ml-10">
               {' '}
@@ -121,7 +124,7 @@ const AgreeModal = ({ onClose }: ModalProps) => {
           </p>
           <br />
           <p>
-            <p> 5. 동의 거부권 및 거부 시 불이익</p>
+            <strong> 5. 동의 거부권 및 거부 시 불이익</strong>
             <li className="ml-1">
               {' '}
               개인정보 수집·이용에 대한 동의를 거부할 수 있습니다.
@@ -132,7 +135,7 @@ const AgreeModal = ({ onClose }: ModalProps) => {
             </li>
           </p>
           <br />
-          <p> 6. 개인정보의 안전성 확보 조치</p>
+          <strong> 6. 개인정보의 안전성 확보 조치</strong>
           <p>
             {' '}
             회사는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고
@@ -152,10 +155,10 @@ const AgreeModal = ({ onClose }: ModalProps) => {
           <li className="ml-10">전산실, 자료보관실 등의 접근통제</li>
 
           <br />
-          <p>
+          <strong>
             ※ 개인정보 보호법 제15조 및 제22조에 따라 개인정보의 수집·이용에
-            관하여 고지하고 동의를 받아야 합니다.
-          </p>
+            관하여 <br /> 고지하고 동의를 받아야 합니다.
+          </strong>
         </div>
       </div>
     </div>
