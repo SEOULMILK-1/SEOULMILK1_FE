@@ -27,7 +27,7 @@ const UserDataTable = () => {
     <div className="mt-4 flex h-[778px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <UserDataTableHeader />
 
-      <div className="flex-grow mx-2">
+      <div className="flex-grow mx-2 overflow-y-scroll">
         {data.map((row, index) => (
           <div
             key={index}
