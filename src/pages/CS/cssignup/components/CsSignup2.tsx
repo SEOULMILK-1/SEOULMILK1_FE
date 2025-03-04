@@ -18,7 +18,7 @@ const CsSignup2 = () => {
   const [isAgreeModal, setIsAgreeModal] = useState(false);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div className="flex min-h-screen h-[1024px] items-center justify-center bg-gray-50">
       <div className="flex flex-col w-[480px] py-[42px] px-8 justify-center items-start gap-8 rounded-[32px] bg-white drop-shadow-elevation1">
         <div className="flex flex-col">
           <CircleNumber type="two" />
