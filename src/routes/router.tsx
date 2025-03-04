@@ -4,7 +4,6 @@ import { LoginPage, CompoExample } from '../pages';
 import HeadCustomer from '../pages/HQ/customer/HeadCustomer';
 import Tax from '../pages/HQ/tax';
 import AdminRootLayout from '../outlet/AdminRootLayout';
-import { CS_home } from '../pages/CS/home';
 import DashBoard from '../pages/ADMIN/home/DashBoard';
 import UserManage from '../pages/ADMIN/user/UserManage';
 import HQRootLayout from '../outlet/HQRootLayout';
@@ -14,6 +13,7 @@ import HeadSignup from '../pages/HQ/signup/HeadSignup';
 import Signup from '../pages/HQ/signup';
 import Signup2 from '../pages/HQ/signup/components/Signup2';
 import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
+import CSTax from '../pages/CS/tax';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <CSRootLayout />,
-    children: [{ path: '/CS-home', element: <CS_home /> }]
+    children: [{ path: '/CS-tax', element: <CSTax /> }]
   },
   { path: '/login', element: <LoginPage /> },
   { path: '/signup', element: <Signup /> },
