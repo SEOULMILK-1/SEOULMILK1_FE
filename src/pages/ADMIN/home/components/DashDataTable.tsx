@@ -1,14 +1,7 @@
 import Check from '../../../../../public/Icon/Check';
 import ChartPagination from '../../../../common/ChartPagination';
+import { UserDummy } from '../../../../utils/UserDummy';
 import DashTableHeader from './DashTableHeader';
-
-const data = Array(18).fill({
-  status: '미등록',
-  name: '김구름',
-  center: '서울우유태평고객센터',
-  phone: '010-1234-5678',
-  date: '2025.02.28'
-});
 
 interface DataTableProps {
   selected: number[];
@@ -21,6 +14,7 @@ const DashDataTable = ({
   toggleSelect,
   toggleSelectAll
 }: DataTableProps) => {
+  const data = UserDummy;
   return (
     <div className="mt-4 flex h-[786px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <div className="flex w-[960px] h-14 pl-2 pr-5 items-center border-b border-gray-300">
@@ -43,7 +37,7 @@ const DashDataTable = ({
       </div>
 
       <div className="flex-grow overflow-y-scroll">
-        {data.map((row, index) => (
+        {data.map((data, index) => (
           <div
             key={index}
             className={`flex w-[932px] h-[42px] items-center mx-2 hover:bg-gray-100 rounded-xl cursor-pointer 
@@ -63,19 +57,19 @@ const DashDataTable = ({
             </div>
 
             <div className="w-[92px] pl-5 text-warning-600 font-sm-medium">
-              {row.status}
+              {data.status}
             </div>
             <div className="w-[120px] pl-5 text-gray-800 font-sm-medium">
-              {row.name}
+              {data.name}
             </div>
             <div className="w-[298px] pl-5 text-gray-800 font-sm-medium">
-              {row.center}
+              {data.center}
             </div>
             <div className="w-[200px] pl-5 text-gray-800 font-sm-medium">
-              {row.phone}
+              {data.phone}
             </div>
             <div className="w-[170px] pl-5 text-gray-800 font-sm-medium">
-              {row.date}
+              {data.date}
             </div>
           </div>
         ))}
