@@ -72,7 +72,7 @@ export const CSMenuItems: MenuItem[] = [
   { name: '홈', path: '', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
   {
     name: '세금계산서 조회',
-    path: '/cs-home',
+    path: '/cs-tax',
     icon: <TaxIconGray />,
     selectedIcon: <TaxIcon />
   }

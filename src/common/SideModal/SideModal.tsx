@@ -3,6 +3,7 @@ import ArrowIcon from '../../../public/Icon/ArrowIcon';
 import LogoutIcon from '../../../public/Icon/LogoutIcon';
 import EditIcon from '../../../public/Icon/EditIcon';
 import CheckIcon from '../../../public/Icon/CheckIcon';
+import ConfirmModal from '../ConfirmModal';
 interface SideModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,6 +15,7 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   // 임시 데이터
   const [userId, setUserId] = useState('12345678');
@@ -36,7 +38,29 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
     };
   }, [isOpen]);
 
+  //사이드 모달 닫기
   const handleClose = () => {
+    if (isEditing) {
+      setIsConfirmModalOpen(true);
+    } else {
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsClosing(false);
+        setIsOpening(false);
+        onClose();
+      }, 300);
+    }
+  };
+
+  //confirm 모달 닫기
+  const handleCancelConfirm = () => {
+    setTimeout(() => {
+      setIsConfirmModalOpen(false);
+    }, 100);
+  };
+  const handleConfirmClose = () => {
+    setIsConfirmModalOpen(false);
+    setIsEditing(false);
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
@@ -45,7 +69,7 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
     }, 300);
   };
 
-  if (!isOpen && !isOpening) return null;
+  if (!isOpen) return null;
 
   return (
     <div
@@ -219,6 +243,16 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
           )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onClose={handleCancelConfirm}
+        onConfirm={handleConfirmClose}
+        title="수정사항이 저장되지 않았어요."
+        description="나가시겠어요?"
+        confirmText="나가기"
+        cancelText="돌아가기"
+      />
     </div>
   );
 };
