@@ -12,6 +12,7 @@ import {
   CSMenuItems,
   HQMenuItems
 } from '../routes/SidebarRouter';
+import SidebarUploadButton from '../pages/CS/UploadTax/SidebarUploadBtn';
 
 interface RoleProps {
   type: 'admin' | 'HQ' | 'CS';
@@ -112,15 +113,16 @@ const Sidebar = ({ type }: RoleProps) => {
           ))}
         </nav>
         {type === 'CS' && (
-          <div className="px-[8px] mt-[32px]">
-            <button
-              className="w-full relative flex items-center bg-primary-700 text-white px-[8px] py-[12px] rounded-[12px] font-md-semibold"
-              onClick={() => navigate('/upload-tax/step1')}
-            >
-              <span className="pl-[8px]">세금계산서 업로드</span>
-              <SidebarUploadIcon className="absolute right-[12px] bottom-0 w-[55px] h-auto" />
-            </button>
-          </div>
+          // <div className="px-[8px] mt-[32px]">
+          //   <button
+          //     className="w-full relative flex items-center bg-primary-700 text-white px-[8px] py-[12px] rounded-[12px] font-md-semibold"
+          //     onClick={() => navigate('/upload-tax/step1')}
+          //   >
+          //     <span className="pl-[8px]">세금계산서 업로드</span>
+          //     <SidebarUploadIcon className="absolute right-[12px] bottom-0 w-[55px] h-auto" />
+          //   </button>
+          // </div>
+          <SidebarUploadButton />
         )}
 
         <div className="flex px-5 py-4 items-center gap-2 mt-auto mb-2">

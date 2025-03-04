@@ -1,4 +1,8 @@
-const Horizontal = () => {
+interface HorizontalProps {
+  rotate?: number;
+}
+
+const Horizontal = ({ rotate = 0 }: HorizontalProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +10,10 @@ const Horizontal = () => {
       height="24"
       viewBox="0 0 25 24"
       fill="none"
+      style={{
+        transform: `rotate(${rotate}deg)`,
+        transition: '0.2s ease-in-out'
+      }}
     >
       <path
         fill-rule="evenodd"
