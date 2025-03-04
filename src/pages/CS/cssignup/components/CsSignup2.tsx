@@ -90,54 +90,66 @@ const CsSignup2 = () => {
   };
 
   return (
-    <div className="flex min-h-screen h-[1024px] items-center justify-center bg-gray-50">
+    <div className="flex  h-[1024px] items-center justify-center bg-gray-50">
       <div className="flex flex-col w-[480px] py-[42px] px-8 justify-center items-start gap-8 rounded-[32px] bg-white drop-shadow-elevation1">
         <div className="flex flex-col">
           <CircleNumber type="two" />
         </div>
 
-        {/* <div className="flex flex-col w-full gap-7 justify-center items-start "> */}
-        <div className="flex flex-col gap-2 w-full">
-          <label className="text-gray-600 font-md-semibold"> 대리점 </label>
-          <SignupInput
-            name="agency"
-            placeholder="선택"
-            type="text"
-            value={formState.agency}
-            onChange={handleChange}
-          />
-        </div>
+        <div className="flex flex-col w-full gap-7 justify-center items-start ">
+          <div className="flex flex-col gap-2 w-full">
+            <label className="text-gray-600 font-md-semibold"> 대리점 </label>
+            <SignupInput
+              name="agency"
+              placeholder="선택"
+              type="text"
+              value={formState.agency}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="flex flex-col gap-2 w-full">
-          <label className="text-gray-600 font-md-semibold">
-            사업자 계좌 (지급 요청 계좌)
-          </label>
-          <SignupInput
-            name="bank"
-            placeholder="은행명 입력"
-            type="text"
-            value={formState.bank}
-            onChange={handleChange}
-          />
+          <div className="flex flex-col gap-2 w-full">
+            <label className="text-gray-600 font-md-semibold">
+              사업자 계좌 (지급 요청 계좌)
+            </label>
+            <SignupInput
+              name="bank"
+              placeholder="은행명 입력"
+              type="text"
+              value={formState.bank}
+              onChange={handleChange}
+            />
+            {errors.bank && (
+              <p className="text-warning-700 font-sm-regular">{errors.bank}</p>
+            )}
 
-          <SignupInput
-            name="account"
-            placeholder="계좌번호 입력"
-            type="text"
-            value={formState.account}
-            onChange={handleChange}
-          />
-        </div>
+            <SignupInput
+              name="account"
+              placeholder="계좌번호 입력"
+              type="text"
+              value={formState.account}
+              onChange={handleChange}
+            />
+            {errors.account && (
+              <p className="text-warning-700 font-sm-regular">
+                {errors.account}
+              </p>
+            )}
+          </div>
 
-        <div className="flex flex-col gap-2 w-full">
-          <label className="text-gray-600 font-md-semibold"> 전화번호 </label>
-          <SignupInput
-            name="phone"
-            placeholder="-없이 숫자만 입력"
-            type="text"
-            value={formState.phone}
-            onChange={handleChange}
-          />
+          <div className="flex flex-col gap-2 w-full">
+            <label className="text-gray-600 font-md-semibold"> 전화번호 </label>
+            <SignupInput
+              name="phone"
+              placeholder="-없이 숫자만 입력"
+              type="text"
+              value={formState.phone}
+              onChange={handleChange}
+            />
+            {errors.phone && (
+              <p className="text-warning-700 font-sm-regular">{errors.phone}</p>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-2 w-full">
@@ -149,6 +161,9 @@ const CsSignup2 = () => {
             value={formState.email}
             onChange={handleChange}
           />
+          {errors.email && (
+            <p className="text-warning-700 font-sm-regular">{errors.email}</p>
+          )}
         </div>
 
         <div className="flex w-full flex-col">
