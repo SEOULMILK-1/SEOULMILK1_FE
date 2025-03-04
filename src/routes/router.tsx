@@ -9,6 +9,8 @@ import DashBoard from '../pages/ADMIN/home/DashBoard';
 import UserManage from '../pages/ADMIN/user/UserManage';
 import HQRootLayout from '../outlet/HQRootLayout';
 import CSRootLayout from '../outlet/CSRootLayout';
+import Step1 from '../pages/CS/UploadTax/Step1';
+import Step2 from '../pages/CS/UploadTax/Step2';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -35,7 +37,11 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <CSRootLayout />,
-    children: [{ path: '/CS-home', element: <CS_home /> }]
+    children: [
+      { path: '/CS-home', element: <CS_home /> },
+      { path: '/upload-tax/step1', element: <Step1 /> },
+      { path: '/upload-tax/step2', element: <Step2 /> }
+    ]
   },
   { path: '/login', element: <LoginPage /> } //sidebar 필요없을때
 ]);
