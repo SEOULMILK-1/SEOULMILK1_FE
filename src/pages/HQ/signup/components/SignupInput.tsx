@@ -1,13 +1,21 @@
 interface InputProps {
+  name?: string;
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type: string;
 }
-const SignupInput = ({ placeholder, value, onChange, type }: InputProps) => {
+const SignupInput = ({
+  name,
+  placeholder,
+  value,
+  onChange,
+  type
+}: InputProps) => {
   return (
     <div className="w-full">
       <input
+        name={name}
         type={type}
         value={value}
         onChange={onChange}

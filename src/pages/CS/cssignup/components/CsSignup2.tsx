@@ -7,15 +7,29 @@ import { useState } from 'react';
 import Check from '../../../../../public/Icon/Check';
 import AgreeModal from '../../../../common/AgreeModal';
 
+interface FormState {
+  agency: string;
+  bank: string;
+  account: string;
+  phone: string;
+  email: string;
+}
+
 const CsSignup2 = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [agency, setAgency] = useState('');
-  const [bank, setBank] = useState('');
-  const [account, setAccount] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
   const [isAgreeModal, setIsAgreeModal] = useState(false);
+  const [formState, setFormState] = useState<FormState>({
+    agency: '',
+    bank: '',
+    account: '',
+    phone: '',
+    email: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="flex min-h-screen h-[1024px] items-center justify-center bg-gray-50">
@@ -25,64 +39,67 @@ const CsSignup2 = () => {
         </div>
 
         <div className="flex flex-col w-full gap-7 justify-center items-start ">
-          {/* 여기서부터 input */}
           <div className="flex flex-col gap-2 w-full">
             <label className="text-gray-600 font-md-semibold"> 대리점 </label>
             <SignupInput
+              name="agency"
               placeholder="선택"
               type="text"
-              value={agency}
-              onChange={(e) => setAgency(e.target.value)}
+              value={formState.agency}
+              onChange={handleChange}
             />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
             <label className="text-gray-600 font-md-semibold">
-              {' '}
               사업자 계좌 (지급 요청 계좌)
             </label>
             <SignupInput
+              name="bank"
               placeholder="은행명 입력"
               type="text"
-              value={bank}
-              onChange={(e) => setBank(e.target.value)}
+              value={formState.bank}
+              onChange={handleChange}
             />
             <SignupInput
+              name="account"
               placeholder="계좌번호 입력"
               type="text"
-              value={account}
-              onChange={(e) => setAccount(e.target.value)}
+              value={formState.account}
+              onChange={handleChange}
             />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
             <label className="text-gray-600 font-md-semibold"> 전화번호 </label>
             <SignupInput
+              name="phone"
               placeholder="-없이 숫자만 입력"
               type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={formState.phone}
+              onChange={handleChange}
             />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
             <label className="text-gray-600 font-md-semibold"> 이메일 </label>
             <SignupInput
+              name="email"
               placeholder="example@email.com"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formState.email}
+              onChange={handleChange}
             />
           </div>
 
           <div className="flex w-full items-center">
-            <div className="relative items-center mt-1 ">
+            <div className="relative items-center mt-1">
               <input
                 type="checkbox"
                 className="appearance-none w-6 h-6 rounded-lg border border-solid border-gray-300 checked:bg-primary-700 checked:border-primary-700 
     relative peer checked:cursor-pointer cursor-pointer"
               />
-              <span className="absolute inset-0 bottom-[6px] left-1 right-1 items-center justify-center pointer-events-none hidden peer-checked:flex ">
+              <span className="absolute inset-0 bottom-[6px] left-1 right-1 items-center justify-center pointer-events-none hidden peer-checked:flex">
                 <Check stroke="#fff" />
               </span>
             </div>
