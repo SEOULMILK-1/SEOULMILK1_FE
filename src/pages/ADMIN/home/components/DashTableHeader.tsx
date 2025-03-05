@@ -13,7 +13,7 @@ const DashTableHeader = () => {
         <ChartLine />
       </div>
       <div className="w-[298px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-        고객센터 지점
+        대리점
       </div>
       <div className="mt-1">
         <ChartLine />
