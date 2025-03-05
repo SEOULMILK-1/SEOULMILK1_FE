@@ -73,12 +73,12 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
 
   return (
     <div
-      className={`fixed inset-0 flex justify-end items-start z-50 transition-opacity duration-300 
+      className={`fixed p-4 pr-0 inset-0 flex justify-end items-start z-50 transition-opacity duration-300 
     ${isOpening && !isClosing ? 'opacity-100' : 'opacity-0'}`}
       onClick={handleClose}
     >
       <div
-        className={`relative bg-white pt-8 px-6 pb-10 rounded-2xl shadow-lg w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300 
+        className={`relative bg-white pt-8 px-6 pb-10 rounded-[24px] drop-shadow-elevation3 w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300 
                 overflow-y-auto custom-scrollbar ${
                   isOpening && !isClosing ? 'translate-x-0' : 'translate-x-full'
                 }`}

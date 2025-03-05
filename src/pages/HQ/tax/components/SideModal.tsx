@@ -53,12 +53,12 @@ const SideModal = ({ isOpen, onClose, selectedItem }: SideModalProps) => {
 
   return (
     <div
-      className={`fixed inset-0 flex justify-end items-start z-50 transition-opacity duration-300 
+      className={`fixed p-4 pr-0 inset-0 flex justify-end items-start z-50 transition-opacity duration-300 
       ${isOpening && !isClosing ? 'opacity-100' : 'opacity-0'}`}
       onClick={handleClose}
     >
       <div
-        className={`relative bg-white pt-8 px-6 rounded-2xl shadow-lg w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300 
+        className={`relative bg-white pt-8 px-6 rounded-[24px] drop-shadow-elevation3 w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300 
                 overflow-y-auto custom-scrollbar ${
                   isOpening && !isClosing ? 'translate-x-0' : 'translate-x-full'
                 }`}
@@ -74,7 +74,10 @@ const SideModal = ({ isOpen, onClose, selectedItem }: SideModalProps) => {
 
         <div>
           <h2 className="flex text-center font-xl-semibold text-gray-800 mt-[12px]">
-            {selectedItem.center}_{selectedItem.date.replace(/\./g, '_')}
+            {selectedItem.center}_
+            {selectedItem.date
+              .replace(/\./g, '_')
+              .replace(/^(\d{4})_(\d{2})_(\d{2})$/, '$1년_$2월_$3일')}
           </h2>
           <div
             className="w-[352px] h-[264px] bg-gray-200 rounded-[24px] flex items-center justify-center mt-4 cursor-pointer"
