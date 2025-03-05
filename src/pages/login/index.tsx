@@ -6,7 +6,7 @@ import ErrorMessage from './components/ErrorMessage';
 import LoginFooter from './components/LoginFooter';
 import ApprovalModal from './components/ApprovalModal';
 
-export function LoginPage() {
+function LoginPage() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -78,3 +78,5 @@ export function LoginPage() {
     </div>
   );
 }
+
+export default LoginPage;
