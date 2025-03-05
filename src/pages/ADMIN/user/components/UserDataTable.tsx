@@ -25,7 +25,6 @@ const UserDataTable = () => {
     const getData = async () => {
       try {
         const token = localStorage.getItem('accesstoken');
-        console.log('accesstoken', token);
 
         const response = await api.get('/admin/user', {
           headers: {
@@ -36,7 +35,7 @@ const UserDataTable = () => {
         console.log('data', response.data);
         setData(response.data.result.responseList);
       } catch (error) {
-        console.error('연결에러', error);
+        console.error('유저데이터 연결에 에러가 발생했습니다.', error);
       }
     };
     getData();
@@ -51,6 +50,27 @@ const UserDataTable = () => {
     setData((prevData) => prevData.filter((user) => user.userId !== userId));
   };
 
+  const handleApproveUser = async (userId: number) => {
+    try {
+      const token = localStorage.getItem('accesstoken');
+      const response = await api.post(`/admin/approve/${userId}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 200) {
+        setData((prevData) =>
+          prevData.map((user) =>
+            user.userId === userId ? { ...user, isAssigned: '등록' } : user
+          )
+        );
+      }
+    } catch (error) {
+      console.error('등록 요청에 실패했습니다', error);
+    }
+  };
+
   return (
     <div className="mt-4 flex h-[778px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <UserDataTableHeader />
@@ -62,7 +82,6 @@ const UserDataTable = () => {
             className="flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer"
             onClick={() => openModal(row)}
           >
-            {/* status */}
             <div
               className={`w-[92px] pl-5 font-sm-medium ${
                 row.isAssigned === '미등록'
@@ -79,7 +98,7 @@ const UserDataTable = () => {
             <div className="w-[120px] pl-5 ml-1 text-gray-800 font-sm-medium">
               {row.name}
             </div>
-            <div className="w-[200px] pl-5 text-gray-800 font-sm-medium text-left">
+            <div className="w-[200px] pl-5 text-gray-800 font-sm-medium tabular-nums">
               {row.phone}
             </div>
             <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium">
@@ -91,7 +110,7 @@ const UserDataTable = () => {
                   className="flex w-[85px] h-[26px] gap-1 pl-2 pr-3 items-center justify-center rounded-lg bg-[#E6F1F7] text-[#2C72FF] font-xs-regular"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log('등록하기');
+                    handleApproveUser(row.userId);
                   }}
                 >
                   <PlusIcon />
