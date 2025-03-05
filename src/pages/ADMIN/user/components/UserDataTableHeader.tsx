@@ -10,14 +10,14 @@ const UserDataTableHeader = () => {
         <div className="mt-1">
           <ChartLine />
         </div>
-        <div className="w-[120px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-          성명
+        <div className="w-[190px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
+          고객센터 지점
         </div>
         <div className="mt-1">
           <ChartLine />
         </div>
-        <div className="w-[190px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-          고객센터 지점
+        <div className="w-[120px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
+          성명
         </div>
         <div className="mt-1">
           <ChartLine />
