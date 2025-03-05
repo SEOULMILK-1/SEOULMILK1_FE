@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
-import SideModal from './SideModal';
+import TaxDetailModal from '../../../../common/TaxDetailModal';
 
 const statuses: Status[] = ['승인됨', '지급완료', '반려됨'];
 
@@ -60,7 +60,7 @@ const CustomerChartContent = () => {
         </div>
       ))}
 
-      <SideModal
+      <TaxDetailModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         selectedItem={selectedItem}

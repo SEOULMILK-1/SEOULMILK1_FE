@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import Button from '../../../../common/Button';
-import ArrowIcon from '../../../../../public/Icon/ArrowIcon';
-import StatusBadge, { Status } from '../../../../common/StatusBagde';
+import Button from './Button';
+import ArrowIcon from '../../public/Icon/ArrowIcon';
+import StatusBadge, { Status } from './StatusBagde';
 
-interface SideModalProps {
+interface TaxDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedItem: {
@@ -13,7 +13,11 @@ interface SideModalProps {
   } | null;
 }
 
-const SideModal = ({ isOpen, onClose, selectedItem }: SideModalProps) => {
+const TaxDetailModal = ({
+  isOpen,
+  onClose,
+  selectedItem
+}: TaxDetailModalProps) => {
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -136,4 +140,4 @@ const DetailField = ({ label, value }: any) => (
   </div>
 );
 
-export default SideModal;
+export default TaxDetailModal;
