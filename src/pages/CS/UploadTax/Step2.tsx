@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
+import WarningIcon from '../../../../public/Icon/WarningIcon';
 
 const Step2 = () => {
   const location = useLocation();
@@ -28,8 +29,8 @@ const Step2 = () => {
           ) : (
             <p className="text-center text-gray-500">이미지가 없습니다.</p>
           )}
-          <div className="w-[560px] px-[24px] py-[16px] bg-warning-50 rounded-[16px] flex items-start">
-            {/* 아이콘 */}
+          <div className="w-[560px] px-[24px] py-[16px] bg-[#FFEAED] rounded-[16px] flex items-start gap-[8px]">
+            <WarningIcon className="mt-1" />
             <div className="text-start gap-[8px]">
               <p className="text-warning-400 font-xl-semibold">
                 내용이 알맞게 입력되었나요?
