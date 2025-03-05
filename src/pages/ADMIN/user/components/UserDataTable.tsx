@@ -1,26 +1,53 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserSideModal from './UserSideModal';
 import ChartPagination from '../../../../common/ChartPagination';
-import { UserDummy } from '../../../../utils/UserDummy';
 import UserDataTableHeader from './UserDataTableHeader';
-import PlusIcon from '../../../../../public/Icon/PlusIcon';
+// import PlusIcon from '../../../../../public/Icon/PlusIcon';
+import api from '../../../../hooks/api';
+
+interface User {
+  userId: number;
+  employeeId: number;
+  name: string;
+  phone: string;
+  role: 'ADMIN';
+  team: string;
+  createdAt: string;
+}
 
 const UserDataTable = () => {
-  const [data, setData] = useState(UserDummy);
+  const [data, setData] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const token = localStorage.getItem('accesstoken');
+        console.log('accesstoken', token);
+
+        const response = await api.get('/admin/pending', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        console.log('data', response.data);
+        setData(response.data.result.responseList);
+      } catch (error) {
+        console.error('연결에러', error);
+      }
+    };
+    getData();
+  }, []);
 
   const openModal = (user: any) => {
     setSelectedUser(user);
     setIsModalOpen(true);
   };
 
-  const deleteUser = (_userId: any) => {
-    if (selectedUser) {
-      setData((prevData) =>
-        prevData.filter((user) => user.userId !== selectedUser.userId)
-      );
-    }
+  const deleteUser = (userId: number) => {
+    setData((prevData) => prevData.filter((user) => user.userId !== userId));
   };
 
   return (
@@ -34,26 +61,26 @@ const UserDataTable = () => {
             className="flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer"
             onClick={() => openModal(row)}
           >
-            <div
+            {/* <div
               className={`w-[92px] pl-5 font-sm-medium ${
                 row.status === '미등록' ? 'text-warning-600' : 'text-gray-800'
               }`}
             >
               {row.status}
-            </div>
+            </div> */}
             <div className="w-[120px] pl-5 gap-5 text-gray-800 font-sm-medium">
               {row.name}
             </div>
             <div className="w-[190px] pl-5 ml-1 text-gray-800 font-sm-medium">
-              {row.center}
+              {row.team}
             </div>
             <div className="w-[200px] pl-5 text-gray-800 font-sm-medium">
               {row.phone}
             </div>
             <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium">
-              {row.date}
+              {row.createdAt}
             </div>
-            <div className="w-[140px] px-5 py-2 items-center">
+            {/* <div className="w-[140px] px-5 py-2 items-center">
               {row.status === '미등록' && (
                 <button
                   className="flex w-[85px] h-[26px] gap-1 pl-2 pr-3 items-center justify-center rounded-lg bg-[#E6F1F7] text-[#2C72FF] font-xs-regular"
@@ -66,7 +93,7 @@ const UserDataTable = () => {
                   등록하기
                 </button>
               )}
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
