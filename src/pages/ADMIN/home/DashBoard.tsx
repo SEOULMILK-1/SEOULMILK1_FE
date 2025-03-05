@@ -3,17 +3,11 @@ import HomeGrayIcon from '../../../../public/Icon/HomeGrayIcon';
 import DashDataTable from './components/DashDataTable';
 import Check from '../../../../public/Icon/Check';
 import Header from '../../../common/Header';
-
-const data = Array(14).fill({
-  status: '미등록',
-  name: '김구름',
-  center: '서울우유태평고객센터',
-  phone: '010-1234-5678',
-  date: '2025.02.28'
-});
+import { UserDummy } from '../../../utils/UserDummy';
 
 const DashBoard = () => {
   const [selected, setSelected] = useState<number[]>([]);
+  const data = UserDummy;
 
   const toggleSelect = (index: number) => {
     setSelected((prev) =>
@@ -31,7 +25,7 @@ const DashBoard = () => {
     <div className="mx-[94px]">
       <Header title="홈" Icon={HomeGrayIcon} />
 
-      <div className="flex flex-row justify-between mt-[37px] h-[40px]">
+      <div className="flex flex-row justify-between mt-[37px] h-[40px] w-[960px]">
         <div className="flex flex-row gap-2">
           <div className="text-gray-800 font-2xl-bold">등록되지 않은 유저</div>
           <span className="text-gray-500 font-2xl-medium"> {data.length} </span>
