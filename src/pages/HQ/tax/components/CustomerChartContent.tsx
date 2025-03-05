@@ -18,20 +18,20 @@ const CustomerChartContent = () => {
           key={index}
           className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"
         >
-          <div className="w-[92px] pl-5">
+          <div className="w-[92px] pl-4">
             <StatusBadge status={item.status} />
           </div>
           <div className="w-[92px] pl-5 text-sm font-medium text-gray-700">
             {item.number}
           </div>
-          <div className="w-[358px] pl-5 text-sm font-medium text-gray-700">
+          <div className="w-[200px] pl-6 text-sm font-medium text-gray-700">
+            {item.center}
+          </div>
+          <div className="w-[358px] pl-6 text-sm font-medium text-gray-700">
             {item.title}
           </div>
-          <div className="w-[170px] pl-5 text-sm font-medium text-gray-700">
+          <div className="w-[170px] pl-7 text-sm font-medium text-gray-700">
             {item.date}
-          </div>
-          <div className="w-[200px] pl-5 text-sm font-medium text-gray-700">
-            {item.center}
           </div>
         </div>
       ))}
