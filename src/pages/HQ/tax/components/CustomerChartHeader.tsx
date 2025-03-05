@@ -16,6 +16,12 @@ const CustomerChartHeader = () => {
       <div className="mt-1">
         <ChartLine />
       </div>
+      <div className="w-[200px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
+        대리점
+      </div>
+      <div className="mt-1">
+        <ChartLine />
+      </div>
       <div className="w-[358px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
         제목
       </div>
@@ -23,13 +29,7 @@ const CustomerChartHeader = () => {
         <ChartLine />
       </div>
       <div className="w-[170px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-        날짜
-      </div>
-      <div className="mt-1">
-        <ChartLine />
-      </div>
-      <div className="w-[200px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-        고객센터 지침
+        발행일
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import Search from '../../../common/Search';
 const HeadCustomer = () => {
   return (
     <div className="mx-[94px] w-[960px]">
-      <Header title="고객센터" Icon={CustomerIcon} />
+      <Header title="대리점 조회" Icon={CustomerIcon} />
       <Search placeholderName={'지점을 검색하세요'} />
       <CustomerChart />
     </div>

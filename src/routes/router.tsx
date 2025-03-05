@@ -14,6 +14,7 @@ import Signup from '../pages/HQ/signup';
 import Signup2 from '../pages/HQ/signup/components/Signup2';
 import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
 import CSTax from '../pages/CS/tax';
+import Payment from '../pages/HQ/payment/Payment';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -33,7 +34,8 @@ const router = createBrowserRouter([
     element: <HQRootLayout />,
     children: [
       { path: '/head-customer', element: <HeadCustomer /> },
-      { path: '/tax', element: <Tax /> }
+      { path: '/tax', element: <Tax /> },
+      { path: '/payment', element: <Payment /> }
     ]
   },
   //대리점쪽 라우터(CS)

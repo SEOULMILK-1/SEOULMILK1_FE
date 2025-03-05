@@ -4,7 +4,7 @@ interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
-  size?: 'sm' | 'lg';
+  size?: 'xs' | 'sm' | 'lg';
   disabled?: boolean;
 }
 
@@ -16,6 +16,7 @@ const Button = ({
   disabled = false
 }: ButtonProps) => {
   const sizeStyles = {
+    xs: 'w-[104px] h-[48px] font-md-medium px-[18px] py-[12px] whitespace-nowrap',
     sm: 'w-[114px] h-[48px] font-md-medium px-[18px] py-[12px]',
     lg: 'w-[392px] h-[56px] font-xl-semibold'
   };

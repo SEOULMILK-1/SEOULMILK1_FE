@@ -38,7 +38,7 @@ const SelectCalendar = () => {
         >
           <CalendarIcon fillcolor={selectedStartDate ? '#009856' : '#949BA7'} />
           <div
-            className={`w-[122px] font-md-medium ${
+            className={`font-md-medium ${
               selectedStartDate ? 'text-primary-700' : 'text-gray-500 '
             }`}
           >
@@ -70,7 +70,7 @@ const SelectCalendar = () => {
         >
           <CalendarIcon fillcolor={selectedEndDate ? '#009856' : '#949BA7'} />
           <div
-            className={`w-[122px] font-md-medium ${
+            className={`font-md-medium ${
               selectedEndDate ? 'text-primary-700' : 'text-gray-500'
             }`}
           >
