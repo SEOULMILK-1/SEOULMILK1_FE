@@ -13,7 +13,7 @@ interface StatusBadgeProps {
 const StatusBadge = ({ status }: StatusBadgeProps) => {
   return (
     <span
-      className={`w-[48px] h-[22px] px-[8px] py-1 rounded-full font-xs-bold ${statusStyles[status]}`}
+      className={`whitespace-nowrap w-[57px] h-[22px] text-center px-[6px] py-1 rounded-full font-xs-bold ${statusStyles[status]}`}
     >
       {status}
     </span>
