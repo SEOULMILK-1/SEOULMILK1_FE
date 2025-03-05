@@ -4,7 +4,7 @@ const CustomerChartHeader = () => {
   return (
     <div className="flex w-[960px] h-14 pl-2 pr-5 items-center border-b border-gray-300">
       <div className="w-[200px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-        고객센터 지점
+        대리점
       </div>
 
       <div className="mt-1">

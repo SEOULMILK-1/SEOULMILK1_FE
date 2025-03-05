@@ -29,7 +29,7 @@ const CustomerChartHeader = () => {
         <ChartLine />
       </div>
       <div className="w-[200px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-        고객센터 지침
+        대리점 지침
       </div>
     </div>
   );

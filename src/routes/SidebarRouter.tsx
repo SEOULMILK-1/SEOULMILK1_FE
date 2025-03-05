@@ -6,6 +6,7 @@ import TaxIcon from '../../public/Icon/TaxIcon';
 import ErrorGray from '../../public/Icon/ErrorGray';
 import Error from '../../public/Icon/Error';
 import HQIcon from '../../public/Icon/CustomerIcon';
+import SelectHQIon from '../../public/Icon/SelectHQIon';
 import UserIcon from '../../public/Icon/UserIcon';
 import PaymentGray from '../../public/Icon/PaymentGray';
 
@@ -61,10 +62,10 @@ export const HQMenuItems: MenuItem[] = [
     selectedIcon: <Error />
   },
   {
-    name: '고객센터',
+    name: '대리점 조회',
     path: '/head-customer',
     icon: <HQIcon />,
-    selectedIcon: <HQIcon primaryColor="#009856" secondaryColor="#4CC584" />
+    selectedIcon: <SelectHQIon />
   }
 ];
 

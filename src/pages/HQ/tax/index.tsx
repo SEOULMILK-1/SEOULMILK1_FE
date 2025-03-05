@@ -17,7 +17,7 @@ const Tax = () => {
       <div className="flex flex-row gap-4 mb-4">
         <div className="flex items-center mt-8 text-gray-500">지점</div>
         <Search
-          placeholderName="고객센터 검색..."
+          placeholderName="대리점 검색..."
           showSearchButton={false}
           defaultSearchIcon={<LocationIcon />}
           activeSearchIcon={<LocationIcon fillColor="#3A404A" />}
