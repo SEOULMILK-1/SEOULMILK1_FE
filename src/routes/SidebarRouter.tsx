@@ -7,6 +7,7 @@ import ErrorGray from '../../public/Icon/ErrorGray';
 import Error from '../../public/Icon/Error';
 import HQIcon from '../../public/Icon/CustomerIcon';
 import UserIcon from '../../public/Icon/UserIcon';
+import PaymentGray from '../../public/Icon/PaymentGray';
 
 export interface MenuItem {
   name: string;
@@ -55,8 +56,8 @@ export const HQMenuItems: MenuItem[] = [
   },
   {
     name: '지급결의서 조회',
-    path: '',
-    icon: <ErrorGray />,
+    path: '/payment',
+    icon: <PaymentGray />,
     selectedIcon: <Error />
   },
   {
