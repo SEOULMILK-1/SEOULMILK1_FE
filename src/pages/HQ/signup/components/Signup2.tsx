@@ -6,6 +6,8 @@ import { useState } from 'react';
 import SignupModal from './SignupModal';
 import Check from '../../../../../public/Icon/Check';
 import AgreeModal from '../../../../common/AgreeModal';
+import api from '../../../../hooks/api';
+import { useSignupStore } from '../../../../hooks/UseSignupStore';
 
 interface FormState {
   phone: string;
@@ -15,31 +17,32 @@ interface FormState {
 interface Errors {
   phone: string;
   email: string;
-  [agree: string]: string;
+  agree?: string;
 }
 
 const Signup2 = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAgreeModal, setIsAgreeModal] = useState(false);
+  const [isAgree, setIsAgree] = useState(false);
   const [formState, setFormState] = useState<FormState>({
     phone: '',
     email: ''
   });
   const [errors, setErrors] = useState<Errors>({
     phone: '',
-    email: ''
+    email: '',
+    agree: ''
   });
+
+  const { name, employeeId, password, resetSignupData } = useSignupStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
   const validate = (): boolean => {
-    let newErrors: Errors = {
-      phone: '',
-      email: ''
-    };
+    let newErrors: Errors = { phone: '', email: '', agree: '' };
     let isValid = true;
 
     if (!formState.phone.trim()) {
@@ -52,16 +55,38 @@ const Signup2 = () => {
       isValid = false;
     }
 
-    const isAgreeChecked = document.querySelector(
-      'input[type="checkbox"]:checked'
-    );
-    if (!isAgreeChecked) {
-      newErrors['agree'] = '개인정보 수집 및 이용 동의를 해주세요.';
+    if (!isAgree) {
+      newErrors.agree = '개인정보 수집 및 이용 동의를 해주세요.';
       isValid = false;
     }
 
     setErrors(newErrors);
     return isValid;
+  };
+
+  const handleSubmit = async (): Promise<void> => {
+    if (!validate()) return;
+
+    console.log('111', formState);
+
+    try {
+      const response = await api.post('/auth/sign-up/hq', {
+        name,
+        employeeId,
+        password,
+        phone: formState.phone,
+        email: formState.email
+      });
+
+      console.log('회원가입 성공:', response.data);
+      resetSignupData();
+      setIsModalOpen(true);
+    } catch (error: any) {
+      setErrors((prev) => ({
+        ...prev,
+        email: error.response?.data?.message || '회원가입에 실패했습니다.'
+      }));
+    }
   };
 
   return (
@@ -104,8 +129,10 @@ const Signup2 = () => {
             <div className="relative items-center mt-1">
               <input
                 type="checkbox"
+                checked={isAgree}
+                onChange={() => setIsAgree(!isAgree)}
                 className="appearance-none w-6 h-6 rounded-lg border border-solid border-gray-300 checked:bg-primary-700 checked:border-primary-700 
-    relative peer checked:cursor-pointer cursor-pointer"
+                relative peer checked:cursor-pointer cursor-pointer"
               />
               <span className="absolute inset-0 bottom-[6px] left-1 right-1 items-center justify-center pointer-events-none hidden peer-checked:flex">
                 <Check stroke="#fff" />
@@ -114,7 +141,7 @@ const Signup2 = () => {
 
             <div className="flex w-full items-center">
               <span className="ml-2 text-center text-gray-800 font-md-medium">
-                개인 정보 수집 및 이용 동의
+                개인정보 수집 및 이용 동의
               </span>
               <div
                 className="text-gray-500 font-sm-medium underline ml-auto cursor-pointer"
@@ -124,10 +151,9 @@ const Signup2 = () => {
               </div>
             </div>
           </div>
-          {/* 임시위치 */}
-          {errors['agree'] && (
+          {errors.agree && (
             <p className="text-warning-700 font-sm-regular mt-2">
-              {errors['agree']}
+              {errors.agree}
             </p>
           )}
         </div>
@@ -135,13 +161,10 @@ const Signup2 = () => {
         <SignupButton
           text="회원가입"
           prevonClick={() => navigate('/head/signup')}
-          onClick={() => {
-            if (validate()) {
-              setIsModalOpen(true);
-            }
-          }}
+          onClick={handleSubmit}
         />
       </div>
+
       {isModalOpen && <SignupModal />}
       {isAgreeModal && <AgreeModal onClose={() => setIsAgreeModal(false)} />}
     </div>

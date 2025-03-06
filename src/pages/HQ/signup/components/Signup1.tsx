@@ -3,32 +3,34 @@ import CircleNumber from './CircleNumber';
 import SignupInput from './SignupInput';
 import SignupButton from './SignupButton';
 import { useState } from 'react';
+import { useSignupStore } from '../../../../hooks/UseSignupStore';
 
 interface FormState {
   name: string;
-  businessNumber: string;
+  employeeId: string;
   password: string;
   passwordCheck: string;
 }
 
 interface Errors {
   name: string;
-  businessNumber: string;
+  employeeId: string;
   password: string;
   passwordCheck: string;
 }
 
 const Signup1 = () => {
   const navigate = useNavigate();
+  const { setSignupData } = useSignupStore();
   const [formState, setFormState] = useState<FormState>({
     name: '',
-    businessNumber: '',
+    employeeId: '',
     password: '',
     passwordCheck: ''
   });
   const [errors, setErrors] = useState<Errors>({
     name: '',
-    businessNumber: '',
+    employeeId: '',
     password: '',
     passwordCheck: ''
   });
@@ -36,14 +38,14 @@ const Signup1 = () => {
   const validate = (): boolean => {
     let newErrors: Errors = {
       name: '',
-      businessNumber: '',
+      employeeId: '',
       password: '',
       passwordCheck: ''
     };
     let isValid = true;
 
-    if (!formState.businessNumber.trim()) {
-      newErrors.businessNumber = '사번을 입력해주세요.';
+    if (!formState.employeeId) {
+      newErrors.employeeId = '사번을 입력해주세요.';
       isValid = false;
     }
     if (!formState.password.trim()) {
@@ -73,8 +75,21 @@ const Signup1 = () => {
 
   const handleSubmit = (): void => {
     if (validate()) {
+      setSignupData({
+        name: formState.name,
+        employeeId: formState.employeeId,
+        password: formState.password
+      });
       navigate('/head/signup2');
     }
+  };
+
+  const handleEmployeeIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormState({
+      ...formState,
+      employeeId: value === '' ? '' : value
+    });
   };
 
   return (
@@ -99,18 +114,18 @@ const Signup1 = () => {
         <div className="flex flex-row gap-2">
           <SignupInput
             type="text"
-            name="businessNumber"
+            name="employeeId"
             placeholder="사번을 입력하세요"
-            value={formState.businessNumber}
-            onChange={handleChange}
+            value={formState.employeeId}
+            onChange={handleEmployeeIdChange}
           />
           <button className="flex w-[80px] whitespace-nowrap px-7 h-14 justify-center items-center gap-[10px] rounded-xl bg-gray-200 text-gray-400 text-center font-md-medium">
             확인
           </button>
         </div>
-        {errors.businessNumber && (
+        {errors.employeeId && (
           <p className="text-warning-700 font-sm-regular">
-            {errors.businessNumber}
+            {errors.employeeId}
           </p>
         )}
       </div>
