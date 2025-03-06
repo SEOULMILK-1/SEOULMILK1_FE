@@ -2,7 +2,7 @@ import { useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import TaxDetailModal from '../../../../common/TaxDetailModal';
 
-const statuses: Status[] = ['승인됨', '지급완료', '반려됨'];
+const statuses: Status[] = ['승인됨', '지급완료'];
 
 interface InvoiceData {
   status: Status;
@@ -10,6 +10,11 @@ interface InvoiceData {
   title: string;
   date: string;
   center: string;
+  approvalNo: string;
+  supplier: string;
+  recipient: string;
+  dateFormatted: string;
+  amount: string;
 }
 
 const data: InvoiceData[] = Array.from({ length: 20 }, (_, index) => ({
@@ -17,7 +22,12 @@ const data: InvoiceData[] = Array.from({ length: 20 }, (_, index) => ({
   number: String(index + 1).padStart(2, '0'),
   title: `○○월 세금계산서 ${index + 1}`,
   date: '2025.02.28',
-  center: '서울우유태평고객센터'
+  center: '서울우유태평고객센터',
+  approvalNo: `APPROVAL-${index + 1}`,
+  supplier: `Supplier ${index + 1}`,
+  recipient: `Recipient ${index + 1}`,
+  dateFormatted: '2025-02-28',
+  amount: `${(index + 1) * 1000}원`
 }));
 
 const CustomerChartContent = () => {

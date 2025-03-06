@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Button from './Button';
 import ArrowIcon from '../../public/Icon/ArrowIcon';
 import StatusBadge, { Status } from './StatusBagde';
+import { useNavigate } from 'react-router-dom';
 
 interface TaxDetailModalProps {
   isOpen: boolean;
@@ -10,6 +11,11 @@ interface TaxDetailModalProps {
     status: string;
     center: string;
     date: string;
+    approvalNo: string;
+    supplier: string;
+    recipient: string;
+    dateFormatted: string;
+    amount: string;
   } | null;
 }
 
@@ -18,6 +24,7 @@ const TaxDetailModal = ({
   onClose,
   selectedItem
 }: TaxDetailModalProps) => {
+  const navigate = useNavigate();
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -49,6 +56,20 @@ const TaxDetailModal = ({
 
   const closeImageModal = () => {
     setIsImageModalOpen(false);
+  };
+  
+  const handleReupload = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event: Event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const imageUrl = URL.createObjectURL(file);
+        navigate('/upload-tax/step1', { state: { selectedImage: imageUrl } });
+      }
+    };
+    input.click();
   };
 
   if (!isOpen || !selectedItem) return null;
@@ -92,24 +113,29 @@ const TaxDetailModal = ({
         </div>
 
         <div className="mt-6 space-y-4 flex-1">
-          <DetailField label="승인번호" value="20220630-41000115-aI3qrzxs" />
-          <DetailField label="공급자 등록번호" value="214-82-00250" />
-          <DetailField label="공급 받는 자 등록번호" value="216-82-00028" />
-          <DetailField label="작성일자" value="2022.06.30" />
-          <DetailField label="공급가액" value="5,400,000" />
+          <DetailField label="승인번호" value={selectedItem.approvalNo} />
+          <DetailField label="공급자 등록번호" value={selectedItem.supplier} />
+          <DetailField
+            label="공급 받는 자 등록번호"
+            value={selectedItem.recipient}
+          />
+          <DetailField label="작성일자" value={selectedItem.date} />
+          <DetailField label="공급가액" value={selectedItem.amount} />
         </div>
 
         {isRejected && (
           <div className="font-xl-semibold flex justify-between w-full p-4 bg-white sticky bottom-0 left-0 right-0 gap-4 ">
             <Button
               className="text-warning-400 w-[168px] h-[56px] border border-warning-400"
-              onClick={() => console.log('재업로드')}
+              onClick={handleReupload}
             >
               재업로드
             </Button>
             <Button
               className="bg-warning-400 text-white w-[168px] h-[56px]"
-              onClick={() => console.log('데이터 수정')}
+              onClick={() =>
+                navigate('/upload-tax/step2', { state: selectedItem })
+              }
             >
               데이터 수정
             </Button>

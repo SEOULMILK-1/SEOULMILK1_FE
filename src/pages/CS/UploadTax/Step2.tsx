@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
@@ -8,8 +9,33 @@ const Step2 = () => {
   const navigate = useNavigate();
   const croppedImage = location.state?.croppedImage;
 
+  const [formData, setFormData] = useState({
+    approvalNo: '',
+    supplier: '',
+    recipient: '',
+    date: '',
+    amount: ''
+  });
+
+  useEffect(() => {
+    if (location.state) {
+      setFormData({
+        approvalNo: location.state.approvalNo || '',
+        supplier: location.state.supplier || '',
+        recipient: location.state.recipient || '',
+        date: location.state.date || '',
+        amount: location.state.amount || ''
+      });
+    }
+  }, [location.state]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
-    <div className="px-[94px] mx-auto ">
+    <div className="px-[94px] mx-auto">
       <Header
         title="세금계산서 업로드"
         showStepProgress={true}
@@ -48,6 +74,9 @@ const Step2 = () => {
               <span className="font-md-semibold text-gray-600">승인번호</span>
               <input
                 type="text"
+                name="approvalNo"
+                value={formData.approvalNo}
+                onChange={handleChange}
                 className="border border-gray-300 rounded-[12px] p-[16px]"
               />
             </label>
@@ -58,6 +87,9 @@ const Step2 = () => {
               </span>
               <input
                 type="text"
+                name="supplier"
+                value={formData.supplier}
+                onChange={handleChange}
                 className="border border-gray-300 rounded-[12px] p-[16px]"
               />
             </label>
@@ -68,28 +100,43 @@ const Step2 = () => {
               </span>
               <input
                 type="text"
+                name="recipient"
+                value={formData.recipient}
+                onChange={handleChange}
                 className="border border-gray-300 rounded-[12px] p-[16px]"
               />
             </label>
+
             <label className="flex flex-col gap-1">
               <span className="font-md-semibold text-gray-600">작성일자</span>
               <input
                 type="text"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
                 className="border border-gray-300 rounded-[12px] p-[16px]"
               />
             </label>
+
             <label className="flex flex-col gap-1">
               <span className="font-md-semibold text-gray-600">공급가액</span>
               <input
                 type="text"
+                name="amount"
+                value={formData.amount}
+                onChange={handleChange}
                 className="border border-gray-300 rounded-[12px] p-[16px]"
               />
             </label>
           </form>
         </div>
       </div>
+
       <div className="mt-[64px] flex gap-[24px] justify-center">
-        <button className="font-md-medium w-[200px] h-[48px] text-center border border-primary-600 text-primary-600 px-6 py-3 rounded-[12px]">
+        <button
+          className="font-md-medium w-[200px] h-[48px] text-center border border-primary-600 text-primary-600 px-6 py-3 rounded-[12px]"
+          onClick={() => navigate(-1)}
+        >
           이전
         </button>
         <button
