@@ -42,7 +42,7 @@ const Step1 = () => {
           onClick={() =>
             navigate('/upload-tax/step2', { state: { croppedImage } })
           }
-          // disabled={croppedImage}
+          disabled={!croppedImage}
         >
           다음
         </button>
