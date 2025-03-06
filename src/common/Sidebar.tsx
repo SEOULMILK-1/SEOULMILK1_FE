@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SettingIcon from '../../public/Icon/SettingIcon';
 import LogoGray from '../../public/Icon/LogoGray';
 import NoticeBoard from './NoticeBoard';
@@ -19,6 +19,7 @@ interface RoleProps {
 
 const Sidebar = ({ type }: RoleProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedMenu, setSelectedMenu] = useState<string>('홈');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -28,6 +29,15 @@ const Sidebar = ({ type }: RoleProps) => {
       : type === 'HQ'
       ? HQMenuItems
       : CSMenuItems;
+
+  useEffect(() => {
+    const activeMenu = menuItems.find(
+      (item) => item.path === location.pathname
+    );
+    if (activeMenu) {
+      setSelectedMenu(activeMenu.name);
+    }
+  }, [location.pathname, menuItems]); 
 
   const getModalComponent = () => {
     switch (type) {
@@ -111,9 +121,7 @@ const Sidebar = ({ type }: RoleProps) => {
             </div>
           ))}
         </nav>
-        {type === 'CS' && (
-          <SidebarUploadButton />
-        )}
+        {type === 'CS' && <SidebarUploadButton />}
 
         <div className="flex px-5 py-4 items-center gap-2 mt-auto mb-2">
           <LogoGray />
