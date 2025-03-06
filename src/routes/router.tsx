@@ -7,9 +7,6 @@ import DashBoard from '../pages/ADMIN/home/DashBoard';
 import UserManage from '../pages/ADMIN/user/UserManage';
 import HQRootLayout from '../outlet/HQRootLayout';
 import CSRootLayout from '../outlet/CSRootLayout';
-import Step1 from '../pages/CS/uploadTax/Step1';
-import Step2 from '../pages/CS/uploadTax/Step2';
-import Step3 from '../pages/CS/uploadTax/Step3';
 import LoginPage from '../pages/login';
 import CSSignup from '../pages/CS/cssignup/CSSignup';
 import HeadSignup from '../pages/HQ/signup/HeadSignup';
@@ -23,6 +20,9 @@ import { AdminBoard } from '../pages/ADMIN/board';
 import { AdminTax } from '../pages/ADMIN/tax';
 import { AdminPayment } from '../pages/ADMIN/payment';
 import { CSHome } from '../pages/CS/home';
+import Step1 from '../pages/CS/UploadTax/Step1';
+import Step2 from '../pages/CS/UploadTax/Step2';
+import Step3 from '../pages/CS/UploadTax/Step3';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
