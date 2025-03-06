@@ -7,19 +7,22 @@ import DashBoard from '../pages/ADMIN/home/DashBoard';
 import UserManage from '../pages/ADMIN/user/UserManage';
 import HQRootLayout from '../outlet/HQRootLayout';
 import CSRootLayout from '../outlet/CSRootLayout';
-import Step1 from '../pages/CS/UploadTax/Step1';
-import Step2 from '../pages/CS/UploadTax/Step2';
-import Step3 from '../pages/CS/UploadTax/Step3';
+import Step1 from '../pages/CS/uploadTax/Step1';
+import Step2 from '../pages/CS/uploadTax/Step2';
+import Step3 from '../pages/CS/uploadTax/Step3';
 import LoginPage from '../pages/login';
 import CSSignup from '../pages/CS/cssignup/CSSignup';
 import HeadSignup from '../pages/HQ/signup/HeadSignup';
 import Signup from '../pages/HQ/signup';
 import Signup2 from '../pages/HQ/signup/components/Signup2';
 import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
-import { CS_home } from '../pages/CS/home';
 import CSTax from '../pages/CS/tax';
 import Payment from '../pages/HQ/payment/Payment';
 import HQ_home from '../pages/HQ/home/HQDashBoard';
+import { AdminBoard } from '../pages/ADMIN/board';
+import { AdminTax } from '../pages/ADMIN/tax';
+import { AdminPayment } from '../pages/ADMIN/payment';
+import { CSHome } from '../pages/CS/home';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -28,7 +31,10 @@ const router = createBrowserRouter([
     element: <AdminRootLayout />,
     children: [
       { path: '/', element: <DashBoard /> },
-      { path: '/user-manage', element: <UserManage /> }
+      { path: '/user-manage', element: <UserManage /> },
+      { path: '/admin-board', element: <AdminBoard /> },
+      { path: '/admin-tax', element: <AdminTax /> },
+      { path: '/admin-payment', element: <AdminPayment /> }
     ]
   },
 
@@ -48,7 +54,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <CSRootLayout />,
     children: [
-      { path: '/CS-home', element: <CS_home /> },
+      { path: '/CS-home', element: <CSHome /> },
       { path: '/upload-tax/step1', element: <Step1 /> },
       { path: '/upload-tax/step2', element: <Step2 /> },
       { path: '/upload-tax/step3', element: <Step3 /> },

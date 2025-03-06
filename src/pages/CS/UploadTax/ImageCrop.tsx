@@ -11,34 +11,114 @@ interface ImageCropProps {
   onCropComplete: (croppedImg: string) => void;
 }
 
-const ImageCrop: React.FC<ImageCropProps> = ({
-  initialImage,
-  onCropComplete
-}) => {
+const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
+  const [crop, setCrop] = useState<Crop>({
+    unit: '%',
+    width: 100,
+    height: 100,
+    x: 0,
+    y: 0
+  });
+
+  // 최종적으로 선택된 크롭 정보
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+
+  // 회전, 반전 상태
+  const [rotation, setRotation] = useState(0);
+  const [flipX, setFlipX] = useState(1);
+  const [flipY, setFlipY] = useState(1);
+  const [imageSize, setImageSize] = useState({
+    width: 0,
+    height: 0,
+    naturalWidth: 0,
+    naturalHeight: 0
+  });
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const cropContainerRef = useRef<HTMLDivElement | null>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (initialImage) {
       setSelectedImage(initialImage);
       setOriginalImage(initialImage);
+
+      const img = new Image();
+      img.onload = () => {
+        setImageSize({
+          width: 0,
+          height: 0,
+          naturalWidth: img.width,
+          naturalHeight: img.height
+        });
+
+        const aspectRatio = img.width / img.height;
+        setCrop({
+          unit: '%',
+          width: aspectRatio > 1 ? 50 : 50 / aspectRatio,
+          height: aspectRatio > 1 ? 50 * aspectRatio : 50,
+          x: (100 - (aspectRatio > 1 ? 50 : 50 / aspectRatio)) / 2,
+          y: (100 - (aspectRatio > 1 ? 50 * aspectRatio : 50)) / 2
+        });
+      };
+      img.src = initialImage;
     }
   }, [initialImage]);
 
-  const [crop, setCrop] = useState<Crop>({
-    unit: '%',
-    width: 50,
-    height: 50,
-    x: 25,
-    y: 25
-  });
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
-  const [rotation, setRotation] = useState(0);
-  const [flipX, setFlipX] = useState(1);
-  const [flipY, setFlipY] = useState(1);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  // 화면 크기 및 회전 상태에 따라 이미지 크기 업데이트
+  useEffect(() => {
+    const updateSizes = () => {
+      if (cropContainerRef.current && imgRef.current) {
+        const container = cropContainerRef.current;
 
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+
+        // 컨테이너 크기와 이미지 원본 비율을 기준으로 이미지 크기 계산
+        const { naturalWidth, naturalHeight } = imageSize;
+        const naturalAspectRatio = naturalWidth / naturalHeight;
+
+        // 90도/270도 회전 시 비율 반전
+        const isRotated90or270 = Math.abs(rotation % 180) === 90;
+        const effectiveRatio = isRotated90or270
+          ? 1 / naturalAspectRatio
+          : naturalAspectRatio;
+
+        let width, height;
+        const scaleFactor = 0.9;
+
+        if (effectiveRatio > containerWidth / containerHeight) {
+          // 가로가 더 긴 경우
+          width = containerWidth * scaleFactor;
+          height = width / effectiveRatio;
+        } else {
+          // 세로가 더 긴 경우
+          height = containerHeight * scaleFactor;
+          width = height * effectiveRatio;
+        }
+
+        setImageSize((prev) => ({
+          ...prev,
+          width: Math.round(width),
+          height: Math.round(height)
+        }));
+      }
+    };
+
+    updateSizes();
+
+    // 회전이 변경될 때마다 크기 업데이트
+    window.addEventListener('resize', updateSizes);
+    return () => window.removeEventListener('resize', updateSizes);
+  }, [
+    rotation,
+    imageSize.naturalWidth,
+    imageSize.naturalHeight,
+    cropContainerRef.current
+  ]);
+
+  // 크롭된 이미지를 캔버스에서 생성
   const cropImage = () => {
     if (!imgRef.current || !completedCrop || !previewCanvasRef.current) return;
 
@@ -47,40 +127,69 @@ const ImageCrop: React.FC<ImageCropProps> = ({
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
-    const { width, height, x, y } = completedCrop;
 
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
+    // 원본 이미지에서 크롭할 부분을 계산하기 위한 배율
+    const scaleX = imageSize.naturalWidth / image.width;
+    const scaleY = imageSize.naturalHeight / image.height;
 
-    const realX = x * scaleX;
-    const realY = y * scaleY;
-    const realWidth = width * scaleX;
-    const realHeight = height * scaleY;
+    let { x, y, width, height } = completedCrop;
+    x *= scaleX;
+    y *= scaleY;
+    width *= scaleX;
+    height *= scaleY;
 
-    canvas.width = realWidth;
-    canvas.height = realHeight;
+    // 회전 상태에 따른 크롭 좌표 보정
+    let newX = x,
+      newY = y,
+      newWidth = width,
+      newHeight = height;
+    const isRotated90or270 = Math.abs(rotation % 180) === 90;
+
+    if (rotation === 90) {
+      newX = y;
+      newY = imageSize.naturalWidth - (x + width);
+      newWidth = height;
+      newHeight = width;
+    } else if (rotation === 180) {
+      newX = imageSize.naturalWidth - (x + width);
+      newY = imageSize.naturalHeight - (y + height);
+    } else if (rotation === 270) {
+      newX = imageSize.naturalHeight - (y + height);
+      newY = x;
+      newWidth = height;
+      newHeight = width;
+    }
+
+    // 캔버스 크기 설정
+    canvas.width = isRotated90or270 ? newHeight : newWidth;
+    canvas.height = isRotated90or270 ? newWidth : newHeight;
+
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(flipX, flipY);
 
-    const dx = -realWidth / 2;
-    const dy = -realHeight / 2;
+    
+    let dx = -newWidth / 2;
+    let dy = -newHeight / 2;
     ctx.drawImage(
       image,
-      realX,
-      realY,
-      realWidth,
-      realHeight,
+      newX,
+      newY,
+      newWidth,
+      newHeight,
       dx,
       dy,
-      realWidth,
-      realHeight
+      newWidth,
+      newHeight
     );
+
     ctx.restore();
 
-    // 크롭된 이미지를 Base64로 변환 후 저장
+    // 크롭된 이미지를 Base64로 변환 후 전달
     const croppedImage = canvas.toDataURL('image/png');
     onCropComplete(croppedImage);
   };
@@ -89,22 +198,81 @@ const ImageCrop: React.FC<ImageCropProps> = ({
     cropImage();
   }, [completedCrop, rotation, flipX, flipY]);
 
-  // 회전
-  const rotateLImage = () => setRotation((prev) => (prev + 90) % 360);
-  const rotateRImage = () => setRotation((prev) => (prev - 90) % 360);
+  const rotateLImage = () => {
+    setRotation((prev) => (prev - 90) % 360); // 왼쪽 회전은 -90도
+
+    // 회전 후 크롭 영역 재조정을 위한 타이머 설정
+    setTimeout(() => {
+      if (imgRef.current) {
+        const naturalAspectRatio =
+          imageSize.naturalWidth / imageSize.naturalHeight;
+
+        // 회전 방향에 따라 가로/세로 비율 조정
+        const isRotated90or270 = Math.abs((rotation - 90) % 180) === 0;
+        const rotatedAspectRatio = isRotated90or270
+          ? 1 / naturalAspectRatio
+          : naturalAspectRatio;
+
+        // 크롭 재설정
+        setCrop({
+          unit: '%',
+          width: rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio,
+          height: rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50,
+          x:
+            (100 - (rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio)) / 2,
+          y: (100 - (rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50)) / 2
+        });
+      }
+    }, 50);
+  };
+
+  const rotateRImage = () => {
+    setRotation((prev) => (prev + 90) % 360); // 오른쪽 회전은 +90도
+
+    // 회전 후 크롭 영역 재조정을 위한 타이머 설정
+    setTimeout(() => {
+      if (imgRef.current) {
+        const naturalAspectRatio =
+          imageSize.naturalWidth / imageSize.naturalHeight;
+
+        // 회전 방향에 따라 가로/세로 비율 조정
+        const isRotated90or270 = Math.abs((rotation + 90) % 180) === 0;
+        const rotatedAspectRatio = isRotated90or270
+          ? 1 / naturalAspectRatio
+          : naturalAspectRatio;
+
+        // 크롭 재설정
+        setCrop({
+          unit: '%',
+          width: rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio,
+          height: rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50,
+          x:
+            (100 - (rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio)) / 2,
+          y: (100 - (rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50)) / 2
+        });
+      }
+    }, 50);
+  };
+
   const flipImageX = () => setFlipX((prev) => prev * -1);
   const flipImageY = () => setFlipY((prev) => prev * -1);
 
-  // 원본 복원
   const resetImage = () => {
     setSelectedImage(originalImage);
     setRotation(0);
     setFlipX(1);
     setFlipY(1);
+
+    // 원본 이미지에 맞게 크롭 영역 재설정
+    const naturalAspectRatio = imageSize.naturalWidth / imageSize.naturalHeight;
+    setCrop({
+      unit: '%',
+      width: naturalAspectRatio > 1 ? 50 : 50 / naturalAspectRatio,
+      height: naturalAspectRatio > 1 ? 50 * naturalAspectRatio : 50,
+      x: (100 - (naturalAspectRatio > 1 ? 50 : 50 / naturalAspectRatio)) / 2,
+      y: (100 - (naturalAspectRatio > 1 ? 50 * naturalAspectRatio : 50)) / 2
+    });
   };
-  useEffect(() => {
-    cropImage();
-  }, [completedCrop, rotation, flipX, flipY]);
 
   return (
     <div className="flex flex-col items-center">
@@ -113,7 +281,14 @@ const ImageCrop: React.FC<ImageCropProps> = ({
           <h3 className="py-[12px] text-white bg-gray-800 text-center h-[54px] rounded-t-[32px]">
             세금계산서가 잘 보이도록 사진을 편집해주세요.
           </h3>
-          <div className="relative border-none border-gray-300 overflow-hidden text-center h-[534px] flex items-center justify-center">
+          <div
+            ref={cropContainerRef}
+            className="relative border-none border-gray-300 overflow-hidden text-center h-[534px] flex items-center justify-center bg-white"
+            style={{
+              position: 'relative',
+              backgroundColor: 'white'
+            }}
+          >
             <div className="absolute inset-0 bg-black bg-opacity-50 z-10 pointer-events-none"></div>
 
             <ReactCrop
@@ -121,16 +296,19 @@ const ImageCrop: React.FC<ImageCropProps> = ({
               onChange={(c) => setCrop(c)}
               onComplete={(c) => setCompletedCrop(c)}
               className="relative z-20"
+              style={{ backgroundColor: 'white' }}
             >
               <img
                 ref={imgRef}
                 src={selectedImage}
                 alt="Upload"
-                className="w-full h-full object-contain"
+                className="object-contain"
                 style={{
-                  maxHeight: '534px',
-                  maxWidth: '100%',
-                  transform: `rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`
+                  width: imageSize.width > 0 ? `${imageSize.width}px` : 'auto',
+                  height:
+                    imageSize.height > 0 ? `${imageSize.height}px` : 'auto',
+                  transform: `rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
+                  transition: 'transform 0.5s ease'
                 }}
               />
             </ReactCrop>
