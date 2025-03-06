@@ -52,7 +52,12 @@ export const adminMenuItems: MenuItem[] = [
 
 // 본사 메뉴
 export const HQMenuItems: MenuItem[] = [
-  { name: '홈', path: '', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
+  {
+    name: '홈',
+    path: '/HQ-home',
+    icon: <HomeGrayIcon />,
+    selectedIcon: <HomeIcon />
+  },
   {
     name: '세금계산서 조회',
     path: '/tax',
