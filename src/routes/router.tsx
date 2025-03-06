@@ -16,9 +16,12 @@ import HeadSignup from '../pages/HQ/signup/HeadSignup';
 import Signup from '../pages/HQ/signup';
 import Signup2 from '../pages/HQ/signup/components/Signup2';
 import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
-import { CS_home } from '../pages/CS/home';
 import CSTax from '../pages/CS/tax';
 import Payment from '../pages/HQ/payment/Payment';
+import { AdminBoard } from '../pages/ADMIN/board';
+import { AdminTax } from '../pages/ADMIN/tax';
+import { AdminPayment } from '../pages/ADMIN/payment';
+import { CSHome } from '../pages/CS/home';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -27,7 +30,10 @@ const router = createBrowserRouter([
     element: <AdminRootLayout />,
     children: [
       { path: '/', element: <DashBoard /> },
-      { path: '/user-manage', element: <UserManage /> }
+      { path: '/user-manage', element: <UserManage /> },
+      { path: '/admin-board', element: <AdminBoard /> },
+      { path: '/admin-tax', element: <AdminTax /> },
+      { path: '/admin-payment', element: <AdminPayment /> }
     ]
   },
 
@@ -46,7 +52,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <CSRootLayout />,
     children: [
-      { path: '/CS-home', element: <CS_home /> },
+      { path: '/CS-home', element: <CSHome /> },
       { path: '/upload-tax/step1', element: <Step1 /> },
       { path: '/upload-tax/step2', element: <Step2 /> },
       { path: '/upload-tax/step3', element: <Step3 /> },

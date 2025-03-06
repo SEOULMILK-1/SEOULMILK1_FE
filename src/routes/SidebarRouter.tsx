@@ -20,7 +20,7 @@ export const adminMenuItems: MenuItem[] = [
   { name: '홈', path: '/', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
   {
     name: '게시판 관리',
-    path: '',
+    path: '/admin-board',
     icon: <SpeakerGray />,
     selectedIcon: <SpeakerGray color="#009856" />
   },
@@ -32,13 +32,13 @@ export const adminMenuItems: MenuItem[] = [
   },
   {
     name: '세금계산서 조회',
-    path: '',
+    path: '/admin-tax',
     icon: <TaxIconGray />,
     selectedIcon: <TaxIcon />
   },
   {
     name: '지급결의서 조회',
-    path: '',
+    path: '/admin-payment',
     icon: <PaymentIcon />,
     selectedIcon: (
       <PaymentIcon
@@ -81,7 +81,12 @@ export const HQMenuItems: MenuItem[] = [
 
 // 대리점 메뉴
 export const CSMenuItems: MenuItem[] = [
-  { name: '홈', path: '', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
+  {
+    name: '홈',
+    path: '/cs-home',
+    icon: <HomeGrayIcon />,
+    selectedIcon: <HomeIcon />
+  },
   {
     name: '세금계산서 조회',
     path: '/cs-tax',
