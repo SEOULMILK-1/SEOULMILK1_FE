@@ -1,7 +1,7 @@
 interface ResetIconProps {
   color?: string;
 }
-const ResetIcon = ({ color = '##10AB63' }: ResetIconProps) => {
+const ResetIcon = ({ color = '#10AB63' }: ResetIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

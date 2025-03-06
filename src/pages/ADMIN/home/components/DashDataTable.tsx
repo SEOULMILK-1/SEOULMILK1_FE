@@ -36,7 +36,7 @@ const DashDataTable = ({
         <DashTableHeader />
       </div>
 
-      <div className="flex-grow overflow-y-scroll">
+      <div className="flex-grow overflow-y-scroll custom-scrollbar">
         {data.map((data, index) => (
           <div
             key={index}

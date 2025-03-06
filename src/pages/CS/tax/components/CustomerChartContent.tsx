@@ -1,6 +1,15 @@
+import { useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
+import TaxDetailModal from '../../../../common/TaxDetailModal';
 
 const statuses: Status[] = ['승인됨', '지급완료', '반려됨'];
+interface InvoiceData {
+  status: Status;
+  number: string;
+  title: string;
+  date: string;
+  center: string;
+}
 
 const data = Array.from({ length: 20 }, (_, index) => ({
   status: statuses[index % statuses.length],
@@ -11,12 +20,25 @@ const data = Array.from({ length: 20 }, (_, index) => ({
 }));
 
 const CustomerChartContent = () => {
+  const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleItemClick = (item: InvoiceData) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedItem(null);
+  };
   return (
     <div className="h-[602px] w-[960px] overflow-y-auto overflow-x-hidden custom-scrollbar ">
       {data.map((item, index) => (
         <div
           key={index}
           className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"
+          onClick={() => handleItemClick(item)}
         >
           <div className="w-[92px] pl-5">
             <StatusBadge status={item.status} />
@@ -35,6 +57,11 @@ const CustomerChartContent = () => {
           </div>
         </div>
       ))}
+      <TaxDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        selectedItem={selectedItem}
+      />
     </div>
   );
 };
