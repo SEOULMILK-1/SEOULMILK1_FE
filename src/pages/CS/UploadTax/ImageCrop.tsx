@@ -22,7 +22,10 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     y: 0
   });
 
+  // 최종적으로 선택된 크롭 정보
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+
+  // 회전, 반전 상태
   const [rotation, setRotation] = useState(0);
   const [flipX, setFlipX] = useState(1);
   const [flipY, setFlipY] = useState(1);
@@ -63,12 +66,11 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     }
   }, [initialImage]);
 
-  // 컨테이너 및 이미지 크기 업데이트
+  // 화면 크기 및 회전 상태에 따라 이미지 크기 업데이트
   useEffect(() => {
     const updateSizes = () => {
       if (cropContainerRef.current && imgRef.current) {
         const container = cropContainerRef.current;
-        const img = imgRef.current;
 
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
@@ -83,10 +85,8 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
           ? 1 / naturalAspectRatio
           : naturalAspectRatio;
 
-        // 회전을 고려하여 이미지가 컨테이너에 맞도록 크기 계산
-        // 추가 여백을 위해 더 작게 설정 (80%)
         let width, height;
-        const scaleFactor = 0.9; // 이미지를 더 작게 표시 (70% 크기)
+        const scaleFactor = 0.9;
 
         if (effectiveRatio > containerWidth / containerHeight) {
           // 가로가 더 긴 경우
@@ -118,6 +118,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     cropContainerRef.current
   ]);
 
+  // 크롭된 이미지를 캔버스에서 생성
   const cropImage = () => {
     if (!imgRef.current || !completedCrop || !previewCanvasRef.current) return;
 
@@ -131,14 +132,13 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     const scaleX = imageSize.naturalWidth / image.width;
     const scaleY = imageSize.naturalHeight / image.height;
 
-    // 기존 크롭 영역을 원본 이미지 기준으로 변환
     let { x, y, width, height } = completedCrop;
     x *= scaleX;
     y *= scaleY;
     width *= scaleX;
     height *= scaleY;
 
-    // 90도, 180도, 270도 회전 시 크롭 영역 보정
+    // 회전 상태에 따른 크롭 좌표 보정
     let newX = x,
       newY = y,
       newWidth = width,
@@ -164,17 +164,15 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     canvas.width = isRotated90or270 ? newHeight : newWidth;
     canvas.height = isRotated90or270 ? newWidth : newHeight;
 
-    // 캔버스 배경을 흰색으로 설정
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 회전 적용
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(flipX, flipY);
 
-    // drawImage의 좌표를 보정
+    
     let dx = -newWidth / 2;
     let dy = -newHeight / 2;
     ctx.drawImage(
@@ -310,7 +308,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
                   height:
                     imageSize.height > 0 ? `${imageSize.height}px` : 'auto',
                   transform: `rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
-                  transition: 'transform 0.2s ease'
+                  transition: 'transform 0.5s ease'
                 }}
               />
             </ReactCrop>
