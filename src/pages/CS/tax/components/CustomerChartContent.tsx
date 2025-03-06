@@ -2,7 +2,7 @@ import { useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import TaxDetailModal from '../../../../common/TaxDetailModal';
 
-const statuses: Status[] = ['승인됨', '지급완료', '반려됨'];
+const statuses: Status[] = ['승인됨', '반려됨'];
 interface InvoiceData {
   status: Status;
   number: string;
