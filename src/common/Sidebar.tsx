@@ -11,7 +11,7 @@ import {
   CSMenuItems,
   HQMenuItems
 } from '../routes/SidebarRouter';
-import SidebarUploadButton from '../pages/CS/UploadTax/SidebarUploadBtn';
+import SidebarUploadButton from '../pages/CS/uploadTax/SidebarUploadBtn';
 
 interface RoleProps {
   type: 'admin' | 'HQ' | 'CS';
@@ -37,7 +37,7 @@ const Sidebar = ({ type }: RoleProps) => {
     if (activeMenu) {
       setSelectedMenu(activeMenu.name);
     }
-  }, [location.pathname, menuItems]); 
+  }, [location.pathname, menuItems]);
 
   const getModalComponent = () => {
     switch (type) {
