@@ -23,6 +23,12 @@ const Sidebar = ({ type }: RoleProps) => {
   const [selectedMenu, setSelectedMenu] = useState<string>('홈');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const excludedPaths = [
+    '/upload-tax/step1',
+    '/upload-tax/step2',
+    '/upload-tax/step3'
+  ];
+
   const menuItems =
     type === 'admin'
       ? adminMenuItems
@@ -31,6 +37,10 @@ const Sidebar = ({ type }: RoleProps) => {
       : CSMenuItems;
 
   useEffect(() => {
+    if (excludedPaths.includes(location.pathname)) {
+      setSelectedMenu('');
+      return;
+    }
     const activeMenu = menuItems.find(
       (item) => item.path === location.pathname
     );
