@@ -30,7 +30,7 @@ const CSTax = () => {
             size="sm"
             className="bg-transparent border border-primary-600 text-primary-500 flex items-center gap-1"
           >
-            <ResetIcon color="##10AB63" />
+            <ResetIcon />
             초기화
           </Button>
           <Button
