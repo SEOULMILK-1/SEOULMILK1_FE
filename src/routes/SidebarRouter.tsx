@@ -3,12 +3,10 @@ import HomeIcon from '../../public/Icon/HomeIcon';
 import SpeakerGray from '../../public/Icon/SpeakerGray';
 import TaxIconGray from '../../public/Icon/TaxIconGray';
 import TaxIcon from '../../public/Icon/TaxIcon';
-import ErrorGray from '../../public/Icon/ErrorGray';
-import Error from '../../public/Icon/Error';
 import HQIcon from '../../public/Icon/CustomerIcon';
 import SelectHQIon from '../../public/Icon/SelectHQIon';
 import UserIcon from '../../public/Icon/UserIcon';
-import PaymentGray from '../../public/Icon/PaymentGray';
+import PaymentIcon from '../../public/Icon/PaymentIcon';
 
 export interface MenuItem {
   name: string;
@@ -41,8 +39,14 @@ export const adminMenuItems: MenuItem[] = [
   {
     name: '지급결의서 조회',
     path: '',
-    icon: <ErrorGray />,
-    selectedIcon: <Error />
+    icon: <PaymentIcon />,
+    selectedIcon: (
+      <PaymentIcon
+        primaryColor="#4CC584"
+        secondaryColor="#009856"
+        accentColor="#C3EAD2"
+      />
+    )
   }
 ];
 
@@ -58,8 +62,14 @@ export const HQMenuItems: MenuItem[] = [
   {
     name: '지급결의서 조회',
     path: '/payment',
-    icon: <PaymentGray />,
-    selectedIcon: <Error />
+    icon: <PaymentIcon />,
+    selectedIcon: (
+      <PaymentIcon
+        primaryColor="#4CC584"
+        secondaryColor="#009856"
+        accentColor="#C3EAD2"
+      />
+    )
   },
   {
     name: '대리점 조회',
