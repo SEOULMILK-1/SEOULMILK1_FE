@@ -20,34 +20,35 @@ const Step1 = () => {
       setSelectedImage(location.state.selectedImage);
     }
   }, [location.state]);
-  const handleUpload = async () => {
-    if (!croppedImage) return;
 
-    console.log('handleUpload 실행됨!'); 
-    setIsUploading(true);
+  // const handleUpload = async () => {
+  //   if (!croppedImage) return;
 
-    try {
-      const response = await fetch(croppedImage);
-      const blob = await response.blob();
-      console.log('Blob 변환', blob); 
+  //   console.log('handleUpload 실행됨!');
+  //   setIsUploading(true);
 
-      const formData = new FormData();
-      formData.append('file', blob, 'cropped-image.png');
+  //   try {
+  //     const response = await fetch(croppedImage);
+  //     const blob = await response.blob();
+  //     console.log('Blob 변환', blob);
 
-      console.log('FormData 준비 '); 
+  //     const formData = new FormData();
+  //     formData.append('file', blob, 'cropped-image.png');
 
-      const res = await api.post('/tax/ocr', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+  //     console.log('FormData 준비 ');
 
-      console.log('OCR 응답', res.data); 
-      navigate('/upload-tax/step2', { state: { ocrData: res.data } });
-    } catch (error) {
-      console.error('OCR 업로드 실패:', error);
-    } finally {
-      setIsUploading(false);
-    }
-  };
+  //     const res = await api.post('/tax/ocr', formData, {
+  //       headers: { 'Content-Type': 'multipart/form-data' }
+  //     });
+
+  //     console.log('OCR 응답', res.data);
+  //     navigate('/upload-tax/step2', { state: { ocrData: res.data } });
+  //   } catch (error) {
+  //     console.error('OCR 업로드 실패:', error);
+  //   } finally {
+  //     setIsUploading(false);
+  //   }
+  // };
 
   return (
     <div className="px-[94px] mx-auto">
@@ -70,7 +71,8 @@ const Step1 = () => {
         </button>
         <button
           className="font-md-medium w-[200px] h-[48px] text-center bg-primary-600 text-white px-6 py-3 rounded-[12px]"
-          onClick={handleUpload}
+          // onClick={handleUpload}
+          onClick={() => navigate('/upload-tax/step2')}
           disabled={!croppedImage || isUploading}
         >
           {isUploading ? '업로드 중...' : '다음'}

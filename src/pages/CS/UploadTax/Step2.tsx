@@ -3,28 +3,38 @@ import { useState, useEffect } from 'react';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
+import imageTest from '../../../utils/imageTest.png'; // 기본 이미지
 
 const Step2 = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const croppedImage = location.state?.croppedImage;
 
-  const [formData, setFormData] = useState({
-    approvalNo: '',
-    supplier: '',
-    recipient: '',
-    date: '',
-    amount: ''
-  });
+  // 기본 이미지 설정
+  const defaultImage = imageTest;
+  const croppedImage =
+    location.state?.croppedImage ||
+    location.state?.selectedImage ||
+    defaultImage;
+
+  // 기본 데이터 설정
+  const defaultFormData = {
+    approvalNo: '123-456-789',
+    supplier: '123-45-67890',
+    recipient: '987-65-43210',
+    date: '2025-03-08',
+    amount: '1,000,000'
+  };
+
+  const [formData, setFormData] = useState(defaultFormData);
 
   useEffect(() => {
     if (location.state) {
       setFormData({
-        approvalNo: location.state.approvalNo || '',
-        supplier: location.state.supplier || '',
-        recipient: location.state.recipient || '',
-        date: location.state.date || '',
-        amount: location.state.amount || ''
+        approvalNo: location.state.approvalNo || defaultFormData.approvalNo,
+        supplier: location.state.supplier || defaultFormData.supplier,
+        recipient: location.state.recipient || defaultFormData.recipient,
+        date: location.state.date || defaultFormData.date,
+        amount: location.state.amount || defaultFormData.amount
       });
     }
   }, [location.state]);
@@ -45,16 +55,13 @@ const Step2 = () => {
       />
 
       <div className="pt-[32px] flex gap-[40px]">
+        {/* 이미지 영역 */}
         <div className="w-[560px] flex-col rounded-[32px] flex items-center justify-center gap-[24px]">
-          {croppedImage ? (
-            <img
-              src={croppedImage}
-              alt="Cropped Preview"
-              className="w-[560px] max-h-[500px] object-contain rounded-md"
-            />
-          ) : (
-            <p className="text-center text-gray-500">이미지가 없습니다.</p>
-          )}
+          <img
+            src={croppedImage}
+            alt="Cropped Preview"
+            className="w-[560px] max-h-[500px] object-contain rounded-md"
+          />
           <div className="w-[560px] px-[24px] py-[16px] bg-[#FFEAED] rounded-[16px] flex items-start gap-[8px]">
             <WarningIcon className="mt-1" />
             <div className="text-start gap-[8px]">
@@ -68,6 +75,7 @@ const Step2 = () => {
           </div>
         </div>
 
+        {/* 입력 폼 */}
         <div className="w-[360px] p-6">
           <form className="flex flex-col gap-[24px]">
             <label className="flex flex-col gap-1">
@@ -77,7 +85,7 @@ const Step2 = () => {
                 name="approvalNo"
                 value={formData.approvalNo}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
 
@@ -90,7 +98,7 @@ const Step2 = () => {
                 name="supplier"
                 value={formData.supplier}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
 
@@ -103,7 +111,7 @@ const Step2 = () => {
                 name="recipient"
                 value={formData.recipient}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
 
@@ -114,7 +122,7 @@ const Step2 = () => {
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
 
@@ -125,7 +133,7 @@ const Step2 = () => {
                 name="amount"
                 value={formData.amount}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
           </form>
@@ -142,7 +150,6 @@ const Step2 = () => {
         <button
           className="font-md-medium w-[200px] h-[48px] text-center bg-primary-600 text-white px-6 py-3 rounded-[12px]"
           onClick={() => navigate('/upload-tax/step3')}
-          //업로드 api요청
         >
           업로드
         </button>

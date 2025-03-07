@@ -136,7 +136,7 @@ const TaxDetailModal = ({
               className="bg-warning-400 text-white w-[168px] h-[56px]"
               onClick={() =>
                 navigate('/upload-tax/step2', {
-                  state: { ...selectedItem }
+                  state: { ...selectedItem, selectedImage: imageTest }
                 })
               }
             >

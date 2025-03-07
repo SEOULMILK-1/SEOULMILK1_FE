@@ -35,10 +35,12 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     naturalWidth: 0,
     naturalHeight: 0
   });
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const cropContainerRef = useRef<HTMLDivElement | null>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // 이미지 초기 로드 시 원본 이미지 정보 설정
   useEffect(() => {
     if (initialImage) {
       setSelectedImage(initialImage);
@@ -52,15 +54,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
           naturalWidth: img.width,
           naturalHeight: img.height
         });
-
-        const aspectRatio = img.width / img.height;
-        setCrop({
-          unit: '%',
-          width: aspectRatio > 1 ? 50 : 50 / aspectRatio,
-          height: aspectRatio > 1 ? 50 * aspectRatio : 50,
-          x: (100 - (aspectRatio > 1 ? 50 : 50 / aspectRatio)) / 2,
-          y: (100 - (aspectRatio > 1 ? 50 * aspectRatio : 50)) / 2
-        });
+        setIsImageLoaded(true);
       };
       img.src = initialImage;
     }
@@ -69,7 +63,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   // 화면 크기 및 회전 상태에 따라 이미지 크기 업데이트
   useEffect(() => {
     const updateSizes = () => {
-      if (cropContainerRef.current && imgRef.current) {
+      if (cropContainerRef.current && imgRef.current && isImageLoaded) {
         const container = cropContainerRef.current;
 
         const containerWidth = container.clientWidth;
@@ -103,20 +97,65 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
           width: Math.round(width),
           height: Math.round(height)
         }));
+
+        // 이미지 크기가 변경되면 크롭 영역도 업데이트
+        updateCropArea(effectiveRatio);
       }
     };
 
-    updateSizes();
+    if (isImageLoaded) {
+      updateSizes();
+    }
 
-    // 회전이 변경될 때마다 크기 업데이트
     window.addEventListener('resize', updateSizes);
     return () => window.removeEventListener('resize', updateSizes);
   }, [
     rotation,
     imageSize.naturalWidth,
     imageSize.naturalHeight,
-    cropContainerRef.current
+    isImageLoaded
   ]);
+
+  // 크롭 영역을 업데이트하는 함수
+  const updateCropArea = (aspectRatio: number) => {
+    const cropSize = 50; // 기본 크롭 크기 (%)
+
+    // 마지막 completedCrop 정보가 있으면 비율만 유지하면서 위치 조정
+    if (completedCrop) {
+      // 기존 크롭 영역 중심점 계산
+      const centerX = completedCrop.x + completedCrop.width / 2;
+      const centerY = completedCrop.y + completedCrop.height / 2;
+
+      // 회전에 따른 새 크기 계산 (단위는 %)
+      let newWidth = cropSize;
+      let newHeight = cropSize;
+
+      // 새로운 크롭 영역의 왼쪽 상단 좌표 계산
+      let x = Math.max(0, centerX - newWidth / 2);
+      let y = Math.max(0, centerY - newHeight / 2);
+
+      // 화면 경계를 벗어나지 않도록 조정
+      if (x + newWidth > 100) x = 100 - newWidth;
+      if (y + newHeight > 100) y = 100 - newHeight;
+
+      setCrop({
+        unit: '%',
+        width: newWidth,
+        height: newHeight,
+        x,
+        y
+      });
+    } else {
+      // 초기 설정인 경우 중앙에 배치
+      setCrop({
+        unit: '%',
+        width: cropSize,
+        height: cropSize,
+        x: (100 - cropSize) / 2,
+        y: (100 - cropSize) / 2
+      });
+    }
+  };
 
   // 크롭된 이미지를 캔버스에서 생성
   const cropImage = () => {
@@ -172,7 +211,6 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(flipX, flipY);
 
-    
     let dx = -newWidth / 2;
     let dy = -newHeight / 2;
     ctx.drawImage(
@@ -195,63 +233,25 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   };
 
   useEffect(() => {
-    cropImage();
+    if (completedCrop) {
+      cropImage();
+    }
   }, [completedCrop, rotation, flipX, flipY]);
 
   const rotateLImage = () => {
-    setRotation((prev) => (prev - 90) % 360); // 왼쪽 회전은 -90도
+    const newRotation = (rotation - 90) % 360;
+    setRotation(newRotation);
 
-    // 회전 후 크롭 영역 재조정을 위한 타이머 설정
-    setTimeout(() => {
-      if (imgRef.current) {
-        const naturalAspectRatio =
-          imageSize.naturalWidth / imageSize.naturalHeight;
-
-        // 회전 방향에 따라 가로/세로 비율 조정
-        const isRotated90or270 = Math.abs((rotation - 90) % 180) === 0;
-        const rotatedAspectRatio = isRotated90or270
-          ? 1 / naturalAspectRatio
-          : naturalAspectRatio;
-
-        // 크롭 재설정
-        setCrop({
-          unit: '%',
-          width: rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio,
-          height: rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50,
-          x:
-            (100 - (rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio)) / 2,
-          y: (100 - (rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50)) / 2
-        });
-      }
-    }, 50);
+    // 회전 후 이미지 크기 업데이트가 필요함
+    // updateSizes() 효과가 자동으로 실행됨
   };
 
   const rotateRImage = () => {
-    setRotation((prev) => (prev + 90) % 360); // 오른쪽 회전은 +90도
+    const newRotation = (rotation + 90) % 360;
+    setRotation(newRotation);
 
-    // 회전 후 크롭 영역 재조정을 위한 타이머 설정
-    setTimeout(() => {
-      if (imgRef.current) {
-        const naturalAspectRatio =
-          imageSize.naturalWidth / imageSize.naturalHeight;
-
-        // 회전 방향에 따라 가로/세로 비율 조정
-        const isRotated90or270 = Math.abs((rotation + 90) % 180) === 0;
-        const rotatedAspectRatio = isRotated90or270
-          ? 1 / naturalAspectRatio
-          : naturalAspectRatio;
-
-        // 크롭 재설정
-        setCrop({
-          unit: '%',
-          width: rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio,
-          height: rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50,
-          x:
-            (100 - (rotatedAspectRatio > 1 ? 50 : 50 / rotatedAspectRatio)) / 2,
-          y: (100 - (rotatedAspectRatio > 1 ? 50 * rotatedAspectRatio : 50)) / 2
-        });
-      }
-    }, 50);
+    // 회전 후 이미지 크기 업데이트가 필요함
+    // updateSizes() 효과가 자동으로 실행됨
   };
 
   const flipImageX = () => setFlipX((prev) => prev * -1);
@@ -262,16 +262,11 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     setRotation(0);
     setFlipX(1);
     setFlipY(1);
+    setCompletedCrop(null);
 
-    // 원본 이미지에 맞게 크롭 영역 재설정
+    // 이미지 리셋 시 초기 크롭 영역도 재설정
     const naturalAspectRatio = imageSize.naturalWidth / imageSize.naturalHeight;
-    setCrop({
-      unit: '%',
-      width: naturalAspectRatio > 1 ? 50 : 50 / naturalAspectRatio,
-      height: naturalAspectRatio > 1 ? 50 * naturalAspectRatio : 50,
-      x: (100 - (naturalAspectRatio > 1 ? 50 : 50 / naturalAspectRatio)) / 2,
-      y: (100 - (naturalAspectRatio > 1 ? 50 * naturalAspectRatio : 50)) / 2
-    });
+    updateCropArea(naturalAspectRatio);
   };
 
   return (
@@ -289,29 +284,45 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
               backgroundColor: 'white'
             }}
           >
-            <div className="absolute inset-0 bg-black bg-opacity-50 z-10 pointer-events-none"></div>
-
-            <ReactCrop
-              crop={crop}
-              onChange={(c) => setCrop(c)}
-              onComplete={(c) => setCompletedCrop(c)}
-              className="relative z-20"
-              style={{ backgroundColor: 'white' }}
-            >
-              <img
-                ref={imgRef}
-                src={selectedImage}
-                alt="Upload"
-                className="object-contain"
-                style={{
-                  width: imageSize.width > 0 ? `${imageSize.width}px` : 'auto',
-                  height:
-                    imageSize.height > 0 ? `${imageSize.height}px` : 'auto',
-                  transform: `rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
-                  transition: 'transform 0.5s ease'
-                }}
-              />
-            </ReactCrop>
+            {isImageLoaded && (
+              <>
+                <div className="absolute inset-0 bg-black bg-opacity-50 z-10 pointer-events-none"></div>
+                <ReactCrop
+                  crop={crop}
+                  onChange={(c) => setCrop(c)}
+                  onComplete={(c) => setCompletedCrop(c)}
+                  className="relative z-20"
+                  style={{ backgroundColor: 'white' }}
+                >
+                  <img
+                    ref={imgRef}
+                    src={selectedImage}
+                    alt="Upload"
+                    className="object-contain"
+                    style={{
+                      width:
+                        imageSize.width > 0 ? `${imageSize.width}px` : 'auto',
+                      height:
+                        imageSize.height > 0 ? `${imageSize.height}px` : 'auto',
+                      transform: `rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
+                      transition: 'transform 0.3s ease'
+                    }}
+                    onLoad={() => {
+                      if (imgRef.current) {
+                        const naturalAspectRatio =
+                          imageSize.naturalWidth / imageSize.naturalHeight;
+                        const isRotated90or270 =
+                          Math.abs(rotation % 180) === 90;
+                        const effectiveRatio = isRotated90or270
+                          ? 1 / naturalAspectRatio
+                          : naturalAspectRatio;
+                        updateCropArea(effectiveRatio);
+                      }
+                    }}
+                  />
+                </ReactCrop>
+              </>
+            )}
           </div>
 
           <div className="flex items-center justify-center h-[72px] gap-6 border border-gray-300 rounded-b-[32px] p-4">

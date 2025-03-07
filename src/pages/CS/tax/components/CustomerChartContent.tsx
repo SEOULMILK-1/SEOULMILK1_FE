@@ -9,19 +9,24 @@ interface InvoiceData {
   title: string;
   date: string;
   center: string;
+  approvalNo: string;
+  supplier: string;
+  recipient: string;
+  dateFormatted: string;
+  amount: string;
 }
 
 const data: InvoiceData[] = Array.from({ length: 20 }, (_, index) => ({
-  status: statuses[index % statuses.length],
+  status: statuses[Math.floor(Math.random() * statuses.length)],
   number: String(index + 1).padStart(2, '0'),
   title: `○○월 세금계산서 ${index + 1}`,
   date: '2025.02.28',
   center: '서울우유태평고객센터',
-  approvalNo: `2022060812-${index + 1}`,
-  supplier: `214-87-415 ${index + 1}`,
-  recipient: `213-4546 ${index + 1}`,
+  approvalNo: `202206-0812-${index + 1}`,
+  supplier: `214-87-415${index + 1}`,
+  recipient: `213-45-74${index + 1}`,
   dateFormatted: '2025-02-28',
-  amount: `${(index + 1) * 1000}원`
+  amount: `5,000,000`
 }));
 
 const CustomerChartContent = () => {
