@@ -1,15 +1,49 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
+import imageTest from '../../../utils/imageTest.png'; 
 
 const Step2 = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const croppedImage = location.state?.croppedImage;
+
+  const defaultImage = imageTest;
+  const croppedImage =
+    location.state?.croppedImage ||
+    location.state?.selectedImage ||
+    defaultImage;
+
+  const defaultFormData = {
+    approvalNo: '123-456-789',
+    supplier: '123-45-67890',
+    recipient: '987-65-43210',
+    date: '2025-03-08',
+    amount: '1,000,000'
+  };
+
+  const [formData, setFormData] = useState(defaultFormData);
+
+  useEffect(() => {
+    if (location.state) {
+      setFormData({
+        approvalNo: location.state.approvalNo || defaultFormData.approvalNo,
+        supplier: location.state.supplier || defaultFormData.supplier,
+        recipient: location.state.recipient || defaultFormData.recipient,
+        date: location.state.date || defaultFormData.date,
+        amount: location.state.amount || defaultFormData.amount
+      });
+    }
+  }, [location.state]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
-    <div className="px-[94px] mx-auto ">
+    <div className="px-[94px] mx-auto">
       <Header
         title="세금계산서 업로드"
         showStepProgress={true}
@@ -20,15 +54,11 @@ const Step2 = () => {
 
       <div className="pt-[32px] flex gap-[40px]">
         <div className="w-[560px] flex-col rounded-[32px] flex items-center justify-center gap-[24px]">
-          {croppedImage ? (
-            <img
-              src={croppedImage}
-              alt="Cropped Preview"
-              className="w-[560px] max-h-[500px] object-contain rounded-md"
-            />
-          ) : (
-            <p className="text-center text-gray-500">이미지가 없습니다.</p>
-          )}
+          <img
+            src={croppedImage}
+            alt="Cropped Preview"
+            className="w-[560px] max-h-[500px] object-contain rounded-md"
+          />
           <div className="w-[560px] px-[24px] py-[16px] bg-[#FFEAED] rounded-[16px] flex items-start gap-[8px]">
             <WarningIcon className="mt-1" />
             <div className="text-start gap-[8px]">
@@ -48,7 +78,10 @@ const Step2 = () => {
               <span className="font-md-semibold text-gray-600">승인번호</span>
               <input
                 type="text"
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                name="approvalNo"
+                value={formData.approvalNo}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
 
@@ -58,7 +91,10 @@ const Step2 = () => {
               </span>
               <input
                 type="text"
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                name="supplier"
+                value={formData.supplier}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
 
@@ -68,34 +104,48 @@ const Step2 = () => {
               </span>
               <input
                 type="text"
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                name="recipient"
+                value={formData.recipient}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
+
             <label className="flex flex-col gap-1">
               <span className="font-md-semibold text-gray-600">작성일자</span>
               <input
                 type="text"
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
+
             <label className="flex flex-col gap-1">
               <span className="font-md-semibold text-gray-600">공급가액</span>
               <input
                 type="text"
-                className="border border-gray-300 rounded-[12px] p-[16px]"
+                name="amount"
+                value={formData.amount}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-[12px] p-[16px] focus:border-primary-500"
               />
             </label>
           </form>
         </div>
       </div>
+
       <div className="mt-[64px] flex gap-[24px] justify-center">
-        <button className="font-md-medium w-[200px] h-[48px] text-center border border-primary-600 text-primary-600 px-6 py-3 rounded-[12px]">
+        <button
+          className="font-md-medium w-[200px] h-[48px] text-center border border-primary-600 text-primary-600 px-6 py-3 rounded-[12px]"
+          onClick={() => navigate(-1)}
+        >
           이전
         </button>
         <button
           className="font-md-medium w-[200px] h-[48px] text-center bg-primary-600 text-white px-6 py-3 rounded-[12px]"
           onClick={() => navigate('/upload-tax/step3')}
-          //업로드 api요청
         >
           업로드
         </button>
