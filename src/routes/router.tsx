@@ -7,9 +7,6 @@ import DashBoard from '../pages/ADMIN/home/DashBoard';
 import UserManage from '../pages/ADMIN/user/UserManage';
 import HQRootLayout from '../outlet/HQRootLayout';
 import CSRootLayout from '../outlet/CSRootLayout';
-import Step1 from '../pages/CS/uploadTax/Step1';
-import Step2 from '../pages/CS/uploadTax/Step2';
-import Step3 from '../pages/CS/uploadTax/Step3';
 import LoginPage from '../pages/login';
 import CSSignup from '../pages/CS/cssignup/CSSignup';
 import HeadSignup from '../pages/HQ/signup/HeadSignup';
@@ -18,10 +15,14 @@ import Signup2 from '../pages/HQ/signup/components/Signup2';
 import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
 import CSTax from '../pages/CS/tax';
 import Payment from '../pages/HQ/payment/Payment';
+import HQ_home from '../pages/HQ/home/HQDashBoard';
 import { AdminBoard } from '../pages/ADMIN/board';
 import { AdminTax } from '../pages/ADMIN/tax';
 import { AdminPayment } from '../pages/ADMIN/payment';
 import { CSHome } from '../pages/CS/home';
+import Step1 from '../pages/CS/UploadTax/Step1';
+import Step2 from '../pages/CS/UploadTax/Step2';
+import Step3 from '../pages/CS/UploadTax/Step3';
 
 const router = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <HQRootLayout />,
     children: [
+      { path: '/HQ-home', element: <HQ_home /> },
       { path: '/head-customer', element: <HeadCustomer /> },
       { path: '/tax', element: <Tax /> },
       { path: '/payment', element: <Payment /> }

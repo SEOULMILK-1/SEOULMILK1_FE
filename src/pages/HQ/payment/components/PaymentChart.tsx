@@ -1,6 +1,6 @@
 import ChartPagination from '../../../../common/ChartPagination';
-import PaymentContent from '../PaymentContent';
 import PaymentChartHeader from './PaymentChartHeader';
+import PaymentChartContent from './PaymentContent';
 
 const PaymentChart = () => {
   return (
@@ -8,7 +8,7 @@ const PaymentChart = () => {
       <PaymentChartHeader />
 
       <div className="flex-grow">
-        <PaymentContent />
+        <PaymentChartContent />
       </div>
 
       <ChartPagination />
