@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ImageCrop from './ImageCrop';
+
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
+import ImageCrop from './ImageCrop';
 
 const Step1 = () => {
   const navigate = useNavigate();
