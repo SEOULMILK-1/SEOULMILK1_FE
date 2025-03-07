@@ -21,12 +21,13 @@ const CsDropDown = ({ selectedId, onSelect }: Props) => {
     const fetchAgencies = async () => {
       try {
         const response = await api.get('/auth/search/cs');
+
         // console.log('111', response.data);
         // console.log('222', response.data.result.responseList);
         setCsList(response.data.result.responseList);
 
         if (selectedId) {
-          const selectedAgency = response.data.find(
+          const selectedAgency = response.data.result.responseList.find(
             (agency: Agency) => agency.csId === selectedId
           );
 
