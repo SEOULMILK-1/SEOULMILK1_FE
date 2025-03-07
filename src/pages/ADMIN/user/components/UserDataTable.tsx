@@ -16,8 +16,13 @@ interface User {
   isAssigned: string;
 }
 
-const UserDataTable = () => {
+interface UserDataTableProps {
+  searchTerm: string;
+}
+
+const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
   const [data, setData] = useState<User[]>([]);
+  const [filteredData, setFilteredData] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,7 +31,7 @@ const UserDataTable = () => {
       try {
         const token = localStorage.getItem('accesstoken');
 
-        const response = await api.get('/admin/user', {
+        const response = await api.get('/admin/user?page=0&size=110', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -34,6 +39,7 @@ const UserDataTable = () => {
 
         console.log('data', response.data);
         setData(response.data.result.responseList);
+        setFilteredData(response.data.result.responseList);
       } catch (error) {
         console.error('유저데이터 연결에 에러가 발생했습니다.', error);
       }
@@ -41,13 +47,35 @@ const UserDataTable = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    if (!searchTerm || searchTerm.trim() === '') {
+      setFilteredData(data);
+    } else {
+      const filtered = data.filter((user) => {
+        const csNameLower = user.csName ? user.csName.toLowerCase() : '';
+        const nameLower = user.name ? user.name.toLowerCase() : '';
+        const searchTermLower = searchTerm.toLowerCase();
+
+        return (
+          csNameLower.includes(searchTermLower) ||
+          nameLower.includes(searchTermLower)
+        );
+      });
+      setFilteredData(filtered);
+    }
+  }, [searchTerm, data]);
+
   const openModal = (user: any) => {
     setSelectedUser(user);
     setIsModalOpen(true);
   };
 
   const deleteUser = (userId: number) => {
-    setData((prevData) => prevData.filter((user) => user.userId !== userId));
+    setData((prevData) => {
+      const updatedData = prevData.filter((user) => user.userId !== userId);
+      setFilteredData(updatedData);
+      return updatedData;
+    });
   };
 
   const handleApproveUser = async (userId: number) => {
@@ -60,11 +88,32 @@ const UserDataTable = () => {
       });
 
       if (response.status === 200) {
-        setData((prevData) =>
-          prevData.map((user) =>
+        setData((prevData) => {
+          const updatedData = prevData.map((user) =>
             user.userId === userId ? { ...user, isAssigned: '등록' } : user
-          )
-        );
+          );
+
+          if (!searchTerm || searchTerm.trim() === '') {
+            setFilteredData(updatedData);
+          } else {
+            setFilteredData(
+              updatedData.filter((user) => {
+                const csNameLower = user.csName
+                  ? user.csName.toLowerCase()
+                  : '';
+                const nameLower = user.name ? user.name.toLowerCase() : '';
+                const searchTermLower = searchTerm.toLowerCase();
+
+                return (
+                  csNameLower.includes(searchTermLower) ||
+                  nameLower.includes(searchTermLower)
+                );
+              })
+            );
+          }
+
+          return updatedData;
+        });
       }
     } catch (error) {
       console.error('등록 요청에 실패했습니다', error);
@@ -75,8 +124,8 @@ const UserDataTable = () => {
     <div className="mt-4 flex h-[778px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <UserDataTableHeader />
 
-      <div className="flex-grow mx-2 overflow-y-scroll">
-        {data.map((row, index) => (
+      <div className="flex-grow mx-2 overflow-y-scroll custom-scrollbar">
+        {filteredData.map((row, index) => (
           <div
             key={index}
             className="flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer"
@@ -91,17 +140,17 @@ const UserDataTable = () => {
             >
               {row.isAssigned}
             </div>
-
             <div className="w-[190px] pl-5 gap-5 text-gray-800 font-sm-medium">
               {row.csName}
             </div>
+            ㄴ
             <div className="w-[120px] pl-5 ml-1 text-gray-800 font-sm-medium">
               {row.name}
             </div>
             <div className="w-[200px] pl-5 text-gray-800 font-sm-medium tabular-nums">
               {row.phone}
             </div>
-            <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium">
+            <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium tabular-nums">
               {row.createdAt}
             </div>
             <div className="w-[140px] px-5 py-2 items-center">

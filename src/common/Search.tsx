@@ -4,14 +4,15 @@ import { LoginDeleteIcon } from '../../public/Icon/LoginDeleteIcon';
 import SearchButton from './SearchButton';
 
 interface SearchBarProps {
-  // onSearch: (value: string) => void;
+  onSearch: (value: string) => void;
   placeholderName: string;
-  showSearchButton?: boolean; // 검색 버튼 유무
-  defaultSearchIcon?: JSX.Element; // 기본 설정
-  activeSearchIcon?: JSX.Element; // 입력 값이 있을 때 아이콘
+  showSearchButton?: boolean;
+  defaultSearchIcon?: JSX.Element;
+  activeSearchIcon?: JSX.Element;
 }
 
 const Search = ({
+  onSearch,
   placeholderName,
   showSearchButton = true,
   defaultSearchIcon = <GraySearchIcon />,
@@ -25,6 +26,13 @@ const Search = ({
 
   const handleClearText = () => {
     setInputValue('');
+    onSearch('');
+  };
+
+  const handleSearch = () => {
+    if (inputValue.trim() !== '') {
+      onSearch(inputValue);
+    }
   };
 
   return (
@@ -37,6 +45,11 @@ const Search = ({
           placeholder={placeholderName}
           value={inputValue}
           onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearch();
+            }
+          }}
           className={`w-full h-12 pl-[44px] pr-4 py-4 rounded-xl border border-solid focus:border-primary-500 ${
             inputValue ? 'border-primary-500 text-gray-800' : 'border-gray-300'
           } placeholder:text-gray-500 placeholder:font-md-medium focus:outline-none`}
@@ -52,7 +65,11 @@ const Search = ({
         )}
       </div>
 
-      {showSearchButton && <SearchButton isActive={inputValue.length > 0} />}
+      {showSearchButton && (
+        <div onClick={handleSearch}>
+          <SearchButton isActive={inputValue.length > 0} />
+        </div>
+      )}
     </div>
   );
 };
