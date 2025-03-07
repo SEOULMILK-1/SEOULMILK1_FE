@@ -38,6 +38,8 @@ function LoginPage() {
         }
 
         const role = response.data.result?.role;
+        localStorage.setItem('userRole', role);
+
         console.log(role);
         if (role === 'CS_USER') {
           //대리점
