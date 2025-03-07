@@ -7,7 +7,7 @@ import SignupModal from './SignupModal';
 import Check from '../../../../../public/Icon/Check';
 import AgreeModal from '../../../../common/AgreeModal';
 import api from '../../../../hooks/api';
-import { useSignupStore } from '../../../../hooks/UseSignupStore';
+import { useSignupStore } from '../../../../hooks/useSignupStore';
 
 interface FormState {
   phone: string;
