@@ -3,32 +3,34 @@ import SignupInput from '../../../HQ/signup/components/SignupInput';
 import SignupButton from '../../../HQ/signup/components/SignupButton';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useCsSignupStore } from '../../../../hooks/useCsSignupStore';
 
 interface FormState {
   name: string;
-  id: string;
+  loginId: string;
   password: string;
   passwordCheck: string;
 }
 
 interface Errors {
   name: string;
-  id: string;
+  loginId: string;
   password: string;
   passwordCheck: string;
 }
 
 const CsSignup1 = () => {
   const navigate = useNavigate();
+  const { setSignupData } = useCsSignupStore();
   const [formState, setFormState] = useState<FormState>({
     name: '',
-    id: '',
+    loginId: '',
     password: '',
     passwordCheck: ''
   });
   const [errors, setErrors] = useState<Errors>({
     name: '',
-    id: '',
+    loginId: '',
     password: '',
     passwordCheck: ''
   });
@@ -36,17 +38,17 @@ const CsSignup1 = () => {
   const validate = (): boolean => {
     let newErrors: Errors = {
       name: '',
-      id: '',
+      loginId: '',
       password: '',
       passwordCheck: ''
     };
     let isValid = true;
 
-    if (!formState.id.trim()) {
-      newErrors.id = '아이디를 입력해주세요.';
+    if (!formState.loginId.trim()) {
+      newErrors.loginId = '아이디를 입력해주세요.';
       isValid = false;
-    } else if (!/^[a-zA-Z0-9]{6,20}$/.test(formState.id)) {
-      newErrors.id = '유효한 아이디가 아닙니다.';
+    } else if (!/^[a-zA-Z0-9]{6,20}$/.test(formState.loginId)) {
+      newErrors.loginId = '유효한 아이디가 아닙니다.';
       isValid = false;
     }
 
@@ -77,6 +79,11 @@ const CsSignup1 = () => {
 
   const handleSubmit = (): void => {
     if (validate()) {
+      setSignupData({
+        name: formState.name,
+        loginId: formState.loginId,
+        password: formState.password
+      });
       navigate('/cs/signup2');
     }
   };
@@ -103,17 +110,17 @@ const CsSignup1 = () => {
         <div className="flex flex-row gap-2">
           <SignupInput
             placeholder="최소 6자 이상,최대 20자 이하의 영문 또는 숫자"
-            name="id"
+            name="loginId"
             type="text"
-            value={formState.id}
+            value={formState.loginId}
             onChange={handleChange}
           />
           <button className="flex w-[80px] whitespace-nowrap px-7 h-14 justify-center items-center gap-[10px] rounded-xl bg-gray-200 text-gray-400 text-center font-md-medium">
             확인
           </button>
         </div>
-        {errors.id && (
-          <p className="text-warning-700 font-sm-regular">{errors.id}</p>
+        {errors.loginId && (
+          <p className="text-warning-700 font-sm-regular">{errors.loginId}</p>
         )}
       </div>
 

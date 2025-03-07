@@ -6,9 +6,12 @@ import SignupModal from '../../../HQ/signup/components/SignupModal';
 import { useState } from 'react';
 import Check from '../../../../../public/Icon/Check';
 import AgreeModal from '../../../../common/AgreeModal';
+import { useCsSignupStore } from '../../../../hooks/useCsSignupStore';
+import api from '../../../../hooks/api';
+import CsDropDown from './CsDropDown';
 
 interface FormState {
-  agency: string;
+  csId: number | null;
   bank: string;
   account: string;
   phone: string;
@@ -16,7 +19,7 @@ interface FormState {
 }
 
 interface Errors {
-  agency: string;
+  csId: string;
   bank: string;
   account: string;
   phone: string;
@@ -29,19 +32,25 @@ const CsSignup2 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAgreeModal, setIsAgreeModal] = useState(false);
   const [formState, setFormState] = useState<FormState>({
-    agency: '',
+    csId: null,
     bank: '',
     account: '',
     phone: '',
     email: ''
   });
   const [errors, setErrors] = useState<Errors>({
-    agency: '',
+    csId: '',
     bank: '',
     account: '',
     phone: '',
     email: ''
   });
+
+  const { name, loginId, password, resetSignupData } = useCsSignupStore();
+
+  const handleSelectAgency = (id: number) => {
+    setFormState({ ...formState, csId: id });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -49,6 +58,7 @@ const CsSignup2 = () => {
 
   const validate = (): boolean => {
     let newErrors: Errors = {
+      csId: '',
       agency: '',
       bank: '',
       account: '',
@@ -89,6 +99,34 @@ const CsSignup2 = () => {
     return isValid;
   };
 
+  const handleSubmit = async (): Promise<void> => {
+    if (!validate()) return;
+
+    console.log('111', formState);
+
+    try {
+      const response = await api.post('/auth/sign-up/cs', {
+        name,
+        loginId,
+        password,
+        csId: formState.csId,
+        bank: formState.bank,
+        account: formState.account,
+        phone: formState.phone,
+        email: formState.email
+      });
+
+      console.log('회원가입 성공:', response.data);
+      resetSignupData();
+      setIsModalOpen(true);
+    } catch (error: any) {
+      setErrors((prev) => ({
+        ...prev,
+        email: error.response?.data?.message || '회원가입에 실패했습니다.'
+      }));
+    }
+  };
+
   return (
     <div className="flex  h-[1024px] items-center justify-center bg-gray-50">
       <div className="flex flex-col w-[480px] py-[42px] px-8 justify-center items-start gap-8 rounded-[32px] bg-white drop-shadow-elevation1">
@@ -98,13 +136,9 @@ const CsSignup2 = () => {
 
         <div className="flex flex-col w-full gap-7 justify-center items-start ">
           <div className="flex flex-col gap-2 w-full">
-            <label className="text-gray-600 font-md-semibold"> 대리점 </label>
-            <SignupInput
-              name="agency"
-              placeholder="선택"
-              type="text"
-              value={formState.agency}
-              onChange={handleChange}
+            <CsDropDown
+              selectedId={formState.csId}
+              onSelect={handleSelectAgency}
             />
           </div>
 
@@ -202,11 +236,7 @@ const CsSignup2 = () => {
         <SignupButton
           text="회원가입"
           prevonClick={() => navigate('/cs/signup')}
-          onClick={() => {
-            if (validate()) {
-              setIsModalOpen(true);
-            }
-          }}
+          onClick={handleSubmit}
         />
       </div>
       {isModalOpen && <SignupModal />}
