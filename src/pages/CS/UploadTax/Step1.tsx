@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import ImageCrop from './ImageCrop';
-import api from '../../../hooks/api';
 
 const Step1 = () => {
   const navigate = useNavigate();
@@ -12,8 +10,10 @@ const Step1 = () => {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
+  // const [croppedImage, setCroppedImage] = useState<string | null>(null);
+  const [_, setCroppedImage] = useState<string | null>(null);
+
+  // const [isUploading, setIsUploading] = useState<boolean>(false);
 
   useEffect(() => {
     if (location.state?.selectedImage) {
@@ -73,9 +73,9 @@ const Step1 = () => {
           className="font-md-medium w-[200px] h-[48px] text-center bg-primary-600 text-white px-6 py-3 rounded-[12px]"
           // onClick={handleUpload}
           onClick={() => navigate('/upload-tax/step2')}
-          disabled={!croppedImage || isUploading}
+          // disabled={!croppedImage || isUploading}
         >
-          {isUploading ? '업로드 중...' : '다음'}
+          {/* {isUploading ? '업로드 중...' : '다음'} */}다음
         </button>
       </div>
     </div>

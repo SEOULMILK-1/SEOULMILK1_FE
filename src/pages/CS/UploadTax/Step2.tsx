@@ -3,20 +3,18 @@ import { useState, useEffect } from 'react';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
-import imageTest from '../../../utils/imageTest.png'; // 기본 이미지
+import imageTest from '../../../utils/imageTest.png'; 
 
 const Step2 = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 기본 이미지 설정
   const defaultImage = imageTest;
   const croppedImage =
     location.state?.croppedImage ||
     location.state?.selectedImage ||
     defaultImage;
 
-  // 기본 데이터 설정
   const defaultFormData = {
     approvalNo: '123-456-789',
     supplier: '123-45-67890',
@@ -55,7 +53,6 @@ const Step2 = () => {
       />
 
       <div className="pt-[32px] flex gap-[40px]">
-        {/* 이미지 영역 */}
         <div className="w-[560px] flex-col rounded-[32px] flex items-center justify-center gap-[24px]">
           <img
             src={croppedImage}
@@ -75,7 +72,6 @@ const Step2 = () => {
           </div>
         </div>
 
-        {/* 입력 폼 */}
         <div className="w-[360px] p-6">
           <form className="flex flex-col gap-[24px]">
             <label className="flex flex-col gap-1">

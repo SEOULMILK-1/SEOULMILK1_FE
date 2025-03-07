@@ -117,7 +117,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   ]);
 
   // 크롭 영역을 업데이트하는 함수
-  const updateCropArea = (aspectRatio: number) => {
+  const updateCropArea = (_aspectRatio: number) => {
     const cropSize = 50; // 기본 크롭 크기 (%)
 
     // 마지막 completedCrop 정보가 있으면 비율만 유지하면서 위치 조정

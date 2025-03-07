@@ -3,7 +3,7 @@ import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import TaxDetailModal from '../../../../common/TaxDetailModal';
 import api from '../../../../hooks/api';
 
-const statuses: Status[] = ['승인됨', '반려됨'];
+// const statuses: Status[] = ['승인됨', '반려됨'];
 interface InvoiceData {
   status: Status;
   number: string;
@@ -34,8 +34,8 @@ const CustomerChartContent = () => {
   const [data, setData] = useState<InvoiceData[]>([]);
   const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [page, setPage] = useState(1);
-  const size = 20; 
+  const [page] = useState(1);
+  const size = 20;
 
   useEffect(() => {
     const fetchData = async () => {
