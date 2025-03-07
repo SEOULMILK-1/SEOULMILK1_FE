@@ -1,30 +1,58 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ToggleIcon from '../../../../../public/Icon/ToggleIcon';
+import api from '../../../../hooks/api';
 
 interface Agency {
-  id: number;
-  name: string;
+  csId: number;
+  csName: string;
 }
 
 interface Props {
   selectedId: number | null;
-  options: Agency[];
-  onSelect: (id: number) => void;
+  onSelect: (csId: number) => void;
 }
 
-const CsDropDown = ({ selectedId, options, onSelect }: Props) => {
+const CsDropDown = ({ selectedId, onSelect }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(
-    options.find((opt) => opt.id === selectedId)?.name || ''
-  );
+  const [csList, setCsList] = useState<Agency[]>([]);
+  const [inputValue, setInputValue] = useState('');
 
-  const filteredOptions = options.filter((opt) =>
-    opt.name.includes(inputValue)
-  );
+  useEffect(() => {
+    const fetchAgencies = async () => {
+      try {
+        const response = await api.get('/auth/search/cs');
+        // console.log('111', response.data);
+        // console.log('222', response.data.result.responseList);
+        setCsList(response.data.result.responseList);
 
-  const handleSelect = (id: number, name: string) => {
-    setInputValue(name);
-    onSelect(id);
+        if (selectedId) {
+          const selectedAgency = response.data.find(
+            (agency: Agency) => agency.csId === selectedId
+          );
+
+          if (selectedAgency) {
+            setInputValue(selectedAgency.csName);
+          } else {
+            setInputValue('');
+          }
+        }
+      } catch (error) {
+        console.error('대리점 목록 불러오기 실패:', error);
+      }
+    };
+
+    fetchAgencies();
+  }, [selectedId]);
+
+  const filteredOptions = Array.isArray(csList)
+    ? csList.filter((opt) =>
+        opt.csName.toLowerCase().includes(inputValue.toLowerCase())
+      )
+    : [];
+
+  const handleSelect = (csId: number, csName: string) => {
+    setInputValue(csName);
+    onSelect(csId);
     setIsOpen(false);
   };
 
@@ -53,14 +81,14 @@ const CsDropDown = ({ selectedId, options, onSelect }: Props) => {
         </button>
       </div>
       {isOpen && filteredOptions.length > 0 && (
-        <ul className="absolute w-full bg-white border rounded-lg mt-1 z-10">
+        <ul className="absolute w-full h-[224px] overflow-y-scroll py-3 px-2 bg-white rounded-xl drop-shadow-elevation1 mt-1 z-10 font-md-medium text-gray-500 custom-scrollbar">
           {filteredOptions.map((agency) => (
             <li
-              key={agency.id}
-              className="p-3 hover:bg-gray-100 cursor-pointer"
-              onClick={() => handleSelect(agency.id, agency.name)}
+              key={agency.csId}
+              className="py-2 px-4 hover:bg-primary-50 hover:text-primary-700 cursor-pointer hover:font-md-semibold"
+              onClick={() => handleSelect(agency.csId, agency.csName)}
             >
-              {agency.name}
+              {agency.csName}
             </li>
           ))}
         </ul>
