@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ArrowIcon from '../../../../../public/Icon/ArrowIcon';
 import DeleteXIcon from '../../../../../public/Icon/DeleteXIcon';
 import ConfirmModal from '../../../../common/ConfirmModal';
+import api from '../../../../hooks/api';
 
 interface UserSideModalProps {
   isOpen: boolean;
@@ -53,14 +54,33 @@ const UserSideModal = ({
     setIsConfirmModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    onDelete();
-    setIsConfirmModalOpen(false);
-    handleClose();
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteUser(user.userId);
+      setIsConfirmModalOpen(false);
+      handleClose();
+      onDelete();
+    } catch (error) {
+      alert('회원 삭제에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   const handleCancelDelete = () => {
     setIsConfirmModalOpen(false);
+  };
+
+  const deleteUser = async (userId: string) => {
+    try {
+      const token = localStorage.getItem('accesstoken');
+      const response = await api.delete(`/admin/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      // console.log('삭제완료');
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      throw error;
+    }
   };
 
   if (!isOpen && !isOpening) return null;
@@ -110,7 +130,6 @@ const UserSideModal = ({
           </div>
         </div>
 
-        {/* 유저 정보 */}
         <div className="mt-[16px] space-y-4">
           <div>
             <label className="font-md-medium text-gray-500">아이디</label>
