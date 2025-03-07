@@ -28,7 +28,6 @@ const TaxDetailModal = ({
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string | null>(imageTest);
 
   useEffect(() => {
     if (isOpen) {
@@ -137,7 +136,7 @@ const TaxDetailModal = ({
               className="bg-warning-400 text-white w-[168px] h-[56px]"
               onClick={() =>
                 navigate('/upload-tax/step2', {
-                  state: { ...selectedItem, imageUrl }
+                  state: { ...selectedItem }
                 })
               }
             >
