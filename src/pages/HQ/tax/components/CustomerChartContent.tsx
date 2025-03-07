@@ -35,7 +35,7 @@ const CustomerChartContent = () => {
   const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const size = 20; // 한 페이지에 20개씩 조회
+  const size = 20; 
 
   useEffect(() => {
     const fetchData = async () => {
