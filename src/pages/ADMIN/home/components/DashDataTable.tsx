@@ -118,10 +118,10 @@ const DashDataTable = ({
             <div className="w-[298px] pl-5 text-gray-800 font-sm-medium">
               {data.csName}
             </div>
-            <div className="w-[200px] pl-5 text-gray-800 font-sm-medium">
+            <div className="w-[200px] pl-5 text-gray-800 font-sm-medium tabular-nums">
               {data.phone}
             </div>
-            <div className="w-[170px] pl-5 text-gray-800 font-sm-medium">
+            <div className="w-[170px] pl-5 text-gray-800 font-sm-medium tabular-nums">
               {data.createdAt}
             </div>
           </div>

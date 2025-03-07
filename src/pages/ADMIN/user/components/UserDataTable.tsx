@@ -140,17 +140,17 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
             >
               {row.isAssigned}
             </div>
-
             <div className="w-[190px] pl-5 gap-5 text-gray-800 font-sm-medium">
               {row.csName}
             </div>
+            ㄴ
             <div className="w-[120px] pl-5 ml-1 text-gray-800 font-sm-medium">
               {row.name}
             </div>
             <div className="w-[200px] pl-5 text-gray-800 font-sm-medium tabular-nums">
               {row.phone}
             </div>
-            <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium">
+            <div className="w-[170px] pl-5 ml-1 text-gray-800 font-sm-medium tabular-nums">
               {row.createdAt}
             </div>
             <div className="w-[140px] px-5 py-2 items-center">
