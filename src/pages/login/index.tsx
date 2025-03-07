@@ -38,15 +38,16 @@ function LoginPage() {
         }
 
         const role = response.data.result?.role;
-        if (role === 'ADMIN') {
-          //관리자
-          navigate('/');
-        } else if (role === 'USER') {
+        console.log(role);
+        if (role === 'CS_USER') {
           //대리점
           navigate('/CS-home');
-        } else {
+        } else if (role === 'HQ_USER') {
           //본사
           navigate('/HQ-home');
+        } else {
+          //관리자
+          navigate('/');
         }
       } else {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');
