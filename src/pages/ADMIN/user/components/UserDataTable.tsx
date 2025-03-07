@@ -143,7 +143,7 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
             <div className="w-[190px] pl-5 gap-5 text-gray-800 font-sm-medium">
               {row.csName}
             </div>
-            ㄴ
+
             <div className="w-[120px] pl-5 ml-1 text-gray-800 font-sm-medium">
               {row.name}
             </div>

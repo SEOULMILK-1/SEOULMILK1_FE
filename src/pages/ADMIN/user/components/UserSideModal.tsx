@@ -167,9 +167,9 @@ const UserSideModal = ({
           </div>
         </div>
 
-        <div className="flex justify-end space-x-2 mt-6">
+        <div className="flex justify-end mt-6">
           <button
-            className="w-[128px] px-[18px] py-[12px] flex items-center gap-[4px] border border-red-500 text-red-500 rounded-[12px] bg-white font-md-medium whitespace-nowrap"
+            className="w-[128px] px-6 py-3 gap-2 flex items-center justify-centergap-[4px] border border-red-500 text-red-500 rounded-[12px] bg-white font-md-medium whitespace-nowrap"
             onClick={handleDeleteClick}
           >
             <DeleteXIcon />
