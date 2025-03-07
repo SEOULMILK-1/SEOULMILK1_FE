@@ -1,5 +1,5 @@
 import MainLine from '../../public/Icon/MainLine';
-import StepProgress from '../pages/CS/UploadTax/StepProgress';
+import StepProgress from '../pages/CS/uploadTax/StepProgress';
 
 interface HeaderProps {
   title: string;
