@@ -31,7 +31,7 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
       try {
         const token = localStorage.getItem('accesstoken');
 
-        const response = await api.get('/admin/user', {
+        const response = await api.get('/admin/user?page=0&size=110', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -124,7 +124,7 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
     <div className="mt-4 flex h-[778px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <UserDataTableHeader />
 
-      <div className="flex-grow mx-2 overflow-y-scroll">
+      <div className="flex-grow mx-2 overflow-y-scroll custom-scrollbar">
         {filteredData.map((row, index) => (
           <div
             key={index}
