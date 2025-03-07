@@ -35,7 +35,7 @@ const Signup2 = () => {
     agree: ''
   });
 
-  const { name, employeeId, password, resetSignupData } = useSignupStore();
+  const { name, loginId, password, resetSignupData } = useSignupStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -72,7 +72,7 @@ const Signup2 = () => {
     try {
       const response = await api.post('/auth/sign-up/hq', {
         name,
-        employeeId,
+        loginId,
         password,
         phone: formState.phone,
         email: formState.email

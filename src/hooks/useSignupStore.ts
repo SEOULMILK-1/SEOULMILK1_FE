@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 interface SignupState {
   name: string;
-  employeeId: string;
+  loginId: string;
   password: string;
   setSignupData: (data: Partial<SignupState>) => void;
   resetSignupData: () => void;
@@ -10,8 +10,8 @@ interface SignupState {
 
 export const useSignupStore = create<SignupState>((set) => ({
   name: '',
-  employeeId: '',
+  loginId: '',
   password: '',
   setSignupData: (data) => set((state) => ({ ...state, ...data })),
-  resetSignupData: () => set({ name: '', employeeId: '', password: '' })
+  resetSignupData: () => set({ name: '', loginId: '', password: '' })
 }));

@@ -7,14 +7,14 @@ import { useSignupStore } from '../../../../hooks/UseSignupStore';
 
 interface FormState {
   name: string;
-  employeeId: string;
+  loginId: string;
   password: string;
   passwordCheck: string;
 }
 
 interface Errors {
   name: string;
-  employeeId: string;
+  loginId: string;
   password: string;
   passwordCheck: string;
 }
@@ -24,13 +24,13 @@ const Signup1 = () => {
   const { setSignupData } = useSignupStore();
   const [formState, setFormState] = useState<FormState>({
     name: '',
-    employeeId: '',
+    loginId: '',
     password: '',
     passwordCheck: ''
   });
   const [errors, setErrors] = useState<Errors>({
     name: '',
-    employeeId: '',
+    loginId: '',
     password: '',
     passwordCheck: ''
   });
@@ -38,14 +38,14 @@ const Signup1 = () => {
   const validate = (): boolean => {
     let newErrors: Errors = {
       name: '',
-      employeeId: '',
+      loginId: '',
       password: '',
       passwordCheck: ''
     };
     let isValid = true;
 
-    if (!formState.employeeId) {
-      newErrors.employeeId = '사번을 입력해주세요.';
+    if (!formState.loginId) {
+      newErrors.loginId = '사번을 입력해주세요.';
       isValid = false;
     }
     if (!formState.password.trim()) {
@@ -77,7 +77,7 @@ const Signup1 = () => {
     if (validate()) {
       setSignupData({
         name: formState.name,
-        employeeId: formState.employeeId,
+        loginId: formState.loginId,
         password: formState.password
       });
       navigate('/head/signup2');
@@ -88,7 +88,7 @@ const Signup1 = () => {
     const value = e.target.value;
     setFormState({
       ...formState,
-      employeeId: value === '' ? '' : value
+      loginId: value === '' ? '' : value
     });
   };
 
@@ -116,17 +116,15 @@ const Signup1 = () => {
             type="text"
             name="employeeId"
             placeholder="사번을 입력하세요"
-            value={formState.employeeId}
+            value={formState.loginId}
             onChange={handleEmployeeIdChange}
           />
           <button className="flex w-[80px] whitespace-nowrap px-7 h-14 justify-center items-center gap-[10px] rounded-xl bg-gray-200 text-gray-400 text-center font-md-medium">
             확인
           </button>
         </div>
-        {errors.employeeId && (
-          <p className="text-warning-700 font-sm-regular">
-            {errors.employeeId}
-          </p>
+        {errors.loginId && (
+          <p className="text-warning-700 font-sm-regular">{errors.loginId}</p>
         )}
       </div>
 
