@@ -15,6 +15,7 @@ interface UserSideModalProps {
     phone: string;
     selectedBank?: string;
     accountNumber?: string;
+    isAssigned?: string;
   };
   role: 'admin' | 'HQ' | 'CS';
   onDelete: () => void;
@@ -112,11 +113,17 @@ const UserSideModal = ({
             className={`flex gap-1 ${role === 'CS' ? 'flex-col' : 'flex-row'}`}
           >
             <div className="text-gray-800 font-xl-bold">{user.name}</div>
-            {role === 'admin' && (
-              <span className="flex gap-[8px] px-[10px] py-[2px] justify-center items-center rounded-3xl bg-primary-50 text-primary-600 font-xs-semibold">
-                관리자
-              </span>
-            )}
+
+            {role === 'admin' &&
+              (user.isAssigned !== '미등록' ? (
+                <span className="flex gap-[8px] px-[10px] py-[2px] justify-center items-center rounded-3xl bg-primary-50 text-primary-600 font-xs-semibold">
+                  대리점 직원
+                </span>
+              ) : (
+                <span className="flex gap-[8px] px-[10px] py-[2px] justify-center items-center rounded-3xl bg-warning-50 text-warning-700 font-xs-semibold">
+                  미등록
+                </span>
+              ))}
             {role === 'HQ' && (
               <span className="flex px-[10px] py-[2px] justify-center items-center gap-[10px] rounded-3xl bg-primary-50 text-primary-600 font-xs-semibold">
                 직원
