@@ -1,20 +1,73 @@
+import { useEffect, useState } from 'react';
 import Check from '../../../../../public/Icon/Check';
 import ChartPagination from '../../../../common/ChartPagination';
-import { UserDummy } from '../../../../utils/UserDummy';
 import DashTableHeader from './DashTableHeader';
+import api from '../../../../hooks/api';
+
+interface UserData {
+  userId: number;
+  employeeId: number;
+  name: string;
+  csName: string;
+  role: 'ADMIN';
+  phone: string;
+  createdAt: string;
+  isAssigned: string;
+}
 
 interface DataTableProps {
   selected: number[];
   toggleSelect: (index: number) => void;
   toggleSelectAll: () => void;
+  setDataLength: (length: number) => void;
+  userData: UserData[];
+  refreshTrigger?: number;
 }
 
 const DashDataTable = ({
   selected,
   toggleSelect,
-  toggleSelectAll
+  toggleSelectAll,
+  setDataLength,
+  userData,
+  refreshTrigger = 0
 }: DataTableProps) => {
-  const data = UserDummy;
+  const [data, setData] = useState<UserData[]>([]);
+
+  useEffect(() => {
+    if (userData && userData.length > 0) {
+      const filteredData = userData.filter(
+        (user: UserData) => user.isAssigned === '미등록'
+      );
+      setData(filteredData);
+      setDataLength(filteredData.length);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.get('/admin/user', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        const filteredData = response.data.result.responseList.filter(
+          (user: UserData) => user.isAssigned === '미등록'
+        );
+        setData(filteredData);
+        setDataLength(filteredData.length);
+      } catch (error) {
+        console.error('데이터 불러오기 에러가 발생했습니다.', error);
+        setData([]);
+        setDataLength(0);
+      }
+    };
+
+    fetchData();
+  }, [setDataLength, userData, refreshTrigger]);
+
   return (
     <div className="mt-4 flex h-[786px] w-[960px] flex-col items-start rounded-3xl border border-solid border-gray-300 bg-white">
       <div className="flex w-[960px] h-14 pl-2 pr-5 items-center border-b border-gray-300">
@@ -23,7 +76,7 @@ const DashDataTable = ({
             type="checkbox"
             className="appearance-none w-5 h-5 rounded-md border border-solid border-gray-300 checked:bg-primary-700 checked:border-primary-700 
       relative peer checked:cursor-pointer cursor-pointer"
-            checked={selected.length === data.length}
+            checked={selected.length === data.length && data.length > 0}
             onChange={toggleSelectAll}
           />
           <span className="absolute inset-0 bottom-5 left-2 items-center justify-center pointer-events-none hidden peer-checked:flex ">
@@ -57,19 +110,19 @@ const DashDataTable = ({
             </div>
 
             <div className="w-[92px] pl-5 text-warning-600 font-sm-medium">
-              {data.status}
+              {data.isAssigned}
             </div>
             <div className="w-[120px] pl-5 text-gray-800 font-sm-medium">
               {data.name}
             </div>
             <div className="w-[298px] pl-5 text-gray-800 font-sm-medium">
-              {data.center}
+              {data.csName}
             </div>
             <div className="w-[200px] pl-5 text-gray-800 font-sm-medium">
               {data.phone}
             </div>
             <div className="w-[170px] pl-5 text-gray-800 font-sm-medium">
-              {data.date}
+              {data.createdAt}
             </div>
           </div>
         ))}
@@ -78,4 +131,5 @@ const DashDataTable = ({
     </div>
   );
 };
+
 export default DashDataTable;
