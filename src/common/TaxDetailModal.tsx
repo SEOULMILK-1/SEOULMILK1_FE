@@ -3,7 +3,7 @@ import Button from './Button';
 import ArrowIcon from '../../public/Icon/ArrowIcon';
 import StatusBadge, { Status } from './StatusBagde';
 import { useNavigate } from 'react-router-dom';
-
+import imageTest from '../utils/imageTest.png';
 interface TaxDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,6 +28,7 @@ const TaxDetailModal = ({
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(imageTest);
 
   useEffect(() => {
     if (isOpen) {
@@ -57,7 +58,7 @@ const TaxDetailModal = ({
   const closeImageModal = () => {
     setIsImageModalOpen(false);
   };
-  
+
   const handleReupload = () => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -108,7 +109,8 @@ const TaxDetailModal = ({
             className="w-[352px] h-[264px] bg-gray-200 rounded-[24px] flex items-center justify-center mt-4 cursor-pointer"
             onClick={handleImageClick}
           >
-            <span className="text-gray-500">임시이미지</span>
+            {/* 이미지 포함한 api요청 */}
+            <img src={imageTest} alt="Test" />
           </div>
         </div>
 
@@ -134,7 +136,9 @@ const TaxDetailModal = ({
             <Button
               className="bg-warning-400 text-white w-[168px] h-[56px]"
               onClick={() =>
-                navigate('/upload-tax/step2', { state: selectedItem })
+                navigate('/upload-tax/step2', {
+                  state: { ...selectedItem, imageUrl }
+                })
               }
             >
               데이터 수정

@@ -22,9 +22,9 @@ const data: InvoiceData[] = Array.from({ length: 20 }, (_, index) => ({
   title: `○○월 세금계산서 ${index + 1}`,
   date: '2025.02.28',
   center: '서울우유태평고객센터',
-  approvalNo: `APPROVAL-${index + 1}`,
-  supplier: `Supplier ${index + 1}`,
-  recipient: `Recipient ${index + 1}`,
+  approvalNo: `2022060812-${index + 1}`,
+  supplier: `214-87-415 ${index + 1}`,
+  recipient: `213-4546 ${index + 1}`,
   dateFormatted: '2025-02-28',
   amount: `${(index + 1) * 1000}원`
 }));
