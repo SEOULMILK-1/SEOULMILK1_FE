@@ -3,7 +3,6 @@ import Button from './Button';
 import ArrowIcon from '../../public/Icon/ArrowIcon';
 import StatusBadge, { Status } from './StatusBagde';
 import { useNavigate } from 'react-router-dom';
-import imageTest from '../utils/imageTest.png';
 interface TaxDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -109,7 +108,7 @@ const TaxDetailModal = ({
             onClick={handleImageClick}
           >
             {/* 이미지 포함한 api요청 */}
-            <img src={imageTest} alt="Test" />
+            이미지
           </div>
         </div>
 
@@ -136,7 +135,8 @@ const TaxDetailModal = ({
               className="bg-warning-400 text-white w-[168px] h-[56px]"
               onClick={() =>
                 navigate('/upload-tax/step2', {
-                  state: { ...selectedItem, selectedImage: imageTest }
+                  // state: { ...selectedItem, selectedImage: imageTest }
+                  state: { ...selectedItem }
                 })
               }
             >

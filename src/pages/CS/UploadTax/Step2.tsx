@@ -3,39 +3,42 @@ import { useState, useEffect } from 'react';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
-import imageTest from '../../../utils/imageTest.png'; 
 
 const Step2 = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const defaultImage = imageTest;
+  console.log('Step2 - location.state:', location.state); 
+  console.log('Step2 - OCR 데이터:', location.state?.ocrData?.result); 
+
   const croppedImage =
-    location.state?.croppedImage ||
-    location.state?.selectedImage ||
-    defaultImage;
+    location.state?.croppedImage || location.state?.selectedImage;
 
-  const defaultFormData = {
-    approvalNo: '123-456-789',
-    supplier: '123-45-67890',
-    recipient: '987-65-43210',
-    date: '2025-03-08',
-    amount: '1,000,000'
-  };
-
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useState({
+    approvalNo: '',
+    supplier: '',
+    recipient: '',
+    date: '',
+    amount: ''
+  });
 
   useEffect(() => {
-    if (location.state) {
+    if (location.state?.ocrData?.result) {
+      console.log('OCR 데이터 적용됨:', location.state.ocrData.result); 
+
+      const ocrData = location.state.ocrData.result;
+
       setFormData({
-        approvalNo: location.state.approvalNo || defaultFormData.approvalNo,
-        supplier: location.state.supplier || defaultFormData.supplier,
-        recipient: location.state.recipient || defaultFormData.recipient,
-        date: location.state.date || defaultFormData.date,
-        amount: location.state.amount || defaultFormData.amount
+        approvalNo: ocrData.issueId || '', // 승인번호
+        supplier: ocrData.suId || '', // 공급자 등록번호
+        recipient: ocrData.ipId || '', // 공급 받는 자 등록번호
+        date: ocrData.issueDate || '', // 작성일자
+        amount: ocrData.chargeTotal || '' // 공급가액
       });
+    } else {
+      console.warn('OCR 데이터 없음! location.state:', location.state);
     }
-  }, [location.state]);
+  }, [JSON.stringify(location.state?.ocrData?.result)]); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
