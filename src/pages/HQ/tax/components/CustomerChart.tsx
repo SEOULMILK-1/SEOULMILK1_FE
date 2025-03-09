@@ -7,9 +7,7 @@ const CustomerChart = () => {
     <div className="mt-4 flex h-[650px] flex-col border border-gray-300 bg-white rounded-3xl">
       <CustomerChartHeader />
 
-      <div className="flex-grow">
-        <CustomerChartContent />
-      </div>
+      <CustomerChartContent />
 
       <ChartPagination />
     </div>
