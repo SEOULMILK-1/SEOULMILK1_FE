@@ -16,7 +16,11 @@ interface InvoiceData {
   amount: string;
 }
 
-const CustomerChartContent = () => {
+const CustomerChartContent = ({
+  selectedStatus
+}: {
+  selectedStatus: string;
+}) => {
   const [data, setData] = useState<InvoiceData[]>([]);
   const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,9 +55,14 @@ const CustomerChartContent = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
   };
+
+  const filteredData = selectedStatus
+    ? data.filter((item) => item.status === selectedStatus)
+    : data;
+
   return (
     <div className="h-[602px] w-[960px] overflow-y-auto overflow-x-hidden custom-scrollbar cursor-pointer ">
-      {data.map((item, index) => (
+      {filteredData.map((item, index) => (
         <div
           key={index}
           className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"

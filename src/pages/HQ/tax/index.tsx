@@ -9,19 +9,25 @@ import TaxIconGray from '../../../../public/Icon/TaxIconGray';
 import Search from '../../../common/Search';
 import LocationIcon from '../../../../public/Icon/LocationIcon';
 import SelectCalendar from '../../../common/SelectCalendar';
+import { useState } from 'react';
 const Tax = () => {
+  const [selectedStatus, setSelectedStatus] = useState<string>('');
+
+  const handleStateChange = (state: string) => {
+    setSelectedStatus(state);
+  };
   return (
     <div className="mx-[94px] w-[960px]">
       <Header title="세금계산서 조회" Icon={TaxIconGray} />
 
       <div className="flex flex-row gap-4 mb-4">
         <div className="flex items-center mt-8 text-gray-500">지점</div>
-        <Search
+        {/* <Search
           placeholderName="대리점 검색..."
           showSearchButton={false}
           defaultSearchIcon={<LocationIcon />}
           activeSearchIcon={<LocationIcon fillColor="#3A404A" />}
-        />
+        /> */}
       </div>
       <div className="flex items-center gap-4 text-gray-500">
         기간
@@ -32,7 +38,7 @@ const Tax = () => {
       <div className="flex items-center justify-between my-4">
         <div className="flex items-center gap-4 text-gray-500">
           상태
-          <StateDropdown />
+          <StateDropdown onStateChange={handleStateChange} />
         </div>
 
         <div className="flex items-center gap-2">
@@ -53,8 +59,7 @@ const Tax = () => {
         </div>
       </div>
 
-      {/* 표 */}
-      <CustomerChart />
+      <CustomerChart selectedStatus={selectedStatus} />
     </div>
   );
 };

@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import StateDropdownIcon from '../../public/Icon/StateDropdownIcon';
 
-export default function StateDropdown() {
+export default function StateDropdown({
+  onStateChange
+}: {
+  onStateChange?: (state: string) => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('선택');
-  const options = ['승인', '승인대기', '반려됨', '지급결의'];
+  const options = ['반영', '미반영'];
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -24,6 +28,17 @@ export default function StateDropdown() {
     };
   }, []);
 
+  const handleSelect = (option: string) => {
+    if (selected !== option) {
+      setSelected(option);
+      setIsOpen(false);
+
+      if (onStateChange) {
+        onStateChange(option);
+      }
+    }
+  };
+
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
@@ -32,7 +47,7 @@ export default function StateDropdown() {
           selected === '선택'
             ? 'border-gray-400 text-gray-500'
             : 'border-primary-700 text-primary-700'
-        } ${isOpen ? 'border-primary-700' : ''}`} 
+        } ${isOpen ? 'border-primary-700' : ''}`}
       >
         {selected}
         <StateDropdownIcon selected={selected} />
@@ -47,12 +62,7 @@ export default function StateDropdown() {
                   ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                   : ''
               }`}
-              onClick={() => {
-                if (selected !== option) {
-                  setSelected(option);
-                  setIsOpen(false);
-                }
-              }}
+              onClick={() => handleSelect(option)}
               disabled={selected === option}
             >
               {option}
