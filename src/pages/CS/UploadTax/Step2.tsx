@@ -3,13 +3,14 @@ import { useState, useEffect } from 'react';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
+import api from '../../../hooks/api';
 
 const Step2 = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log('Step2 - location.state:', location.state); 
-  console.log('Step2 - OCR 데이터:', location.state?.ocrData?.result); 
+  console.log('Step2 - location.state:', location.state);
+  console.log('Step2 - OCR 데이터:', location.state?.ocrData?.result);
 
   const croppedImage =
     location.state?.croppedImage || location.state?.selectedImage;
@@ -22,27 +23,58 @@ const Step2 = () => {
     amount: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     if (location.state?.ocrData?.result) {
-      console.log('OCR 데이터 적용됨:', location.state.ocrData.result); 
+      console.log('OCR 데이터 적용됨:', location.state.ocrData.result);
 
       const ocrData = location.state.ocrData.result;
 
       setFormData({
-        approvalNo: ocrData.issueId || '', // 승인번호
-        supplier: ocrData.suId || '', // 공급자 등록번호
-        recipient: ocrData.ipId || '', // 공급 받는 자 등록번호
-        date: ocrData.issueDate || '', // 작성일자
-        amount: ocrData.chargeTotal || '' // 공급가액
+        approvalNo: ocrData.issueId || '',
+        supplier: ocrData.suId || '',
+        recipient: ocrData.ipId || '',
+        date: ocrData.issueDate || '',
+        amount: ocrData.chargeTotal || ''
       });
     } else {
       console.warn('OCR 데이터 없음! location.state:', location.state);
     }
-  }, [JSON.stringify(location.state?.ocrData?.result)]); 
+  }, [JSON.stringify(location.state?.ocrData?.result)]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleUpload = async () => {
+    if (!location.state?.ocrData?.result?.ntsTaxId) {
+      console.error('ntxTaxId 없음! API 요청을 보낼 수 없습니다.');
+      return;
+    }
+
+    const ntxTaxId = location.state.ocrData.result.ntsTaxId;
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await api.post(`/tax/validate/${ntxTaxId}`);
+
+      console.log('API 응답:', response.data);
+
+      if (response.data.isSuccess) {
+        navigate('/upload-tax/step3', {
+          state: { validationData: response.data.result }
+        });
+      } else {
+        console.error('API 요청 실패:', response.data.message);
+      }
+    } catch (error) {
+      console.error('API 요청 중 오류 발생:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -148,9 +180,10 @@ const Step2 = () => {
         </button>
         <button
           className="font-md-medium w-[200px] h-[48px] text-center bg-primary-600 text-white px-6 py-3 rounded-[12px]"
-          onClick={() => navigate('/upload-tax/step3')}
+          onClick={handleUpload}
+          disabled={isSubmitting} // ✅ API 요청 중에는 버튼 비활성화
         >
-          업로드
+          {isSubmitting ? '업로드 중...' : '업로드'}
         </button>
       </div>
     </div>
