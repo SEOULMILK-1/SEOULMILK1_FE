@@ -1,8 +1,30 @@
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import step3Icon from '../../../../public/Icon/홈택스.svg';
+import { useLocation, useNavigate } from 'react-router-dom';
+import queryString from 'query-string';
+import { useEffect } from 'react';
 
 const Step3 = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { taxId } = queryString.parse(location.search);
+
+  useEffect(() => {
+    if (!taxId) {
+      return;
+    }
+
+    console.log(`3초 후 /cs-tax?taxId=${taxId}로 이동`);
+
+    const timer = setTimeout(() => {
+      navigate(`/cs-tax?taxId=${taxId}`);
+    }, 3000);
+
+    return () => clearTimeout(timer); 
+  }, [taxId, navigate]);
+
   return (
     <div className="mx-[94px]">
       <Header

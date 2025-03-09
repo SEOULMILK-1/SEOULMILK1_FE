@@ -4,10 +4,12 @@ import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
 import api from '../../../hooks/api';
+import queryString from 'query-string';
 
 const Step2 = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { taxId } = queryString.parse(location.search);
 
   console.log('Step2 - location.state:', location.state);
   console.log('Step2 - OCR 데이터:', location.state?.ocrData?.result);
@@ -54,17 +56,17 @@ const Step2 = () => {
       return;
     }
 
-    const ntxTaxId = location.state.ocrData.result.ntsTaxId;
+    // const ntxTaxId = location.state.ocrData.result.ntsTaxId;
 
     setIsSubmitting(true);
 
     try {
-      const response = await api.post(`/tax/validate/${ntxTaxId}`);
+      const response = await api.post(`/tax/validate/${taxId}`);
 
       console.log('API 응답:', response.data);
 
       if (response.data.isSuccess) {
-        navigate('/upload-tax/step3', {
+        navigate(`/upload-tax/step3?taxId=${taxId}`, {
           state: { validationData: response.data.result }
         });
       } else {
@@ -181,7 +183,7 @@ const Step2 = () => {
         <button
           className="font-md-medium w-[200px] h-[48px] text-center bg-primary-600 text-white px-6 py-3 rounded-[12px]"
           onClick={handleUpload}
-          disabled={isSubmitting} // ✅ API 요청 중에는 버튼 비활성화
+          disabled={isSubmitting}
         >
           {isSubmitting ? '업로드 중...' : '업로드'}
         </button>

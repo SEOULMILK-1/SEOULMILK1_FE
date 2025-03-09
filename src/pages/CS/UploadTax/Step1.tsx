@@ -43,7 +43,7 @@ const Step1 = () => {
 
       console.log('OCR 응답', res.data);
 
-      navigate('/upload-tax/step2', {
+      navigate(`/upload-tax/step2?taxId=${res.data.result.ntsTaxId}`, {
         state: { ocrData: res.data, selectedImage: croppedImage }
       });
     } catch (error) {
