@@ -4,7 +4,7 @@ const statusStyles = {
   지급완료: 'bg-gray-200 text-gray-500'
 };
 
-export type Status = '승인됨' | '반려됨' | '지급완료';
+export type Status = '승인됨' | '반려됨';
 
 interface StatusBadgeProps {
   status: Status;

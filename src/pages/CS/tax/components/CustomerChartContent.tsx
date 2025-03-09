@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import TaxDetailModal from '../../../../common/TaxDetailModal';
 import api from '../../../../hooks/api';
-import {  useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 interface InvoiceData {
   id: string;
@@ -20,7 +20,7 @@ interface InvoiceData {
 
 const statusMap: Record<string, Status> = {
   APPROVE: '승인됨',
-  REJECT: '반려됨',
+  REFUSED: '반려됨'
 };
 
 const CustomerChartContent = () => {
@@ -44,17 +44,16 @@ const CustomerChartContent = () => {
               date: item.taxDate,
               center: item.team,
               status: statusMap[item.status] || '대기중',
-              dateFormatted: item.taxDate,
+              dateFormatted: item.taxDate
             })
           );
 
-          console.log('📌 변환된 데이터:', transformedData);
           setData(transformedData);
 
           const taxIdParam = searchParams.get('taxId');
           if (taxIdParam) {
             const itemToSelect = transformedData.find(
-              (item: { id: string; }) => item.id === taxIdParam
+              (item: { id: string }) => item.id === taxIdParam
             );
             if (itemToSelect) {
               setSelectedItem(itemToSelect);

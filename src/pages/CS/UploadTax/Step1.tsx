@@ -12,7 +12,6 @@ const Step1 = () => {
     undefined
   );
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
-
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -24,7 +23,6 @@ const Step1 = () => {
   const handleUpload = async () => {
     if (!croppedImage) return;
 
-    console.log('handleUpload 실행됨!');
     setIsUploading(true);
 
     try {

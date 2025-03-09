@@ -132,23 +132,24 @@ const TaxDetailModal = ({
         navigate('/upload-tax/step1', {
           state: {
             selectedImage: imageUrl,
-            returnUrl: returnUrl 
+            returnUrl: returnUrl
           }
         });
       }
     };
     input.click();
   };
-
   const handleDataEdit = () => {
-    const currentPath = window.location.pathname;
-    const currentSearchParams = searchParams.toString();
-    const returnUrl = `${currentPath}${
-      currentSearchParams ? `?${currentSearchParams}` : ''
-    }`;
+    if (!selectedItem?.id) {
+      console.error('세금계산서 ID 없음!');
+      return;
+    }
 
-    navigate('/upload-tax/step2', {
+    const taxId = selectedItem.id || detailData?.issueId;
+
+    navigate(`/cs-tax/edit?taxId=${taxId}`, {
       state: {
+        taxId,
         ...selectedItem,
         ...(detailData
           ? {
@@ -158,8 +159,7 @@ const TaxDetailModal = ({
               date: detailData.taxDate,
               amount: detailData.chargeTotal
             }
-          : {}),
-        returnUrl: returnUrl 
+          : {})
       }
     });
   };
@@ -168,8 +168,8 @@ const TaxDetailModal = ({
 
   const getDisplayStatus = (apiStatus: string): Status => {
     const statusMap: Record<string, Status> = {
-      'APPROVED': '승인됨',
-      'REJECTED': '반려됨'
+      APPROVE: '승인됨',
+      REFUSED: '반려됨'
     };
 
     return statusMap[apiStatus] || (apiStatus as Status);
@@ -224,7 +224,7 @@ const TaxDetailModal = ({
                     .replace(/^(\d{4})_(\d{2})_(\d{2})$/, '$1년_$2월_$3일')}`}
               </h2>
               <div
-                className="w-[352px] h-[264px] bg-gray-200 rounded-[24px] flex items-center justify-center mt-4 cursor-pointer"
+                className="w-[352px] h-[264px] border rounded-[24px] flex items-center justify-center mt-4 cursor-pointer"
                 onClick={handleImageClick}
               >
                 {detailData?.taxImageUrl ? (
@@ -234,7 +234,9 @@ const TaxDetailModal = ({
                     className="w-full h-full object-contain rounded-[24px]"
                   />
                 ) : (
-                  <span className="text-gray-500">이미지</span>
+                  <span className="text-gray-500">
+                    이미지가 존재하지 않습니다.
+                  </span>
                 )}
               </div>
             </div>
