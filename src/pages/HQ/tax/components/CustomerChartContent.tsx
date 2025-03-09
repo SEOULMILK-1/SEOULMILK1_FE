@@ -3,13 +3,12 @@ import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import TaxDetailModal from '../../../../common/TaxDetailModal';
 import api from '../../../../hooks/api';
 
-// const statuses: Status[] = ['승인됨', '반려됨'];
 interface InvoiceData {
   status: Status;
-  number: string;
+  ntsTaxId: string;
   title: string;
-  date: string;
-  center: string;
+  taxDate: string;
+  team: string;
   approvalNo: string;
   supplier: string;
   recipient: string;
@@ -17,38 +16,24 @@ interface InvoiceData {
   amount: string;
 }
 
-// const data: InvoiceData[] = Array.from({ length: 20 }, (_, index) => ({
-//   status: statuses[index % statuses.length],
-//   number: String(index + 1).padStart(2, '0'),
-//   title: ○○월 세금계산서 ${index + 1},
-//   date: '2025.02.28',
-//   center: '서울우유태평고객센터',
-//   approvalNo: 2022060812-${index + 1},
-//   supplier: 214-87-415 ${index + 1},
-//   recipient: 213-4546 ${index + 1},
-//   dateFormatted: '2025-02-28',
-//   amount: ${(index + 1) * 1000}원
-// }));
-
 const CustomerChartContent = () => {
   const [data, setData] = useState<InvoiceData[]>([]);
   const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page] = useState(1);
-  const size = 20;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/hq', {
-          params: { page, size }
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.get('/hq/search/tax', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
 
-        if (response.data.isSuccess) {
-          setData(response.data.result.responseList);
-        } else {
-          console.error('API 요청 실패:', response.data.message);
-        }
+        console.log('1111', response.data.result.responseList);
+        setData(response.data.result.responseList);
       } catch (error) {
         console.error('API 요청 중 오류 발생:', error);
       }
@@ -77,17 +62,17 @@ const CustomerChartContent = () => {
           <div className="w-[92px] pl-5">
             <StatusBadge status={item.status} />
           </div>
-          <div className="w-[92px] pl-5 text-sm font-medium text-gray-700">
-            {item.number}
+          <div className="w-[92px] pl-6 text-sm font-medium text-gray-700">
+            {item.ntsTaxId}
           </div>
-          <div className="w-[358px] pl-5 text-sm font-medium text-gray-700">
+          <div className="w-[200px] pl-6 text-sm font-medium text-gray-700">
+            {item.team}
+          </div>
+          <div className="w-[358px] pl-6 text-sm font-medium text-gray-700 ">
             {item.title}
           </div>
-          <div className="w-[170px] pl-5 text-sm font-medium text-gray-700">
-            {item.date}
-          </div>
-          <div className="w-[200px] pl-5 text-sm font-medium text-gray-700">
-            {item.center}
+          <div className="w-[170px] pl-7 text-sm font-medium text-gray-700">
+            {item.taxDate}
           </div>
         </div>
       ))}

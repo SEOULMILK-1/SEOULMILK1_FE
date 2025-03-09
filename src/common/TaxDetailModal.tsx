@@ -9,8 +9,9 @@ interface TaxDetailModalProps {
   onClose: () => void;
   selectedItem: {
     status: string;
-    center: string;
-    date: string;
+    ntsTaxId: string;
+    team: string;
+    taxDate: string;
     approvalNo: string;
     supplier: string;
     recipient: string;
@@ -99,8 +100,8 @@ const TaxDetailModal = ({
 
         <div>
           <h2 className="flex text-center font-xl-semibold text-gray-800 mt-[12px]">
-            {selectedItem.center}_
-            {selectedItem.date
+            {selectedItem.team}_
+            {selectedItem.taxDate
               .replace(/\./g, '_')
               .replace(/^(\d{4})_(\d{2})_(\d{2})$/, '$1년_$2월_$3일')}
           </h2>
@@ -120,7 +121,7 @@ const TaxDetailModal = ({
             label="공급 받는 자 등록번호"
             value={selectedItem.recipient}
           />
-          <DetailField label="작성일자" value={selectedItem.date} />
+          <DetailField label="작성일자" value={selectedItem.taxDate} />
           <DetailField label="공급가액" value={selectedItem.amount} />
         </div>
 
