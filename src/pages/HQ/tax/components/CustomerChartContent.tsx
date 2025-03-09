@@ -71,7 +71,7 @@ const CustomerChartContent = () => {
           <div className="w-[358px] pl-6 text-sm font-medium text-gray-700 ">
             {item.title}
           </div>
-          <div className="w-[170px] pl-7 text-sm font-medium text-gray-700">
+          <div className="w-[170px] pl-7 text-sm font-medium text-gray-700 tabular-nums">
             {item.taxDate}
           </div>
         </div>
