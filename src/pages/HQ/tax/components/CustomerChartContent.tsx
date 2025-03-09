@@ -52,7 +52,7 @@ const CustomerChartContent = () => {
     setSelectedItem(null);
   };
   return (
-    <div className="h-[602px] w-[960px] overflow-y-auto overflow-x-hidden custom-scrollbar ">
+    <div className="h-[602px] w-[960px] overflow-y-auto overflow-x-hidden custom-scrollbar cursor-pointer ">
       {data.map((item, index) => (
         <div
           key={index}
