@@ -15,14 +15,12 @@ const Step3 = () => {
     if (!taxId) {
       return;
     }
-
-    console.log(`3초 후 /cs-tax?taxId=${taxId}로 이동`);
-
+    
     const timer = setTimeout(() => {
       navigate(`/cs-tax?taxId=${taxId}`);
     }, 3000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, [taxId, navigate]);
 
   return (

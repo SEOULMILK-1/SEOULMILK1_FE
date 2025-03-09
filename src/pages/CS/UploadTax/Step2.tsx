@@ -11,9 +11,6 @@ const Step2 = () => {
   const navigate = useNavigate();
   const { taxId } = queryString.parse(location.search);
 
-  console.log('Step2 - location.state:', location.state);
-  console.log('Step2 - OCR 데이터:', location.state?.ocrData?.result);
-
   const croppedImage =
     location.state?.croppedImage || location.state?.selectedImage;
 
@@ -29,7 +26,7 @@ const Step2 = () => {
 
   useEffect(() => {
     if (location.state?.ocrData?.result) {
-      console.log('OCR 데이터 적용됨:', location.state.ocrData.result);
+      console.log('OCR 데이터 적용됨', location.state.ocrData.result);
 
       const ocrData = location.state.ocrData.result;
 
@@ -41,7 +38,7 @@ const Step2 = () => {
         amount: ocrData.chargeTotal || ''
       });
     } else {
-      console.warn('OCR 데이터 없음! location.state:', location.state);
+      console.warn('OCR 데이터 없음', location.state);
     }
   }, [JSON.stringify(location.state?.ocrData?.result)]);
 
@@ -52,25 +49,24 @@ const Step2 = () => {
 
   const handleUpload = async () => {
     if (!location.state?.ocrData?.result?.ntsTaxId) {
-      console.error('ntxTaxId 없음! API 요청을 보낼 수 없습니다.');
+      console.error('ntxTaxId 없음 API 요청을 보낼 수 없습니다.');
       return;
     }
 
-    // const ntxTaxId = location.state.ocrData.result.ntsTaxId;
-
     setIsSubmitting(true);
 
+    // 세금계산서 검증
     try {
       const response = await api.post(`/tax/validate/${taxId}`);
 
-      console.log('API 응답:', response.data);
+      console.log('API 응답', response.data);
 
       if (response.data.isSuccess) {
         navigate(`/upload-tax/step3?taxId=${taxId}`, {
           state: { validationData: response.data.result }
         });
       } else {
-        console.error('API 요청 실패:', response.data.message);
+        console.error('API 요청 실패', response.data.message);
       }
     } catch (error) {
       console.error('API 요청 중 오류 발생:', error);
