@@ -1,40 +1,34 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import StateDropdownIcon from '../../public/Icon/StateDropdownIcon';
 
-export default function StateDropdown({
-  onStateChange
-}: {
-  onStateChange?: (state: string) => void;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState('선택');
-  const options = ['반영', '미반영'];
+interface DropdownProps {
+  selected?: string;
+  onChange?: (state: string) => void;
+}
 
+const StateDropdown = ({ selected = '선택', onChange }: DropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const options = ['반영', '미반영'];
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+  useState(() => {
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  });
 
   const handleSelect = (option: string) => {
     if (selected !== option) {
-      setSelected(option);
       setIsOpen(false);
-
-      if (onStateChange) {
-        onStateChange(option);
+      if (onChange) {
+        onChange(option);
       }
     }
   };
@@ -72,4 +66,6 @@ export default function StateDropdown({
       )}
     </div>
   );
-}
+};
+
+export default StateDropdown;

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Header from '../../../common/Header';
 import SelectMonth from '../../../common/SelectMonth';
 import StateDropdown from '../../../common/StateDropdown';
@@ -9,13 +10,24 @@ import TaxIconGray from '../../../../public/Icon/TaxIconGray';
 import Search from '../../../common/Search';
 import LocationIcon from '../../../../public/Icon/LocationIcon';
 import SelectCalendar from '../../../common/SelectCalendar';
-import { useState } from 'react';
+
 const Tax = () => {
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [dropdownState, setDropdownState] = useState('선택');
+  const [selectedStatus, setSelectedStatus] = useState('');
 
   const handleStateChange = (state: string) => {
-    setSelectedStatus(state);
+    setDropdownState(state);
   };
+
+  const handleReset = () => {
+    setDropdownState('선택');
+    setSelectedStatus('');
+  };
+
+  const handleSearch = () => {
+    setSelectedStatus(dropdownState === '선택' ? '' : dropdownState);
+  };
+
   return (
     <div className="mx-[94px] w-[960px]">
       <Header title="세금계산서 조회" Icon={TaxIconGray} />
@@ -38,13 +50,17 @@ const Tax = () => {
       <div className="flex items-center justify-between my-4">
         <div className="flex items-center gap-4 text-gray-500">
           상태
-          <StateDropdown onStateChange={handleStateChange} />
+          <StateDropdown
+            selected={dropdownState}
+            onChange={handleStateChange}
+          />
         </div>
 
         <div className="flex items-center gap-2">
           <Button
             size="sm"
             className="bg-transparent border border-primary-600 text-primary-500 flex items-center gap-1"
+            onClick={handleReset}
           >
             <ResetIcon />
             초기화
@@ -52,6 +68,7 @@ const Tax = () => {
           <Button
             size="sm"
             className="flex items-center gap-1 text-white bg-primary-700"
+            onClick={handleSearch}
           >
             <SearchIcon />
             조회
