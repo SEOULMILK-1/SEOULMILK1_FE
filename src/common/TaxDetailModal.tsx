@@ -129,7 +129,7 @@ const TaxDetailModal = ({
           currentSearchParams ? `?${currentSearchParams}` : ''
         }`;
 
-        navigate('/upload-tax/step1', {
+        navigate(`/upload-tax/step1?taxId=${selectedItem?.id}`, {
           state: {
             selectedImage: imageUrl,
             returnUrl: returnUrl

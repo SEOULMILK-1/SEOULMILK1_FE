@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import ImageCrop from './ImageCrop';
@@ -23,11 +23,24 @@ const Step1 = () => {
   const [duplicateTaxDate, setDuplicateTaxDate] = useState<string>('');
   const [duplicateId, setDuplicateId] = useState<string>('');
 
+  const [searchParams] = useSearchParams();
+  const taxId = searchParams.get('taxId');
+
   useEffect(() => {
     if (location.state?.selectedImage) {
       setSelectedImage(location.state.selectedImage);
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (taxId) {
+      console.log(`🗑 기존 세금계산서 삭제 요청: /tax/${taxId}`);
+      api
+        .delete(`/tax/${taxId}`)
+        .then(() => console.log(`기존 세금계산서 삭제 완료: ${taxId}`))
+        .catch((err) => console.error('세금계산서 삭제 실패:', err));
+    }
+  }, [taxId]);
 
   const handleUpload = async () => {
     if (!croppedImage) return;
@@ -35,6 +48,16 @@ const Step1 = () => {
 
     // ocr 요청
     try {
+      // if (taxId) {
+      //   try {
+      //     console.log(`🗑 기존 세금계산서 삭제 요청: /tax/${taxId}`);
+      //     await api.delete(`/tax/${taxId}`);
+      //     console.log(`기존 세금계산서 삭제 완료: ${taxId}`);
+      //   } catch (err) {
+      //     console.error('세금계산서 삭제 실패:', err);
+      //   }
+      // }
+
       const response = await fetch(croppedImage);
       const blob = await response.blob();
 
