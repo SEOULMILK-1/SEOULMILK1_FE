@@ -13,7 +13,7 @@ const Step2 = () => {
 
   const croppedImage =
     location.state?.croppedImage || location.state?.selectedImage;
-
+  const newTaxId = location.state?.ocrData?.result?.ntsTaxId || taxId;
   const [formData, setFormData] = useState({
     approvalNo: '',
     supplier: '',
@@ -48,7 +48,7 @@ const Step2 = () => {
   };
 
   const handleUpload = async () => {
-    if (!location.state?.ocrData?.result?.ntsTaxId) {
+    if (!newTaxId) {
       console.error('ntxTaxId 없음 API 요청을 보낼 수 없습니다.');
       return;
     }
@@ -57,12 +57,12 @@ const Step2 = () => {
 
     // 세금계산서 검증
     try {
-      const response = await api.post(`/tax/validate/${taxId}`);
+      const response = await api.post(`/tax/validate/${newTaxId}`);
 
       console.log('API 응답', response.data);
 
       if (response.data.isSuccess) {
-        navigate(`/upload-tax/step3?taxId=${taxId}`, {
+        navigate(`/upload-tax/step3?taxId=${newTaxId}`, {
           state: { validationData: response.data.result }
         });
       } else {

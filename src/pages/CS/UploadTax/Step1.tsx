@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../../common/Header';
 import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import ImageCrop from './ImageCrop';
 import api from '../../../hooks/api';
 import ConfirmUpload from './ConfirmUpload';
 import DuplicateTaxModal from './DuplicateTaxModal';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const Step1 = () => {
   const navigate = useNavigate();
@@ -23,63 +24,68 @@ const Step1 = () => {
   const [duplicateTaxDate, setDuplicateTaxDate] = useState<string>('');
   const [duplicateId, setDuplicateId] = useState<string>('');
 
-  const [searchParams] = useSearchParams();
-  const taxId = searchParams.get('taxId');
-
   useEffect(() => {
     if (location.state?.selectedImage) {
       setSelectedImage(location.state.selectedImage);
     }
   }, [location.state]);
 
-  useEffect(() => {
-    if (taxId) {
-      console.log(`🗑 기존 세금계산서 삭제 요청: /tax/${taxId}`);
-      api
-        .delete(`/tax/${taxId}`)
-        .then(() => console.log(`기존 세금계산서 삭제 완료: ${taxId}`))
-        .catch((err) => console.error('세금계산서 삭제 실패:', err));
-    }
-  }, [taxId]);
-
   const handleUpload = async () => {
-    if (!croppedImage) return;
+    if (!croppedImage) {
+      return;
+    }
     setIsUploading(true);
 
-    // ocr 요청
     try {
-      // if (taxId) {
-      //   try {
-      //     console.log(`🗑 기존 세금계산서 삭제 요청: /tax/${taxId}`);
-      //     await api.delete(`/tax/${taxId}`);
-      //     console.log(`기존 세금계산서 삭제 완료: ${taxId}`);
-      //   } catch (err) {
-      //     console.error('세금계산서 삭제 실패:', err);
-      //   }
-      // }
-
       const response = await fetch(croppedImage);
       const blob = await response.blob();
 
-      const formData = new FormData();
-      formData.append('file', blob, 'cropped-image.png');
+      const uniqueFilename = `cropped-${uuidv4()}.png`;
+      console.log('생성된 이미지 파일명:', uniqueFilename);
 
+      const formData = new FormData();
+      formData.append('file', blob, uniqueFilename);
+
+      for (const [key, value] of formData.entries()) {
+        console.log(`FormData Key: ${key}, Value:`, value);
+      }
+
+      // 1. OCR 요청을 먼저 보내 중복 확인
       const res = await api.post('/tax/ocr', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
+      console.log('OCR 응답:', res.data.result);
 
-      console.log('OCR 응답', res.data.result);
+      const { ntsTaxId, issueId, status, title, issueDate } = res.data.result;
 
-      if (res.data.result.issueId === '이미 등록된 세금계산서입니다.') {
-        setDuplicateId(res.data.result.ntsTaxId || 'id');
-        setDuplicateTitle(res.data.result.title || '세금계산서');
-        setDuplicateTaxDate(res.data.result.issueDate || '날짜 없음');
-        setIsDuplicateModalOpen(true);
-        return;
+      if (issueId === '이미 등록된 세금계산서입니다.') {
+        if (status === 'APPROVED') {
+          setDuplicateId(ntsTaxId.toString());
+          setDuplicateTitle(title || '세금계산서');
+          setDuplicateTaxDate(issueDate || '날짜 없음');
+          setIsDuplicateModalOpen(true);
+          return;
+        }
+        if (status === 'WAIT ' || 'REFUSED') {
+          //  2. 반려된 세금계산서인 경우, 삭제 요청 먼저
+          await api.delete(`/tax/${ntsTaxId}`);
+          console.log(`기존 반려된 세금계산서 삭제 완료: ${ntsTaxId}`);
+
+          // 3. 삭제 후 OCR 재요청
+          const res = await api.post('/tax/ocr', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+          console.log('삭제완료후 재요청 ocr 응답:', res.data.result);
+
+          // 4. 새로운 ID로 Step2 이동
+          navigate(`/upload-tax/step2?taxId=${ntsTaxId}`, {
+            state: { ocrData: res.data, selectedImage: croppedImage }
+          });
+          return;
+        }
       }
-
-      // 중복이 아니라면 step2
-      navigate(`/upload-tax/step2?taxId=${res.data.result.ntsTaxId}`, {
+      // 중복이 아니면 정상적으로 step2 이동
+      navigate(`/upload-tax/step2?taxId=${ntsTaxId}`, {
         state: { ocrData: res.data, selectedImage: croppedImage }
       });
     } catch (error) {
@@ -120,7 +126,9 @@ const Step1 = () => {
 
       <ImageCrop
         initialImage={selectedImage}
-        onCropComplete={setCroppedImage}
+        onCropComplete={(croppedImg) => {
+          setCroppedImage(croppedImg);
+        }}
       />
 
       <div className="mt-[64px] flex gap-[24px] justify-center">
