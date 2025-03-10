@@ -9,7 +9,7 @@ interface UserSideModalProps {
   onClose: () => void;
   user: {
     name: string;
-    userId: string;
+    userId: number;
     department?: string;
     email: string;
     phone: string;
@@ -70,13 +70,12 @@ const UserSideModal = ({
     setIsConfirmModalOpen(false);
   };
 
-  const deleteUser = async (userId: string) => {
+  const deleteUser = async (userId: number) => {
     try {
       const token = localStorage.getItem('accesstoken');
       const response = await api.delete(`/admin/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      // console.log('삭제완료');
       return response.data;
     } catch (error) {
       console.error('Error deleting user:', error);
