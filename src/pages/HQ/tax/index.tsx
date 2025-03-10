@@ -7,8 +7,8 @@ import SearchIcon from '../../../../public/Icon/SearchIcon';
 import ResetIcon from '../../../../public/Icon/ResetIcon';
 import CustomerChart from './components/CustomerChart';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
-import Search from '../../../common/Search'; // Search 추가
-import LocationIcon from '../../../../public/Icon/LocationIcon'; // LocationIcon 추가
+import Search from '../../../common/Search';
+import LocationIcon from '../../../../public/Icon/LocationIcon';
 import SelectCalendar from '../../../common/SelectCalendar';
 
 interface SearchCriteria {
