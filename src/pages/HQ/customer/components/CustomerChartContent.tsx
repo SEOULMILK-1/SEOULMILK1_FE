@@ -27,7 +27,7 @@ const CustomerChartContent = ({ searchTerm }: CustomerSearchProps) => {
           }
         });
 
-        console.log('data', response.data);
+        // console.log('data', response.data);
         setData(response.data.result.responseList);
       } catch (error) {
         console.error('데이터 연결에 에러가 발생했습니다.', error);
@@ -60,7 +60,7 @@ const CustomerChartContent = ({ searchTerm }: CustomerSearchProps) => {
             <div className="flex w-[120px] h-[42px] pl-5 items-center text-gray-800 font-sm-medium">
               {item.name}
             </div>
-            <div className="flex w-[200px] h-[42px] pl-5 items-center text-gray-800 font-sm-medium">
+            <div className="flex w-[200px] h-[42px] pl-5 items-center text-gray-800 font-sm-medium tabular-nums">
               {item.phone}
             </div>
             <div className="flex w-[170px] h-[42px] pl-5 items-center text-gray-800 font-sm-medium">
