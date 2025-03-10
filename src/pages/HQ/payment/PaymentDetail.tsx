@@ -6,23 +6,15 @@ import Button from '../../../common/Button';
 export const PaymentDetail = () => {
   return (
     <div className="mx-[94px] w-[960px]">
-      <Header title="전달받은 제목" Icon={ArrowIcon} />
+      <div >
+        <Header title="전달받은 제목" Icon={ArrowIcon} />
+        <div className="text-sm text-gray-500">
+          작성일: 2025.02.26 | 문서번호: 1234567890
+        </div>
+      </div>
+
       <div className="max-w-4xl mx-auto p-4 font-sans bg-gray-50">
         <div className="bg-white rounded-xl shadow-sm p-6">
-          {/* Header */}
-          <div className="flex justify-between items-center pb-4 border-b border-gray-200 mb-6">
-            <div className="flex items-center gap-2 text-gray-700">
-              {/* <ChevronLeft className="h-5 w-5" /> */}
-              <h1 className="text-lg font-medium">
-                서울유유태평고객센터_2025년_03월_지급결의서
-              </h1>
-            </div>
-            <div className="text-sm text-gray-500">
-              작성일: 2025.02.26 | 문서번호: 1234567890
-            </div>
-          </div>
-
-          {/* Payment Information */}
           <div className="rounded-xl border border-gray-200 overflow-hidden mb-8">
             {/* Section Headers */}
             <div className="grid grid-cols-2 text-center py-3 bg-gray-50 border-b border-gray-200">
