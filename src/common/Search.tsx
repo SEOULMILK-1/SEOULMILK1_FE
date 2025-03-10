@@ -35,6 +35,12 @@ const Search = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="mt-8 flex flex-row gap-4">
       <div className="relative w-[360px]">
@@ -45,11 +51,7 @@ const Search = ({
           placeholder={placeholderName}
           value={inputValue}
           onChange={handleInputChange}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              handleSearch();
-            }
-          }}
+          onKeyDown={handleKeyDown}
           className={`w-full h-12 pl-[44px] pr-4 py-4 rounded-xl border border-solid focus:border-primary-500 ${
             inputValue ? 'border-primary-500 text-gray-800' : 'border-gray-300'
           } placeholder:text-gray-500 placeholder:font-md-medium focus:outline-none`}
