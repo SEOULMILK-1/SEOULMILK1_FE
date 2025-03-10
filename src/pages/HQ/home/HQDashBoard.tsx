@@ -6,22 +6,12 @@ import WritePayment from './components/WritePayment';
 import { useState } from 'react';
 import HQAgencyModal from './components/HQAgencyModal';
 
-const data = Array.from({ length: 20 }, (_, index) => ({
-  title: `○○월 세금계산서 ${index + 1}`,
-  date: '2025.02.28',
-  center: '서울우유태평고객센터'
-})); //임시
-
-const data2 = Array.from({ length: 23 }, (_, index) => ({
-  title: `○○월 세금계산서 ${index + 1}`,
-  date: '2025.02.28',
-  center: '서울우유태평고객센터'
-})); //임시
-
-// const data: { center: string; title: string; date: string }[] = [];
+const data: { center: string; title: string; date: string }[] = [];
 
 const HQ_home = () => {
   const [isModal, setIsModal] = useState(false);
+  const [dataLength, setDataLength] = useState(0);
+
   return (
     <div className="mx-[94px] w-[960px]">
       <Header title="이번 달 지급결의 현황" Icon={HQHome} />
@@ -30,7 +20,7 @@ const HQ_home = () => {
           <div className="text-gray-800 font-2xl-bold">
             지급 대기 세금계산서
           </div>
-          <span className="text-gray-500 font-2xl-medium"> {data.length} </span>
+          <span className="text-gray-500 font-2xl-medium"> {dataLength} </span>
         </div>
 
         <div className="flex flex-row gap-4">
@@ -54,15 +44,12 @@ const HQ_home = () => {
           )}
         </div>
       </div>
-      <WaitingTax />
+      <WaitingTax onDataLength={setDataLength} />
 
       <div className="mt-[53px] flex flex-row">
         <div className="flex flex-row gap-2">
           <div className="text-gray-800 font-2xl-bold">작성된 지급결의서</div>
-          <span className="text-gray-500 font-2xl-medium">
-            {' '}
-            {data2.length}{' '}
-          </span>
+          <span className="text-gray-500 font-2xl-medium"> {data.length} </span>
         </div>
       </div>
       <WritePayment />
