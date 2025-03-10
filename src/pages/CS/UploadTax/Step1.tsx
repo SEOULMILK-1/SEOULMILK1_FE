@@ -27,6 +27,7 @@ const Step1 = () => {
   useEffect(() => {
     if (location.state?.selectedImage) {
       setSelectedImage(location.state.selectedImage);
+      setCroppedImage(location.state.selectedImage);
     }
   }, [location.state]);
 
@@ -127,7 +128,7 @@ const Step1 = () => {
       <ImageCrop
         initialImage={selectedImage}
         onCropComplete={(croppedImg) => {
-          setCroppedImage(croppedImg);
+          setCroppedImage(croppedImg ?? selectedImage ?? null);
         }}
       />
 
