@@ -4,6 +4,7 @@ import SignupInput from './SignupInput';
 import SignupButton from './SignupButton';
 import { useState } from 'react';
 import { useSignupStore } from '../../../../hooks/useSignupStore';
+import api from '../../../../hooks/api';
 
 interface FormState {
   name: string;
@@ -34,6 +35,7 @@ const Signup1 = () => {
     password: '',
     passwordCheck: ''
   });
+  const [employeeIdError, setEmployeeIdError] = useState<string>('');
 
   const validate = (): boolean => {
     let newErrors: Errors = {
@@ -90,6 +92,24 @@ const Signup1 = () => {
       ...formState,
       loginId: value === '' ? '' : value
     });
+    setEmployeeIdError('');
+  };
+
+  const handleValidateid = async () => {
+    try {
+      const response = await api.get(
+        `/auth/validation/login-id?loginId=${formState.loginId}`
+      );
+
+      if (response.data && response.data.result === '가입 가능한 사번입니다.') {
+        setEmployeeIdError('사용 가능한 사번입니다.');
+      } else {
+        setEmployeeIdError('유효한 아이디가 아닙니다.');
+      }
+    } catch (error) {
+      setEmployeeIdError('사번 중복 체크에 실패했습니다.');
+      console.error(error);
+    }
   };
 
   return (
@@ -119,10 +139,21 @@ const Signup1 = () => {
             value={formState.loginId}
             onChange={handleEmployeeIdChange}
           />
-          <button className="flex w-[80px] whitespace-nowrap px-7 h-14 justify-center items-center gap-[10px] rounded-xl bg-gray-200 text-gray-400 text-center font-md-medium">
+          <button
+            type="button"
+            onClick={handleValidateid}
+            className={`flex w-[80px] whitespace-nowrap px-7 h-14 justify-center items-center gap-[10px] rounded-xl text-center font-md-medium ${
+              formState.loginId
+                ? 'bg-primary-700 text-white'
+                : 'bg-gray-200 text-gray-400'
+            }`}
+          >
             확인
           </button>
         </div>
+        {employeeIdError && (
+          <p className="text-warning-700 font-sm-regular">{employeeIdError}</p>
+        )}
         {errors.loginId && (
           <p className="text-warning-700 font-sm-regular">{errors.loginId}</p>
         )}
