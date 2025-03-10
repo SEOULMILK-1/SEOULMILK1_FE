@@ -1,30 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CalendarIcon from '../../public/Icon/CalendarIcon';
 import Calendar from './Calendar';
 
-interface SelectDataProps {
-  date: string;
-  datetype: 'start' | 'end';
+interface SelectCalendarProps {
+  selectedStartDate: string | null;
+  selectedEndDate: string | null;
+  onSelectDate: (date: string, dateType: 'start' | 'end') => void;
 }
 
-const SelectCalendar = () => {
+const SelectCalendar = ({
+  selectedStartDate,
+  selectedEndDate,
+  onSelectDate
+}: SelectCalendarProps) => {
   const [isStartCalendarOpen, setIsStartCalendarOpen] = useState(false);
   const [isEndCalendarOpen, setIsEndCalendarOpen] = useState(false);
-  const [selectedStartDate, setSelectedStartDate] = useState<string | null>(
-    null
-  );
-  const [selectedEndDate, setSelectedEndDate] = useState<string | null>(null);
+  const [startDate, setStartDate] = useState<string | null>(selectedStartDate);
+  const [endDate, setEndDate] = useState<string | null>(selectedEndDate);
 
-  const handleSelectDate = ({ date, datetype }: SelectDataProps) => {
-    console.log(`선택한 날짜: (${datetype}):`, date);
+  useEffect(() => {
+    setStartDate(selectedStartDate);
+  }, [selectedStartDate]);
 
-    if (datetype === 'start') {
-      setSelectedStartDate(date);
+  useEffect(() => {
+    setEndDate(selectedEndDate);
+  }, [selectedEndDate]);
+
+  const handleSelectDate = (date: string, dateType: 'start' | 'end') => {
+    // console.log(`선택한 날짜: (${dateType}):`, date);
+
+    if (dateType === 'start') {
+      setStartDate(date);
       setIsStartCalendarOpen(false);
     } else {
-      setSelectedEndDate(date);
+      setEndDate(date);
       setIsEndCalendarOpen(false);
     }
+
+    onSelectDate(date, dateType);
   };
 
   return (
@@ -32,25 +45,23 @@ const SelectCalendar = () => {
       <div className="relative">
         <div
           className={`flex w-[150px] h-12 p-4 justify-start items-center gap-2 rounded-xl cursor-pointer border border-solid ${
-            selectedStartDate ? 'border-primary-700' : 'border-gray-300'
+            startDate ? 'border-primary-700' : 'border-gray-300'
           }`}
           onClick={() => setIsStartCalendarOpen(!isStartCalendarOpen)}
         >
-          <CalendarIcon fillcolor={selectedStartDate ? '#009856' : '#949BA7'} />
+          <CalendarIcon fillcolor={startDate ? '#009856' : '#949BA7'} />
           <div
             className={`font-md-medium ${
-              selectedStartDate ? 'text-primary-700' : 'text-gray-500 '
+              startDate ? 'text-primary-700' : 'text-gray-500 '
             }`}
           >
-            {selectedStartDate || '시작일...'}
+            {startDate || '시작일...'}
           </div>
         </div>
         {isStartCalendarOpen && (
           <div className="absolute top-14 left-0 z-10">
             <Calendar
-              onSelectDate={(date) =>
-                handleSelectDate({ date, datetype: 'start' })
-              }
+              onSelectDate={(date) => handleSelectDate(date, 'start')}
             />
           </div>
         )}
@@ -64,26 +75,22 @@ const SelectCalendar = () => {
       <div className="relative">
         <div
           className={`flex w-[150px] h-12 p-4 justify-start items-center gap-2 rounded-xl cursor-pointer border border-solid ${
-            selectedEndDate ? 'border-primary-700' : 'border-gray-300'
+            endDate ? 'border-primary-700' : 'border-gray-300'
           }`}
           onClick={() => setIsEndCalendarOpen(!isEndCalendarOpen)}
         >
-          <CalendarIcon fillcolor={selectedEndDate ? '#009856' : '#949BA7'} />
+          <CalendarIcon fillcolor={endDate ? '#009856' : '#949BA7'} />
           <div
             className={`font-md-medium ${
-              selectedEndDate ? 'text-primary-700' : 'text-gray-500'
+              endDate ? 'text-primary-700' : 'text-gray-500'
             }`}
           >
-            {selectedEndDate || '종료일...'}
+            {endDate || '종료일...'}
           </div>
         </div>
         {isEndCalendarOpen && (
           <div className="absolute top-14 left-0 z-10">
-            <Calendar
-              onSelectDate={(date) =>
-                handleSelectDate({ date, datetype: 'end' })
-              }
-            />
+            <Calendar onSelectDate={(date) => handleSelectDate(date, 'end')} />
           </div>
         )}
       </div>
