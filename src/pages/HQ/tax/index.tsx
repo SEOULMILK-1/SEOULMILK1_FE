@@ -8,6 +8,8 @@ import ResetIcon from '../../../../public/Icon/ResetIcon';
 import CustomerChart from './components/CustomerChart';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
 import SelectCalendar from '../../../common/SelectCalendar';
+import LocationIcon from '../../../../public/Icon/LocationIcon';
+import Search from '../../../common/Search';
 
 interface SearchCriteria {
   status: string;
@@ -25,6 +27,7 @@ const Tax = () => {
     endDate: null
   });
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
 
   const handleStateChange = (state: string) => {
     setDropdownState(state);
@@ -48,6 +51,10 @@ const Tax = () => {
       startDate: startDate,
       endDate: endDate
     });
+  };
+
+  const handleSearchInput = (value: string) => {
+    setSearchKeyword(value);
   };
 
   const handleMonthSelect = (
@@ -77,12 +84,13 @@ const Tax = () => {
 
       <div className="flex flex-row gap-4 mb-4">
         <div className="flex items-center mt-8 text-gray-500">지점</div>
-        {/* <Search
+        <Search
           placeholderName="대리점 검색..."
           showSearchButton={false}
           defaultSearchIcon={<LocationIcon />}
           activeSearchIcon={<LocationIcon fillColor="#3A404A" />}
-        /> */}
+          onSearch={handleSearchInput}
+        />
       </div>
 
       <div className="flex items-center gap-4 text-gray-500">
@@ -131,6 +139,7 @@ const Tax = () => {
         selectedStatus={searchCriteria.status}
         startDate={searchCriteria.startDate}
         endDate={searchCriteria.endDate}
+        searchKeyword={searchKeyword}
       />
     </div>
   );

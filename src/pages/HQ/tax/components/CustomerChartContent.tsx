@@ -24,6 +24,7 @@ interface CustomerChartContentProps {
   currentPage: number;
   pageSize: number;
   onTotalItemsChange: (totalItems: number) => void;
+  searchKeyword: string;
 }
 
 const CustomerChartContent = ({
@@ -32,7 +33,8 @@ const CustomerChartContent = ({
   endDate,
   currentPage,
   pageSize,
-  onTotalItemsChange
+  onTotalItemsChange,
+  searchKeyword
 }: CustomerChartContentProps) => {
   const [data, setData] = useState<InvoiceData[]>([]);
   const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
@@ -53,8 +55,6 @@ const CustomerChartContent = ({
           }
         });
 
-        // console.log('1111', response.data);
-        // console.log('222', response.data.result.totalElements);
         setData(response.data.result.responseList);
         onTotalItemsChange(response.data.result.totalElements);
       } catch (error) {
@@ -66,9 +66,11 @@ const CustomerChartContent = ({
   }, [currentPage, pageSize, onTotalItemsChange]);
 
   useEffect(() => {
-    const hasFilters = Boolean(selectedStatus || startDate || endDate);
+    const hasFilters = Boolean(
+      selectedStatus || startDate || endDate || searchKeyword
+    );
     setIsFiltering(hasFilters);
-  }, [selectedStatus, startDate, endDate]);
+  }, [selectedStatus, startDate, endDate, searchKeyword]);
 
   const handleItemClick = (item: InvoiceData) => {
     setSelectedItem(item);
@@ -102,6 +104,14 @@ const CustomerChartContent = ({
           if (endDate && itemDate > parseDate(endDate)) {
             return false;
           }
+        }
+
+        if (searchKeyword && searchKeyword.trim() !== '') {
+          const keyword = searchKeyword.toLowerCase();
+          return (
+            item.title.toLowerCase().includes(keyword) ||
+            item.team.toLowerCase().includes(keyword)
+          );
         }
 
         return true;
