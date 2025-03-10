@@ -221,7 +221,7 @@ const TaxDetailModal = ({
             <div>
               <h2 className="flex text-center font-xl-semibold text-gray-800 mt-[12px]">
                 {detailData?.title ||
-                  `${selectedItem.center}_${selectedItem.date
+                  `${selectedItem.team}_${selectedItem.taxDate
                     .replace(/\./g, '_')
                     .replace(/^(\d{4})_(\d{2})_(\d{2})$/, '$1년_$2월_$3일')}`}
               </h2>
@@ -258,7 +258,7 @@ const TaxDetailModal = ({
               />
               <DetailField
                 label="작성일자"
-                value={detailData?.taxDate || selectedItem.date}
+                value={detailData?.taxDate || selectedItem.taxDate}
               />
               <DetailField
                 label="공급가액"
