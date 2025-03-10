@@ -18,9 +18,7 @@ const PaymentChart = () => {
 
       try {
         const response = await api.get(
-          `/hq/payment-resolution/list/${
-            period || '1'
-          }?page=${page}&size=${size}`
+          `/hq/payment-resolution/list/${period || '1'}?page=0&size=${size}`
         );
         if (response.data.isSuccess) {
           setData(response.data.result);
@@ -39,20 +37,6 @@ const PaymentChart = () => {
 
   return (
     <div className="mt-4 flex h-[714px] flex-col border border-gray-300 bg-white rounded-3xl">
-      {/* 상단 필터 */}
-      <div className="flex justify-between items-center p-4">
-        <h2 className="text-lg font-semibold">지급 결의서 목록</h2>
-        <select
-          className="border border-gray-300 rounded-md px-4 py-2 text-gray-600"
-          value={period || ''}
-          onChange={(e) => setPeriod(Number(e.target.value))}
-        >
-          <option value="">전체</option>
-          <option value="1">최근 1개월</option>
-          <option value="3">최근 3개월</option>
-        </select>
-      </div>
-
       <PaymentChartHeader />
 
       <div className="flex-grow">
@@ -69,7 +53,7 @@ const PaymentChart = () => {
         )}
       </div>
 
-      {/* <ChartPagination page={page} setPage={setPage} /> */}
+      <ChartPagination />
     </div>
   );
 };
