@@ -7,13 +7,26 @@ import SearchIcon from '../../../../public/Icon/SearchIcon';
 import ResetIcon from '../../../../public/Icon/ResetIcon';
 import CustomerChart from './components/CustomerChart';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
-import Search from '../../../common/Search';
-import LocationIcon from '../../../../public/Icon/LocationIcon';
+import Search from '../../../common/Search'; // Search 추가
+import LocationIcon from '../../../../public/Icon/LocationIcon'; // LocationIcon 추가
 import SelectCalendar from '../../../common/SelectCalendar';
+
+interface SearchCriteria {
+  status: string;
+  startDate: string | null;
+  endDate: string | null;
+}
 
 const Tax = () => {
   const [dropdownState, setDropdownState] = useState('선택');
-  const [selectedStatus, setSelectedStatus] = useState('');
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
+    status: '',
+    startDate: null,
+    endDate: null
+  });
+  const [selectedMonth, setSelectedMonth] = useState('');
 
   const handleStateChange = (state: string) => {
     setDropdownState(state);
@@ -21,11 +34,43 @@ const Tax = () => {
 
   const handleReset = () => {
     setDropdownState('선택');
-    setSelectedStatus('');
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedMonth('');
+    setSearchCriteria({
+      status: '',
+      startDate: null,
+      endDate: null
+    });
   };
 
   const handleSearch = () => {
-    setSelectedStatus(dropdownState === '선택' ? '' : dropdownState);
+    setSearchCriteria({
+      status: dropdownState === '선택' ? '' : dropdownState,
+      startDate: startDate,
+      endDate: endDate
+    });
+  };
+
+  const handleMonthSelect = (
+    newStartDate: string,
+    newEndDate: string,
+    label: string
+  ) => {
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+    setSelectedMonth(label);
+  };
+
+  const handleCalendarDateSelect = (
+    date: string,
+    dateType: 'start' | 'end'
+  ) => {
+    if (dateType === 'start') {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
   };
 
   return (
@@ -41,10 +86,18 @@ const Tax = () => {
           activeSearchIcon={<LocationIcon fillColor="#3A404A" />}
         /> */}
       </div>
+
       <div className="flex items-center gap-4 text-gray-500">
         기간
-        <SelectMonth />
-        <SelectCalendar />
+        <SelectMonth
+          selectedMonth={selectedMonth}
+          onSelectMonth={handleMonthSelect}
+        />
+        <SelectCalendar
+          selectedStartDate={startDate}
+          selectedEndDate={endDate}
+          onSelectDate={handleCalendarDateSelect}
+        />
       </div>
 
       <div className="flex items-center justify-between my-4">
@@ -76,7 +129,11 @@ const Tax = () => {
         </div>
       </div>
 
-      <CustomerChart selectedStatus={selectedStatus} />
+      <CustomerChart
+        selectedStatus={searchCriteria.status}
+        startDate={searchCriteria.startDate}
+        endDate={searchCriteria.endDate}
+      />
     </div>
   );
 };
