@@ -6,8 +6,6 @@ import SearchIcon from '../../../../public/Icon/SearchIcon';
 import ResetIcon from '../../../../public/Icon/ResetIcon';
 import CustomerChart from './components/CustomerChart';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
-import Search from '../../../common/Search';
-import LocationIcon from '../../../../public/Icon/LocationIcon';
 import SelectCalendar from '../../../common/SelectCalendar';
 const Tax = () => {
   return (
@@ -16,12 +14,12 @@ const Tax = () => {
 
       <div className="flex flex-row gap-4 mb-4">
         <div className="flex items-center mt-8 text-gray-500">지점</div>
-        <Search
+        {/* <Search
           placeholderName="대리점 검색..."
           showSearchButton={false}
           defaultSearchIcon={<LocationIcon />}
           activeSearchIcon={<LocationIcon fillColor="#3A404A" />}
-        />
+        /> */}
       </div>
       <div className="flex items-center gap-4 text-gray-500">
         기간

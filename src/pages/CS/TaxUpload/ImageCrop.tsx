@@ -14,8 +14,6 @@ interface ImageCropProps {
 const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
-
-  // 초기 크롭 영역을 100%로 설정하여 이미지 전체를 선택
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
     width: 100,
@@ -118,8 +116,9 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     isImageLoaded
   ]);
 
+  // 크롭 영역을 업데이트하는 함수
   const updateCropArea = (_aspectRatio: number) => {
-    const cropSize = 100;
+    const cropSize = 100; // 기본 크롭 크기 (%)
 
     // 마지막 completedCrop 정보가 있으면 비율만 유지하면서 위치 조정
     if (completedCrop) {
@@ -147,7 +146,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
         y
       });
     } else {
-      // 초기 설정인 경우 이미지 전체를 선택
+      // 초기 설정인 경우 중앙에 배치
       setCrop({
         unit: '%',
         width: 100,
@@ -263,12 +262,6 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     updateCropArea(naturalAspectRatio);
   };
 
-  const reactCropStyle = {
-    backgroundColor: 'white',
-    '--ReactCrop__crop-selection': '0px',
-    '--ReactCrop__tile-border': '0px'
-  };
-
   return (
     <div className="flex flex-col items-center">
       {selectedImage && (
@@ -278,7 +271,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
           </h3>
           <div
             ref={cropContainerRef}
-            className="relative border border-gray-300 overflow-hidden text-center h-[534px] flex items-center justify-center bg-white"
+            className="relative border-none border-gray-300 overflow-hidden text-center h-[534px] flex items-center justify-center bg-white"
             style={{
               position: 'relative',
               backgroundColor: 'white'
@@ -286,13 +279,13 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
           >
             {isImageLoaded && (
               <>
-                <div className="absolute inset-0 bg-white z-10 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-black bg-opacity-50 z-10 pointer-events-none"></div>
                 <ReactCrop
                   crop={crop}
                   onChange={(c) => setCrop(c)}
                   onComplete={(c) => setCompletedCrop(c)}
                   className="relative z-20"
-                  style={reactCropStyle}
+                  style={{ backgroundColor: 'white' }}
                 >
                   <img
                     ref={imgRef}
