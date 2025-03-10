@@ -20,9 +20,9 @@ import { AdminBoard } from '../pages/ADMIN/board';
 import { AdminTax } from '../pages/ADMIN/tax';
 import { AdminPayment } from '../pages/ADMIN/payment';
 import { CSHome } from '../pages/CS/home';
-import Step1 from '../pages/CS/uploadTax/Step1';
-import Step2 from '../pages/CS/uploadTax/Step2';
-import Step3 from '../pages/CS/uploadTax/Step3';
+import Step1 from '../pages/CS/TaxUpload/Step1';
+import Step2 from '../pages/CS/TaxUpload/Step2';
+import Step3 from '../pages/CS/TaxUpload/Step3';
 import EditTax from '../pages/CS/tax/EditTax';
 
 //TODO: 직접 url수정으로 다른 role 페이지 이동 막기

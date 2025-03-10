@@ -3,8 +3,8 @@ import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import TaxDetailModal from '../../../../common/TaxDetailModal';
 import api from '../../../../hooks/api';
 
-// const statuses: Status[] = ['승인됨', '반려됨'];
 interface InvoiceData {
+  id: string;
   status: Status;
   number: string;
   title: string;
@@ -16,19 +16,6 @@ interface InvoiceData {
   dateFormatted: string;
   amount: string;
 }
-
-// const data: InvoiceData[] = Array.from({ length: 20 }, (_, index) => ({
-//   status: statuses[index % statuses.length],
-//   number: String(index + 1).padStart(2, '0'),
-//   title: ○○월 세금계산서 ${index + 1},
-//   date: '2025.02.28',
-//   center: '서울우유태평고객센터',
-//   approvalNo: 2022060812-${index + 1},
-//   supplier: 214-87-415 ${index + 1},
-//   recipient: 213-4546 ${index + 1},
-//   dateFormatted: '2025-02-28',
-//   amount: ${(index + 1) * 1000}원
-// }));
 
 const CustomerChartContent = () => {
   const [data, setData] = useState<InvoiceData[]>([]);
