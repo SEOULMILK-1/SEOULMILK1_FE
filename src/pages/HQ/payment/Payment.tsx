@@ -1,10 +1,8 @@
-import LocationIcon from '../../../../public/Icon/LocationIcon';
 import ResetIcon from '../../../../public/Icon/ResetIcon';
 import SearchIcon from '../../../../public/Icon/SearchIcon';
 import PaymentGray from '../../../../public/Icon/PaymentIcon';
 import Button from '../../../common/Button';
 import Header from '../../../common/Header';
-import Search from '../../../common/Search';
 import SelectCalendar from '../../../common/SelectCalendar';
 import SelectMonth from '../../../common/SelectMonth';
 import PaymentChart from './components/PaymentChart';
@@ -16,12 +14,12 @@ const Payment = () => {
 
       <div className="flex flex-row gap-4 mb-4">
         <div className="flex items-center mt-8 text-gray-500">지점</div>
-        <Search
+        {/* <Search
           placeholderName="대리점 검색..."
           showSearchButton={false}
           defaultSearchIcon={<LocationIcon />}
           activeSearchIcon={<LocationIcon fillColor="#3A404A" />}
-        />
+        /> */}
       </div>
 
       <div className="flex flex-row w-full">
