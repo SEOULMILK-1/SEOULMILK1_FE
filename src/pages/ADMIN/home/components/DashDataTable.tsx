@@ -51,6 +51,10 @@ const DashDataTable = ({
       try {
         const token = localStorage.getItem('accesstoken');
         const response = await api.get('/admin/user', {
+          params: {
+            page: currentPage - 1,
+            size: pageSize
+          },
           headers: {
             Authorization: `Bearer ${token}`
           }
