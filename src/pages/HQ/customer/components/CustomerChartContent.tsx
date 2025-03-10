@@ -23,6 +23,7 @@ const CustomerChartContent = ({
 }: CustomerChartContentProps) => {
   const [selectedList, setSelectedList] = useState<number | null>(null);
   const [data, setData] = useState<Customer[]>([]);
+  const [filteredData, setFilteredData] = useState<Customer[]>([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -38,7 +39,8 @@ const CustomerChartContent = ({
             Authorization: `Bearer ${token}`
           }
         });
-        setData(response.data.result.responseList);
+        const result = response.data.result.responseList;
+        setData(result);
         onTotalItemsChange(response.data.result.totalElements);
       } catch (error) {
         console.error('데이터 연결에 에러가 발생했습니다.', error);
@@ -46,11 +48,22 @@ const CustomerChartContent = ({
     };
 
     getData();
-  }, [currentPage, pageSize, searchTerm, onTotalItemsChange]);
+  }, [currentPage, pageSize, onTotalItemsChange]);
+
+  useEffect(() => {
+    const filtered = data.filter(
+      (item) =>
+        item.csName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.phone.includes(searchTerm) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [data]);
 
   return (
     <div className="h-[660px] w-[960px] overflow-y-scroll custom-scrollbar">
-      {data.map((item, index) => (
+      {filteredData.map((item, index) => (
         <div
           key={index}
           onClick={() => setSelectedList(index)}
