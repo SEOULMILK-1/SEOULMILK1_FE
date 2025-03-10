@@ -14,6 +14,8 @@ interface ImageCropProps {
 const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
+
+  // 초기 크롭 영역을 100%로 설정하여 이미지 전체를 선택
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
     width: 100,
@@ -116,9 +118,8 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     isImageLoaded
   ]);
 
-  // 크롭 영역을 업데이트하는 함수
   const updateCropArea = (_aspectRatio: number) => {
-    const cropSize = 50; // 기본 크롭 크기 (%)
+    const cropSize = 100;
 
     // 마지막 completedCrop 정보가 있으면 비율만 유지하면서 위치 조정
     if (completedCrop) {
@@ -146,13 +147,13 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
         y
       });
     } else {
-      // 초기 설정인 경우 중앙에 배치
+      // 초기 설정인 경우 이미지 전체를 선택
       setCrop({
         unit: '%',
-        width: cropSize,
-        height: cropSize,
-        x: (100 - cropSize) / 2,
-        y: (100 - cropSize) / 2
+        width: 100,
+        height: 100,
+        x: 0,
+        y: 0
       });
     }
   };
@@ -241,17 +242,11 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   const rotateLImage = () => {
     const newRotation = (rotation - 90) % 360;
     setRotation(newRotation);
-
-    // 회전 후 이미지 크기 업데이트가 필요함
-    // updateSizes() 효과가 자동으로 실행됨
   };
 
   const rotateRImage = () => {
     const newRotation = (rotation + 90) % 360;
     setRotation(newRotation);
-
-    // 회전 후 이미지 크기 업데이트가 필요함
-    // updateSizes() 효과가 자동으로 실행됨
   };
 
   const flipImageX = () => setFlipX((prev) => prev * -1);
@@ -264,9 +259,14 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     setFlipY(1);
     setCompletedCrop(null);
 
-    // 이미지 리셋 시 초기 크롭 영역도 재설정
     const naturalAspectRatio = imageSize.naturalWidth / imageSize.naturalHeight;
     updateCropArea(naturalAspectRatio);
+  };
+
+  const reactCropStyle = {
+    backgroundColor: 'white',
+    '--ReactCrop__crop-selection': '0px',
+    '--ReactCrop__tile-border': '0px'
   };
 
   return (
@@ -278,7 +278,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
           </h3>
           <div
             ref={cropContainerRef}
-            className="relative border-none border-gray-300 overflow-hidden text-center h-[534px] flex items-center justify-center bg-white"
+            className="relative border border-gray-300 overflow-hidden text-center h-[534px] flex items-center justify-center bg-white"
             style={{
               position: 'relative',
               backgroundColor: 'white'
@@ -286,13 +286,13 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
           >
             {isImageLoaded && (
               <>
-                <div className="absolute inset-0 bg-black bg-opacity-50 z-10 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-white z-10 pointer-events-none"></div>
                 <ReactCrop
                   crop={crop}
                   onChange={(c) => setCrop(c)}
                   onComplete={(c) => setCompletedCrop(c)}
                   className="relative z-20"
-                  style={{ backgroundColor: 'white' }}
+                  style={reactCropStyle}
                 >
                   <img
                     ref={imgRef}
