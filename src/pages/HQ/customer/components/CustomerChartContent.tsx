@@ -1,39 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import api from '../../../../hooks/api';
 
 interface Customer {
-  center: string;
+  csName: string;
   name: string;
   phone: string;
   email: string;
 }
 
-const dataList1: Customer[] = [
-  {
-    center: '서울우유태평고객센터',
-    name: '김구름',
-    phone: '010-1234-5678',
-    email: 'cloudKim@gmail.com'
-  },
-  {
-    center: '서울우유협동조합',
-    name: '김구름',
-    phone: '010-1234-5678',
-    email: 'cloudKim@gmail.com'
-  }
-];
+interface CustomerSearchProps {
+  searchTerm: string;
+}
 
-const CustomerChartContent = () => {
+const CustomerChartContent = ({ searchTerm }: CustomerSearchProps) => {
   const [selectedList, setSelectedList] = useState<number | null>(null);
+  const [data, setData] = useState<Customer[]>([]);
 
-  // 임시
-  const displayedData: Customer[] = Array(7)
-    .fill(dataList1)
-    .flat()
-    .slice(0, 14);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const token = localStorage.getItem('accesstoken');
+
+        const response = await api.get('/hq/search/cs/info', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        console.log('data', response.data);
+        setData(response.data.result.responseList);
+      } catch (error) {
+        console.error('데이터 연결에 에러가 발생했습니다.', error);
+      }
+    };
+
+    getData();
+  }, []);
+
+  const filteredData = data.filter(
+    (item) =>
+      item.csName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="h-[588px] w-[960px]">
-      {displayedData.map((item, index) => (
+      {filteredData.map((item, index) => (
         <div
           key={index}
           onClick={() => setSelectedList(index)}
@@ -43,7 +55,7 @@ const CustomerChartContent = () => {
         >
           <div className="flex">
             <div className="flex w-[200px] h-[42px] pl-5 items-center text-gray-800 font-sm-medium">
-              {item.center}
+              {item.csName}
             </div>
             <div className="flex w-[120px] h-[42px] pl-5 items-center text-gray-800 font-sm-medium">
               {item.name}
