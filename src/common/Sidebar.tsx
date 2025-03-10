@@ -11,7 +11,7 @@ import {
   CSMenuItems,
   HQMenuItems
 } from '../routes/SidebarRouter';
-import SidebarUploadButton from '../pages/CS/uploadTax/SidebarUploadBtn';
+import SidebarUploadButton from '../pages/CS/TaxUpload/SidebarUploadBtn';
 
 interface RoleProps {
   type: 'admin' | 'HQ' | 'CS';
