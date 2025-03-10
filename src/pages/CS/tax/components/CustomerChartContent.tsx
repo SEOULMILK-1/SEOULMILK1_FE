@@ -20,7 +20,8 @@ interface InvoiceData {
 
 const statusMap: Record<string, Status> = {
   APPROVE: '승인됨',
-  REFUSED: '반려됨'
+  REFUSED: '반려됨',
+  WAIT: '반려됨'
 };
 
 const CustomerChartContent = () => {

@@ -169,7 +169,8 @@ const TaxDetailModal = ({
   const getDisplayStatus = (apiStatus: string): Status => {
     const statusMap: Record<string, Status> = {
       APPROVE: '승인됨',
-      REFUSED: '반려됨'
+      REFUSED: '반려됨',
+      WAIT: '반려됨'
     };
 
     return statusMap[apiStatus] || (apiStatus as Status);
