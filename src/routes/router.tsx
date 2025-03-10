@@ -20,9 +20,10 @@ import { AdminBoard } from '../pages/ADMIN/board';
 import { AdminTax } from '../pages/ADMIN/tax';
 import { AdminPayment } from '../pages/ADMIN/payment';
 import { CSHome } from '../pages/CS/home';
-import Step1 from '../pages/CS/UploadTax/Step1';
-import Step2 from '../pages/CS/UploadTax/Step2';
-import Step3 from '../pages/CS/UploadTax/Step3';
+import Step1 from '../pages/CS/TaxUpload/Step1';
+import Step2 from '../pages/CS/TaxUpload/Step2';
+import Step3 from '../pages/CS/TaxUpload/Step3';
+import EditTax from '../pages/CS/tax/EditTax';
 
 //TODO: 직접 url수정으로 다른 role 페이지 이동 막기
 
@@ -60,7 +61,8 @@ const router = createBrowserRouter([
       { path: '/upload-tax/step1', element: <Step1 /> },
       { path: '/upload-tax/step2', element: <Step2 /> },
       { path: '/upload-tax/step3', element: <Step3 /> },
-      { path: '/CS-tax', element: <CSTax /> }
+      { path: '/CS-tax', element: <CSTax /> },
+      { path: '/CS-tax/edit', element: <EditTax /> }
     ]
   },
   { path: '/login', element: <LoginPage /> },

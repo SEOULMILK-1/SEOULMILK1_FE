@@ -3,7 +3,7 @@ const statusStyles = {
   미반영: 'bg-gray-200 text-gray-500'
 };
 
-export type Status = '반영' | '미반영';
+export type Status = '승인됨' | '반려됨';
 
 interface StatusBadgeProps {
   status: Status;

@@ -4,6 +4,7 @@ import TaxDetailModal from '../../../../common/TaxDetailModal';
 import api from '../../../../hooks/api';
 
 interface InvoiceData {
+  id: string;
   status: Status;
   ntsTaxId: string;
   title: string;
