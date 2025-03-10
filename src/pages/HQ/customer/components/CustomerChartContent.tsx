@@ -8,11 +8,19 @@ interface Customer {
   email: string;
 }
 
-interface CustomerSearchProps {
+interface CustomerChartContentProps {
   searchTerm: string;
+  currentPage: number;
+  pageSize: number;
+  onTotalItemsChange: (totalItems: number) => void;
 }
 
-const CustomerChartContent = ({ searchTerm }: CustomerSearchProps) => {
+const CustomerChartContent = ({
+  searchTerm,
+  currentPage,
+  pageSize,
+  onTotalItemsChange
+}: CustomerChartContentProps) => {
   const [selectedList, setSelectedList] = useState<number | null>(null);
   const [data, setData] = useState<Customer[]>([]);
 
@@ -22,30 +30,27 @@ const CustomerChartContent = ({ searchTerm }: CustomerSearchProps) => {
         const token = localStorage.getItem('accesstoken');
 
         const response = await api.get('/hq/search/cs/info', {
+          params: {
+            page: currentPage - 1,
+            size: pageSize
+          },
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-
-        // console.log('data', response.data);
         setData(response.data.result.responseList);
+        onTotalItemsChange(response.data.result.totalElements);
       } catch (error) {
         console.error('데이터 연결에 에러가 발생했습니다.', error);
       }
     };
 
     getData();
-  }, []);
-
-  const filteredData = data.filter(
-    (item) =>
-      item.csName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  }, [currentPage, pageSize, searchTerm, onTotalItemsChange]);
 
   return (
-    <div className="h-[588px] w-[960px]">
-      {filteredData.map((item, index) => (
+    <div className="h-[660px] w-[960px] overflow-y-scroll custom-scrollbar">
+      {data.map((item, index) => (
         <div
           key={index}
           onClick={() => setSelectedList(index)}
