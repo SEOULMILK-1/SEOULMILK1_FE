@@ -26,6 +26,11 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [displayData, setDisplayData] = useState<User[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -37,9 +42,9 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
           }
         });
 
-        console.log('data', response.data);
         setData(response.data.result.responseList);
         setFilteredData(response.data.result.responseList);
+        setTotalItems(response.data.result.totalElements);
       } catch (error) {
         console.error('유저데이터 연결에 에러가 발생했습니다.', error);
       }
@@ -62,8 +67,24 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
         );
       });
       setFilteredData(filtered);
+      setTotalItems(filtered.length);
     }
   }, [searchTerm, data]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, filteredData.length);
+    setDisplayData(filteredData.slice(startIndex, endIndex));
+  }, [filteredData, currentPage, pageSize]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
 
   const openModal = (user: any) => {
     setSelectedUser(user);
@@ -92,31 +113,12 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
           const updatedData = prevData.map((user) =>
             user.userId === userId ? { ...user, isAssigned: '등록' } : user
           );
-
-          if (!searchTerm || searchTerm.trim() === '') {
-            setFilteredData(updatedData);
-          } else {
-            setFilteredData(
-              updatedData.filter((user) => {
-                const csNameLower = user.csName
-                  ? user.csName.toLowerCase()
-                  : '';
-                const nameLower = user.name ? user.name.toLowerCase() : '';
-                const searchTermLower = searchTerm.toLowerCase();
-
-                return (
-                  csNameLower.includes(searchTermLower) ||
-                  nameLower.includes(searchTermLower)
-                );
-              })
-            );
-          }
-
+          setFilteredData(updatedData);
           return updatedData;
         });
       }
     } catch (error) {
-      console.error('등록 요청에 실패했습니다', error);
+      console.error('등록에 실패했습니다', error);
     }
   };
 
@@ -125,7 +127,7 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
       <UserDataTableHeader />
 
       <div className="flex-grow mx-2 overflow-y-scroll custom-scrollbar">
-        {filteredData.map((row, index) => (
+        {displayData.map((row, index) => (
           <div
             key={index}
             className="flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer"
@@ -170,7 +172,14 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
           </div>
         ))}
       </div>
-      <ChartPagination />
+
+      <ChartPagination
+        totalItems={totalItems}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+      />
 
       {isModalOpen && selectedUser && (
         <UserSideModal
