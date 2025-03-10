@@ -5,12 +5,27 @@ import HQIcon from '../../../../public/Icon/CustomerIcon';
 import WritePayment from './components/WritePayment';
 import { useState } from 'react';
 import HQAgencyModal from './components/HQAgencyModal';
-
-const data: { center: string; title: string; date: string }[] = [];
+import api from '../../../hooks/api';
 
 const HQ_home = () => {
   const [isModal, setIsModal] = useState(false);
   const [dataLength, setDataLength] = useState(0);
+
+  const handleWritePayment = async () => {
+    try {
+      const token = localStorage.getItem('accesstoken');
+
+      const response = await api.post('/hq/payment-resolution', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      console.log('일괄 작성 완료:', response.data);
+    } catch (error) {
+      console.error('일괄 작성 요청 중 에러 발생:', error);
+    }
+  };
 
   return (
     <div className="mx-[94px] w-[960px]">
@@ -35,8 +50,11 @@ const HQ_home = () => {
             </span>
           </div>
           {isModal && <HQAgencyModal onClose={() => setIsModal(false)} />}
-          {data.length > 0 && (
-            <div className="flex px-4 py-2 justify-center items-center gap-1 rounded-xl bg-primary-700 cursor-pointer">
+          {dataLength > 0 && (
+            <div
+              className="flex px-4 py-2 justify-center items-center gap-1 rounded-xl bg-primary-700 cursor-pointer"
+              onClick={handleWritePayment}
+            >
               <span className="text-white text-center font-md-medium">
                 지급결의서 일괄 작성
               </span>
@@ -49,7 +67,7 @@ const HQ_home = () => {
       <div className="mt-[53px] flex flex-row">
         <div className="flex flex-row gap-2">
           <div className="text-gray-800 font-2xl-bold">작성된 지급결의서</div>
-          <span className="text-gray-500 font-2xl-medium"> {data.length} </span>
+          <span className="text-gray-500 font-2xl-medium"> 0 </span>
         </div>
       </div>
       <WritePayment />
