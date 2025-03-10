@@ -23,7 +23,7 @@ import { CSHome } from '../pages/CS/home';
 import Step1 from '../pages/CS/uploadTax/Step1';
 import Step2 from '../pages/CS/uploadTax/Step2';
 import Step3 from '../pages/CS/uploadTax/Step3';
-
+import { PaymentDetail } from '../pages/HQ/payment/PaymentDetail';
 //TODO: 직접 url수정으로 다른 role 페이지 이동 막기
 
 const router = createBrowserRouter([
@@ -48,7 +48,8 @@ const router = createBrowserRouter([
       { path: '/HQ-home', element: <HQ_home /> },
       { path: '/head-customer', element: <HeadCustomer /> },
       { path: '/tax', element: <Tax /> },
-      { path: '/payment', element: <Payment /> }
+      { path: '/payment', element: <Payment /> },
+      { path: '/payment/detail/1', element: <PaymentDetail /> }
     ]
   },
   //대리점쪽 라우터(CS)
