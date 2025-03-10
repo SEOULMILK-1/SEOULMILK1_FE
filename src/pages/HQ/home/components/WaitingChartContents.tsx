@@ -27,10 +27,13 @@ const WaitingChartContents = () => {
             <div className="w-[200px] pl-5 font-sm-medium text-gray-800">
               {item.center}
             </div>
-            <div className="w-[562px] pl-5 font-sm-medium text-gray-800">
+            <div className="w-[350px] pl-5 font-sm-medium text-gray-800">
               {item.title}
             </div>
             <div className="w-[170px] pl-5 font-sm-medium text-gray-800">
+              {item.date}
+            </div>
+            <div className="w-[120px] pl-5 font-sm-medium text-gray-800">
               {item.date}
             </div>
           </div>

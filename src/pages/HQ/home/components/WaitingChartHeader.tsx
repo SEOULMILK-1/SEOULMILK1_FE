@@ -9,7 +9,7 @@ const WaitingChartHeader = () => {
       <div className="mt-1">
         <ChartLine />
       </div>
-      <div className="w-[562px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
+      <div className="w-[350px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
         제목
       </div>
       <div className="mt-1">
@@ -17,6 +17,12 @@ const WaitingChartHeader = () => {
       </div>
       <div className="w-[170px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
         발행일
+      </div>
+      <div className="mt-1">
+        <ChartLine />
+      </div>
+      <div className="w-[120px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
+        대리점 관리자
       </div>
     </div>
   );
