@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
-import TaxDetailModal from '../../../../common/TaxDetailModal';
 import api from '../../../../hooks/api';
+import TaxDetailModal from './TaxDetailModal';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 interface InvoiceData {
   id: string;
@@ -10,6 +11,8 @@ interface InvoiceData {
   title: string;
   taxDate: string;
   team: string;
+  center: string;
+  date: string;
   approvalNo: string;
   supplier: string;
   recipient: string;
@@ -39,24 +42,50 @@ const CustomerChartContent = ({
   const [data, setData] = useState<InvoiceData[]>([]);
   const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const [page] = useState(0);
+  const size = 20;
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('accesstoken');
         const response = await api.get('/hq/search/tax', {
           params: {
             page: currentPage - 1,
             size: pageSize
           },
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
         });
+        if (response.data.isSuccess) {
+          const transformedData = response.data.result.responseList.map(
+            (item: any) => ({
+              id: item.ntsTaxId ? String(item.ntsTaxId) : '',
+              title: item.title || '제목 없음',
+              date: item.taxDate || '날짜 없음',
+              center: item.csName || '센터 없음'
+            })
+          );
 
+          setData(transformedData);
+            
         setData(response.data.result.responseList);
         onTotalItemsChange(response.data.result.totalElements);
+
+          const taxIdParam = searchParams.get('taxId');
+          if (taxIdParam) {
+            const itemToSelect = transformedData.find(
+              (item: InvoiceData) => item.id === taxIdParam
+            );
+            if (itemToSelect) {
+              setSelectedItem(itemToSelect);
+              setIsModalOpen(true);
+            }
+          }
+        } else {
+          console.error('API 요청 실패:', response.data.message);
+        }
+    
       } catch (error) {
         console.error('API 요청 중 오류 발생:', error);
       }
@@ -75,12 +104,27 @@ const CustomerChartContent = ({
   const handleItemClick = (item: InvoiceData) => {
     setSelectedItem(item);
     setIsModalOpen(true);
+    setSearchParams({ taxId: item.id });
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
+
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete('taxId');
+    setSearchParams(newSearchParams);
   };
+  useEffect(() => {
+    const taxIdParam = searchParams.get('taxId');
+    if (taxIdParam && !isModalOpen) {
+      const item = data.find((item) => item.id === taxIdParam);
+      if (item) {
+        setSelectedItem(item);
+        setIsModalOpen(true);
+      }
+    }
+  }, [location.pathname, data]);
 
   const parseDate = (dateString: string): Date => {
     if (!dateString) return new Date(0);
@@ -146,7 +190,7 @@ const CustomerChartContent = ({
         ))
       ) : (
         <div className="flex justify-center items-center h-full text-gray-500">
-          {isFiltering ? '결과가 없습니다.' : '로그인 후 이용해주세요'}
+          {isFiltering ? '결과가 없습니다.' : ''}
         </div>
       )}
       <TaxDetailModal

@@ -23,7 +23,7 @@ const PaymentChartHeader = () => {
         <ChartLine />
       </div>
       <div className="w-[120px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-        성명
+        본사 담당자
       </div>
     </div>
   );
