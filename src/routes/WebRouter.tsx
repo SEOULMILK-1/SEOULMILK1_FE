@@ -34,7 +34,7 @@ const WebRouter = createBrowserRouter([
 
   // 관리자쪽 라우터 (ADMIN)
   {
-    path: '/Wadmin',
+    path: '/admin',
     element: <AdminRootLayout />,
     children: [
       { path: 'home', element: <DashBoard /> },
