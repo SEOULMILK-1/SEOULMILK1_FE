@@ -49,7 +49,7 @@ const Step1Mobile = () => {
       const { ntsTaxId, issueId, status, title, issueDate } = res.data.result;
 
       if (issueId === '이미 등록된 세금계산서입니다.') {
-        if (status === 'APPROVED') {
+        if (status === 'APPROVE') {
           setDuplicateId(ntsTaxId.toString());
           setDuplicateTitle(title || '세금계산서');
           setDuplicateTaxDate(issueDate || '날짜 없음');
@@ -71,6 +71,7 @@ const Step1Mobile = () => {
           navigate(`/uploadTax/step2?taxId=${ntsTaxId}`, {
             state: { ocrData: res.data, selectedImage: croppedImage }
           });
+
           return;
         }
       }

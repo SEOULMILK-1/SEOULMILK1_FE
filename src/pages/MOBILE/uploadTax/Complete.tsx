@@ -30,7 +30,7 @@ function Complete() {
         <div className="w-full flex mt-auto rounded-[12px] text-center justify-center">
           <Button
             className="w-[160px] h-[56px] font-xl-semibold bg-white border border-primary-700 text-primary-600"
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/cs')}
           >
             추가 업로드
           </Button>

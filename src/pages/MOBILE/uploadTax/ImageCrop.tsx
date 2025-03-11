@@ -15,12 +15,7 @@ interface ImageCropProps {
   onComplete?: () => void;
 }
 
-const ImageCrop = ({
-  initialImage,
-  onCropComplete,
-  onClose,
-  onComplete
-}: ImageCropProps) => {
+const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [crop, setCrop] = useState<Crop>({
@@ -266,7 +261,6 @@ const ImageCrop = ({
     const naturalAspectRatio = imageSize.naturalWidth / imageSize.naturalHeight;
     updateCropArea(naturalAspectRatio);
   };
-
 
   return (
     <div className="relative flex flex-col items-center w-full h-full bg-black overflow-hidden">
