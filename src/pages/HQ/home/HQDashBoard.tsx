@@ -6,6 +6,8 @@ import WritePayment from './components/WritePayment';
 import { useState } from 'react';
 import HQAgencyModal from './components/HQAgencyModal';
 import api from '../../../hooks/api';
+import TaxIconGray from '../../../../public/Icon/TaxIconGray';
+import PaymentIcon from '../../../../public/Icon/PaymentIcon';
 
 const HQ_home = () => {
   const [isModal, setIsModal] = useState(false);
@@ -31,7 +33,8 @@ const HQ_home = () => {
     <div className="mx-[94px] w-[960px]">
       <Header title="이번 달 지급결의 현황" Icon={HQHome} />
       <div className="mt-8 flex flex-row justify-between">
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 justify-center items-center">
+          <TaxIconGray />
           <div className="text-gray-800 font-2xl-bold">
             지급 대기 세금계산서
           </div>
@@ -71,7 +74,8 @@ const HQ_home = () => {
       <WaitingTax onDataLength={setDataLength} />
 
       <div className="mt-[53px] flex flex-row">
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 justify-center items-center">
+          <PaymentIcon />
           <div className="text-gray-800 font-2xl-bold">작성된 지급결의서</div>
           <span
             className={` font-2xl-medium ${
