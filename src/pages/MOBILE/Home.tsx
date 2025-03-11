@@ -7,8 +7,11 @@ import LogoGray from '../../../public/Icon/LogoGray';
 import TaxIconGray from '../../../public/Icon/TaxIconGray';
 import SpeakerGray from '../../../public/Icon/SpeakerGray';
 import ArrowIcon from '../../../public/Icon/ArrowIcon';
+import { useAuthStore } from '../../store/useAuthStore';
 
 const Home = () => {
+  const { user } = useAuthStore();
+  console.log('Zustand 상태:', { user });
   const navigate = useNavigate();
   const [_, setSelectedImage] = useState<string | null>(null);
 
@@ -36,8 +39,8 @@ const Home = () => {
       </header>
 
       <section className="mt-6 mb-4 ">
-        <h1 className="font-md-bold text-gray-800 pb-1">김구름 님</h1>
-        <p className="font-sm-regular text-gray-500">서울우유태평고객센터</p>
+        <h1 className="font-md-bold text-gray-800 pb-1">{user?.name}님</h1>
+        <p className="font-sm-regular text-gray-500">{user?.teamName}</p>
       </section>
 
       <div className="flex gap-3 mb-6 justify-center">

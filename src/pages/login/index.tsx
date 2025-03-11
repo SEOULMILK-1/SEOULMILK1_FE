@@ -7,6 +7,7 @@ import LoginFooter from './components/LoginFooter';
 import ApprovalModal from './components/ApprovalModal';
 import api from '../../hooks/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/useAuthStore';
 
 function LoginPage() {
   const [loginId, setLoginId] = useState('');
@@ -14,7 +15,7 @@ function LoginPage() {
   const [error, setError] = useState('');
   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { setAuthData, fetchUserInfo } = useAuthStore();
   const isButtonDisabled = !loginId || !password;
 
   const handleLogin = async () => {
@@ -29,7 +30,8 @@ function LoginPage() {
       if (response.data) {
         const accessToken =
           response.headers['authorization']?.split('Bearer ')[1];
-
+        setAuthData(accessToken);
+        await fetchUserInfo();
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken);
           console.log('Access Token 저장', accessToken);
