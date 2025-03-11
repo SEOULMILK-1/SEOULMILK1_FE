@@ -22,3 +22,19 @@ export interface PaymentData {
   totalSupplyAmount: number;
   totalAllAmount: number;
 }
+
+export interface PaymentDatailModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedItem: {
+    id: string;
+    status: string;
+    center: string;
+    date: string;
+    approvalNo: string;
+    supplier: string;
+    recipient: string;
+    dateFormatted: string;
+    amount: string;
+  } | null;
+}

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '../../../common/Modal';
 import api from '../../../hooks/api';
+
 interface AccountEditModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -18,14 +19,44 @@ const AccountEditModal = ({
 }: AccountEditModalProps) => {
   const [bankName, setBankName] = useState(initialBank);
   const [accountNumber, setAccountNumber] = useState(initialAccount);
+  const [userInfo, setUserInfo] = useState<{
+    loginId: string;
+    email: string;
+    phone: string;
+  } | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  // 계좌 정보 업데이트 함수 (PUT 요청)
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await api.get('/user');
+        if (response.data.isSuccess) {
+          setUserInfo(response.data.result);
+        } else {
+          console.error('사용자 정보 불러오기 실패:', response.data.message);
+        }
+      } catch (error) {
+        console.error('서버 요청 실패:', error);
+      }
+    };
+
+    if (isOpen) {
+      fetchUserInfo(); 
+      setBankName(initialBank); 
+      setAccountNumber(initialAccount);
+    }
+  }, [isOpen, initialBank, initialAccount]);
+
   const handleUpdateAccount = async () => {
+    if (!userInfo || isUpdating) return; 
+
+    setIsUpdating(true);
+
     try {
       const payload = {
-        loginId: 'user123',
-        email: 'user@example.com',
-        phone: '010-1234-5678',
+        loginId: userInfo.loginId, 
+        email: userInfo.email,
+        phone: userInfo.phone,
         bank: bankName,
         account: accountNumber
       };
@@ -33,13 +64,17 @@ const AccountEditModal = ({
       await api.put('/user/update', payload);
       console.log(' 계좌 정보 업데이트 성공');
 
-      // 부모 컴포넌트(PaymentDetail)로 변경된 값 전달
       onUpdate(bankName, accountNumber);
       onClose();
     } catch (error) {
-      console.error(' 계좌 정보 업데이트 실패:', error);
+      console.error('계좌 정보 업데이트 실패:', error);
+    } finally {
+      setIsUpdating(false); 
     }
   };
+
+  const isModified =
+    bankName !== initialBank || accountNumber !== initialAccount;
 
   if (!isOpen) return null;
 
@@ -49,6 +84,7 @@ const AccountEditModal = ({
         <h2 className="font-md-semibold text-gray-600">
           사업자 계좌 (지급 요청 계좌)
         </h2>
+
         <input
           type="text"
           className="w-full p-4 border border-gray-300 rounded-[12px] my-2 font-md-medium text-gray-500"
@@ -73,10 +109,15 @@ const AccountEditModal = ({
             취소
           </button>
           <button
-            className="w-full py-2 bg-emerald-600 text-white rounded-[12px]"
+            className={`w-full py-2 rounded-[12px] ${
+              isModified && !isUpdating
+                ? 'bg-emerald-600 text-white cursor-pointer'
+                : 'bg-gray-300 text-gray-600 cursor-not-allowed'
+            }`}
             onClick={handleUpdateAccount}
+            disabled={!isModified || isUpdating} 
           >
-            완료
+            {isUpdating ? '업데이트 중...' : '완료'}
           </button>
         </div>
       </div>

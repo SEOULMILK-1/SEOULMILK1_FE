@@ -6,7 +6,8 @@ import EditIcon from '../../../../public/Icon/EditIcon';
 import { useEffect, useState } from 'react';
 import api from '../../../hooks/api';
 import AccountEditModal from './AccountEditModal';
-import { useParams } from 'react-router-dom';
+import PaymentDetailModal from './PaymentDetailModal';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { PaymentData } from '../../../types/paymentDetails';
 
 const PaymentDetail = () => {
@@ -17,6 +18,8 @@ const PaymentDetail = () => {
   const [paymentData, setPaymentData] = useState<PaymentData>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTaxItem, setSelectedTaxItem] = useState<any | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchPaymentDetails = async () => {
@@ -24,8 +27,8 @@ const PaymentDetail = () => {
         const response = await api.get(`/hq/payment-resolution/${id}`);
         if (response.data.isSuccess) {
           setPaymentData(response.data.result);
-          setBankName(response.data.result.bank || '-');
-          setAccountNumber(response.data.result.account || '-');
+          setBankName(response.data.result.bank);
+          setAccountNumber(response.data.result.account);
         } else {
           setError('데이터를 불러오는 중 오류가 발생했습니다.');
         }
@@ -41,6 +44,31 @@ const PaymentDetail = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const taxId = searchParams.get('ntsId');
+    if (taxId && paymentData?.paymentDetails) {
+      const itemToSelect = paymentData.paymentDetails.find(
+        (item) => item.ntsTaxNum === taxId
+      );
+      if (itemToSelect) {
+        setSelectedTaxItem(itemToSelect);
+      }
+    }
+  }, [searchParams, paymentData]);
+
+  const handleTaxItemClick = (item: any) => {
+    setSelectedTaxItem(item);
+    setSearchParams({ ntsId: item.ntsId.toString() });
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTaxItem(null);
+
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete('ntsId');
+    setSearchParams(newSearchParams);
+  };
+
   const handleDownloadPaymentResolution = async () => {
     try {
       const response = await api.get(`/hq/payment-resolution/pdf/${id}`, {
@@ -54,9 +82,9 @@ const PaymentDetail = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      console.log('✅ 지급 결의서 다운로드 성공');
+      console.log(' 지급 결의서 다운로드 성공');
     } catch (error) {
-      console.error('🚨 지급 결의서 다운로드 실패:', error);
+      console.error(' 지급 결의서 다운로드 실패:', error);
     }
   };
 
@@ -138,7 +166,6 @@ const PaymentDetail = () => {
             </div>
           </div>
 
-          {/* Right Column - Payment Sender */}
           <div>
             <div className="grid grid-cols-2  border-b border-gray-100 bg-gray-50">
               <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
@@ -163,7 +190,7 @@ const PaymentDetail = () => {
                 결제권자
               </div>
               <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                ??
+                -
               </div>
             </div>
 
@@ -181,7 +208,7 @@ const PaymentDetail = () => {
                 지급 예정일
               </div>
               <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                ??
+                -
               </div>
             </div>
           </div>
@@ -189,12 +216,10 @@ const PaymentDetail = () => {
       </div>
 
       {/* 반영된 세금계산서 */}
-      {/* Tax Invoice Section */}
       <div className="mb-8">
         <h2 className="font-2xl-bold text-gray-800 mb-6">반영된 세금계산서</h2>
 
         <div className="w-[960px] rounded-[24px] border border-gray-200 overflow-hidden">
-          {/* Table Header */}
           <div className="flex items-center h-[42px] bg-gray-50 border-b border-gray-300 mt-[14px]  pl-2 pr-5">
             <div className="pl-5 pr-5 text-gray-500 font-sm-medium w-[100px] ">
               번호
@@ -213,7 +238,6 @@ const PaymentDetail = () => {
             </div>
           </div>
 
-          {/* Table Body */}
           <div className="max-h-80 overflow-y-auto">
             {paymentData?.paymentDetails &&
             paymentData.paymentDetails.length > 0 ? (
@@ -222,7 +246,8 @@ const PaymentDetail = () => {
                   key={index}
                   className={`flex items-center py-3 border-b border-gray-100 px-5 ${
                     index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-                  }`}
+                  } hover:bg-gray-100 rounded-[12px]`}
+                  onClick={() => handleTaxItemClick(tax)}
                 >
                   <div className="w-[92px] px-5">{index + 1}</div>
                   <div className="px-5 w-[350px]  overflow-hidden text-ellipsis">
@@ -249,12 +274,20 @@ const PaymentDetail = () => {
 
       <div className="flex justify-end">
         <Button
+          size="sm"
           className="bg-primary-700 h-[48px] rounded-[12px] w-[180px] text-white px-6 py-3 font-md-medium whitespace-nowrap"
           onClick={handleDownloadPaymentResolution}
         >
           지급 결의서 다운로드
         </Button>
       </div>
+      {selectedTaxItem && (
+        <PaymentDetailModal
+          isOpen={!!selectedTaxItem}
+          onClose={handleCloseModal}
+          selectedItem={selectedTaxItem}
+        />
+      )}
       <AccountEditModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

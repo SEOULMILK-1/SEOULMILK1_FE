@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import StatusBadge, { Status } from '../../../common/StatusBagde';
-import ArrowIcon from '../../../../public/Icon/ArrowIcon';
-import api from '../../../hooks/api';
-import Button from '../../../common/Button';
-import { PaymentDatailModalProps } from '../../../types/paymentDetails';
-import { TaxDetailResponse } from '../../../types/taxDetails';
+import api from '../../../../hooks/api';
+import StatusBadge, { Status } from '../../../../common/StatusBagde';
+import ArrowIcon from '../../../../../public/Icon/ArrowIcon';
+import Button from '../../../../common/Button';
+import {
+  TaxDetailModalProps,
+  TaxDetailResponse
+} from '../../../../types/taxDetails';
 
-const PaymentDatailModal = ({
+const TaxDetailModal = ({
   isOpen,
   onClose,
   selectedItem
-}: PaymentDatailModalProps) => {
+}: TaxDetailModalProps) => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
@@ -22,19 +25,20 @@ const PaymentDatailModal = ({
     TaxDetailResponse['result'] | null
   >(null);
 
-  const ntsId = searchParams.get('ntsId');
-  console.log(ntsId);
-
   useEffect(() => {
     const fetchTaxDetail = async () => {
-      if (!isOpen || !ntsId) {
-        console.log('ntsId가 없습니다.');
+      if (!isOpen || !selectedItem?.id) {
+        console.log(' selectedItem 또는 id가 없습니다.');
         return;
       }
-      console.log(`${selectedItem}`);
+
+      setLoading(true);
+      setError(null);
 
       try {
-        const response = await api.get<TaxDetailResponse>(`/cs/tax/${ntsId}`);
+        const response = await api.get<TaxDetailResponse>(
+          `/cs/tax/${selectedItem.id}`
+        );
 
         if (response.data.isSuccess) {
           setDetailData(response.data.result);
@@ -45,14 +49,14 @@ const PaymentDatailModal = ({
         }
       } catch (err) {
         setError('서버 연결에 실패했습니다. 다시 시도해 주세요.');
-        console.error(' API 요청 오류', err);
+        console.error(' API 요청 오류:', err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchTaxDetail();
-  }, [isOpen, selectedItem, ntsId]);
+  }, [isOpen, selectedItem]);
 
   useEffect(() => {
     if (isOpen) {
@@ -69,7 +73,6 @@ const PaymentDatailModal = ({
 
   const handleClose = () => {
     setIsClosing(true);
-
     setTimeout(() => {
       setIsClosing(false);
       onClose();
@@ -102,14 +105,20 @@ const PaymentDatailModal = ({
     ? getDisplayStatus(detailData.status)
     : (selectedItem.status as Status);
 
+  const handleNavigateToPaymentDetail = () => {
+    if (selectedItem?.id) {
+      navigate(`/payment/detail/${selectedItem.id}`);
+    }
+  };
+
   return (
     <div
-      className={`fixed p-4 pr-0 inset-0 flex justify-end items-start z-50 transition-opacity duration-300
+      className={`fixed p-4 pr-0 inset-0 flex justify-end items-start z-50 transition-opacity duration-300 
       ${isOpening && !isClosing ? 'opacity-100' : 'opacity-0'}`}
       onClick={handleClose}
     >
       <div
-        className={`relative bg-white pt-8 px-6 rounded-[24px] drop-shadow-elevation3 w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300
+        className={`relative bg-white pt-8 px-6 rounded-[24px] drop-shadow-elevation3 w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300 
                 overflow-y-auto custom-scrollbar ${
                   isOpening && !isClosing ? 'translate-x-0' : 'translate-x-full'
                 }`}
@@ -192,16 +201,16 @@ const PaymentDatailModal = ({
                 value={detailData?.chargeTotal || selectedItem.amount}
               />
             </div>
-
-            {isRejected && (
-              <div className="font-xl-semibold flex justify-between w-full p-4 bg-white sticky bottom-0 left-0 right-0 gap-4 ">
-                <Button className="bg-warning-400 text-white w-[168px] h-[56px]">
-                  데이터 수정
-                </Button>
-              </div>
-            )}
           </>
         )}
+      </div>
+      <div className="font-xl-semibold flex justify-between w-full p-4 bg-white sticky bottom-0 left-0 right-0 gap-4 ">
+        <Button
+          className="bg-warning-400 text-white w-[168px] h-[56px]"
+          onClick={handleNavigateToPaymentDetail}
+        >
+          데이터 수정
+        </Button>
       </div>
 
       {isImageModalOpen && (
@@ -235,4 +244,4 @@ const DetailField = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-export default PaymentDatailModal;
+export default TaxDetailModal;

@@ -220,10 +220,18 @@ const TaxDetailModal = ({
             <div>
               <h2 className="flex text-center font-xl-semibold text-gray-800 mt-[12px]">
                 {detailData?.title ||
-                  `${selectedItem.center}_${selectedItem.date
-                    .replace(/\./g, '_')
-                    .replace(/^(\d{4})_(\d{2})_(\d{2})$/, '$1년_$2월_$3일')}`}
+                  `${selectedItem.center}_${
+                    selectedItem.date
+                      ? selectedItem.date
+                          .replace(/\./g, '_')
+                          .replace(
+                            /^(\d{4})_(\d{2})_(\d{2})$/,
+                            '$1년_$2월_$3일'
+                          )
+                      : '날짜 없음'
+                  }`}
               </h2>
+
               <div
                 className="w-[352px] h-[264px] border rounded-[24px] flex items-center justify-center mt-4 cursor-pointer"
                 onClick={handleImageClick}

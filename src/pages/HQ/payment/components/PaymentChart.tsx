@@ -3,6 +3,8 @@ import PaymentChartHeader from './PaymentChartHeader';
 import ChartPagination from '../../../../common/ChartPagination';
 import PaymentChartContent from './PaymentContent';
 import api from '../../../../hooks/api';
+
+
 const PaymentChart = () => {
   const [data, setData] = useState([]);
   const [period, setPeriod] = useState<number | undefined>();
@@ -17,9 +19,7 @@ const PaymentChart = () => {
       setError(null);
 
       try {
-        const response = await api.get(
-          `/hq/payment-resolution/list/${period || '1'}?page=0&size=${size}`
-        );
+        const response = await api.get(`/hq/payment-resolution/list/all`);
         if (response.data.isSuccess) {
           setData(response.data.result);
         } else {
