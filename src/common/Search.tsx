@@ -30,9 +30,7 @@ const Search = ({
   };
 
   const handleSearch = () => {
-    if (inputValue.trim() !== '') {
-      onSearch(inputValue);
-    }
+    onSearch(inputValue.trim());
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -44,7 +42,10 @@ const Search = ({
   return (
     <div className="mt-8 flex flex-row gap-4">
       <div className="relative w-[360px]">
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
+        <div
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+          onClick={handleSearch}
+        >
           {inputValue.length > 0 ? activeSearchIcon : defaultSearchIcon}
         </div>
         <input
@@ -69,7 +70,7 @@ const Search = ({
 
       {showSearchButton && (
         <div onClick={handleSearch}>
-          <SearchButton isActive={inputValue.length > 0} />
+          <SearchButton isActive={true} />
         </div>
       )}
     </div>
