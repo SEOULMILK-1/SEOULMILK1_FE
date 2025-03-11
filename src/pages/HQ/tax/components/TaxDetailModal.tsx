@@ -15,7 +15,6 @@ const TaxDetailModal = ({
   selectedItem
 }: TaxDetailModalProps) => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -99,8 +98,6 @@ const TaxDetailModal = ({
     return statusMap[apiStatus] || (apiStatus as Status);
   };
 
-  const isRejected =
-    detailData?.status === 'REJECTED' || selectedItem.status === '반려됨';
   const displayStatus = detailData
     ? getDisplayStatus(detailData.status)
     : (selectedItem.status as Status);

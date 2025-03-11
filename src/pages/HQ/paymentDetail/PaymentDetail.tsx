@@ -103,7 +103,10 @@ const PaymentDetail = () => {
       <Header
         title={paymentData?.name || 'N/A'}
         Icon={() => (
-          <div onClick={() => navigate(-1)} style={{ cursor: 'pointer' }}>
+          <div
+            onClick={() => navigate('/payment')}
+            style={{ cursor: 'pointer' }}
+          >
             <ArrowIcon strokeColor="#3A404A" />
           </div>
         )}
