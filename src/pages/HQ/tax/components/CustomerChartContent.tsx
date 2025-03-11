@@ -44,8 +44,6 @@ const CustomerChartContent = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const [page] = useState(0);
-  const size = 20;
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
 
   useEffect(() => {
