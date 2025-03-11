@@ -74,6 +74,7 @@ function LoginPage() {
           />
           <FloatingLabelInput
             placeholder="비밀번호"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
