@@ -21,16 +21,16 @@ const WaitingChartContents = ({ onDataLength }: LenghProps) => {
       try {
         const token = localStorage.getItem('accesstoken');
 
-        const response = await api.get('/hq/waiting/nts_tax', {
+        const response = await api.get('/hq/wait/tax', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
-        console.log('11111', response.data);
-        console.log('2222', response.data.result.length);
-        setData(response.data.result);
-        onDataLength(response.data.result.length);
+        // console.log('11111', response.data);
+        // console.log('2222', response.data.result.responseList.length);
+        setData(response.data.result.responseList);
+        onDataLength(response.data.result.responseList.length);
       } catch (error) {
         console.error('연결에 에러가 발생했습니다.', error);
       }
