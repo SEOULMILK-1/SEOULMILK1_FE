@@ -5,7 +5,7 @@ import PaymentChartContent from './PaymentContent';
 import api from '../../../../hooks/api';
 
 const PaymentChart = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
@@ -24,9 +24,16 @@ const PaymentChart = () => {
             size: pageSize
           }
         });
+
+        console.log('API 응답:', response.data);
+
         if (response.data.isSuccess) {
-          setData(response.data.result.responseList);
-          setTotalItems(response.data.result.totalElements);
+          const resultData = Array.isArray(response.data.result)
+            ? response.data.result
+            : [];
+
+          setData(resultData);
+          setTotalItems(resultData.length);
         } else {
           setError('데이터를 불러오는 중 오류가 발생했습니다.');
         }
@@ -46,6 +53,7 @@ const PaymentChart = () => {
     setPageSize(size);
     setCurrentPage(1);
   };
+
   return (
     <div className="mt-4 flex h-[714px] flex-col border border-gray-300 bg-white rounded-3xl">
       <PaymentChartHeader />

@@ -22,54 +22,60 @@ const AccountEditModal = ({
   const [userInfo, setUserInfo] = useState<{
     loginId: string;
     email: string;
-    phone: string;
+    phone: string | null;
+    bank: string;
+    account: string;
   } | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await api.get('/user');
+        const response = await api.get('/user/detail');
         if (response.data.isSuccess) {
+          console.log('사용자 정보 불러오기 성공:', response.data.result);
           setUserInfo(response.data.result);
         } else {
-          console.error('사용자 정보 불러오기 실패:', response.data.message);
+          console.error(' 사용자 정보 불러오기 실패:', response.data.message);
         }
       } catch (error) {
-        console.error('서버 요청 실패:', error);
+        console.error(' 서버 요청 실패:', error);
       }
     };
 
     if (isOpen) {
-      fetchUserInfo(); 
-      setBankName(initialBank); 
-      setAccountNumber(initialAccount);
+      fetchUserInfo();
     }
-  }, [isOpen, initialBank, initialAccount]);
+  }, [isOpen]);
 
   const handleUpdateAccount = async () => {
-    if (!userInfo || isUpdating) return; 
+    if (!userInfo || isUpdating) return;
 
     setIsUpdating(true);
 
     try {
       const payload = {
-        loginId: userInfo.loginId, 
+        loginId: userInfo.loginId,
         email: userInfo.email,
-        phone: userInfo.phone,
+        phone: userInfo.phone || '', 
         bank: bankName,
         account: accountNumber
       };
 
-      await api.put('/user/update', payload);
-      console.log(' 계좌 정보 업데이트 성공');
+
+      await api.put('/user/update', payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('계좌 정보 업데이트 성공');
 
       onUpdate(bankName, accountNumber);
       onClose();
     } catch (error) {
       console.error('계좌 정보 업데이트 실패:', error);
     } finally {
-      setIsUpdating(false); 
+      setIsUpdating(false);
     }
   };
 
@@ -101,7 +107,7 @@ const AccountEditModal = ({
           placeholder="계좌번호 입력"
         />
 
-        <div className="flex justify-between gap-4 mt-6 font-xl-semibold ">
+        <div className="flex justify-between gap-4 mt-6 font-xl-semibold">
           <button
             className="w-full h-[56px] py-2 bg-gray-200 text-gray-600 rounded-[12px]"
             onClick={onClose}
@@ -115,7 +121,7 @@ const AccountEditModal = ({
                 : 'bg-gray-300 text-gray-600 cursor-not-allowed'
             }`}
             onClick={handleUpdateAccount}
-            disabled={!isModified || isUpdating} 
+            disabled={!isModified || isUpdating}
           >
             {isUpdating ? '업데이트 중...' : '완료'}
           </button>
