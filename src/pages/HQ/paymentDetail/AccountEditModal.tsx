@@ -56,12 +56,12 @@ const AccountEditModal = ({
     try {
       const payload = {
         loginId: userInfo.loginId,
-        email: userInfo.email,
-        phone: userInfo.phone || '', 
+        email: userInfo.email?.trim() || 'default@example.com', // NULL 방지
+        phone: userInfo.phone?.trim() || '',
         bank: bankName,
         account: accountNumber
       };
-
+      console.log('보낼 데이터:', payload); // 실제 요청 데이터 확인
 
       await api.put('/user/update', payload, {
         headers: {
@@ -93,7 +93,7 @@ const AccountEditModal = ({
 
         <input
           type="text"
-          className="w-full p-4 border border-gray-300 rounded-[12px] my-2 font-md-medium text-gray-500"
+          className="w-full p-4 border border-gray-300 rounded-[12px] my-2 font-md-medium text-gray-600"
           value={bankName}
           onChange={(e) => setBankName(e.target.value)}
           placeholder="은행명 입력"
@@ -101,7 +101,7 @@ const AccountEditModal = ({
 
         <input
           type="text"
-          className="w-full p-4 border border-gray-300 rounded-[12px] mb-[30px] font-md-medium text-gray-500"
+          className="w-full p-4 border border-gray-300 rounded-[12px] mb-[30px] font-md-medium text-gray-600"
           value={accountNumber}
           onChange={(e) => setAccountNumber(e.target.value)}
           placeholder="계좌번호 입력"
