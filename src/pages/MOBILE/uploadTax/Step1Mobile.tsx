@@ -5,7 +5,7 @@ import ImageCrop from './ImageCrop';
 import api from '../../../hooks/api';
 import DuplicateTaxModal from '../../CS/TaxUpload/DuplicateTaxModal';
 
-const Step1 = () => {
+const Step1Mobile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -120,4 +120,4 @@ const Step1 = () => {
   );
 };
 
-export default Step1;
+export default Step1Mobile;

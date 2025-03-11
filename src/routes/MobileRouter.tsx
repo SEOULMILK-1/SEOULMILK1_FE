@@ -1,18 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Checking } from '../pages/MOBILE/uploadTax/Checking';
-import { Complete } from '../pages/MOBILE/uploadTax/Complete';
-import Step1 from '../pages/MOBILE/uploadTax/Step1';
+
+import Step1Mobile from '../pages/MOBILE/uploadTax/Step1Mobile';
 import Home from '../pages/MOBILE/Home';
-import Step2 from '../pages/MOBILE/uploadTax/Step2';
+import Step2Mobile from '../pages/MOBILE/uploadTax/Step2Mobile';
 import LoginPage from '../pages/login';
+import Step3Mobile from '../pages/MOBILE/uploadTax/Step3Mobile';
+import Complete from '../pages/MOBILE/uploadTax/Complete';
 
 const MobileRouter = createBrowserRouter([
-  { path: '/', element: <Home /> },
-  { path: '/uploadTax/step1', element: <Step1 /> },
-  { path: '/uploadTax/step2', element: <Step2 /> },
-  { path: '/checking', element: <Checking /> },
+  { path: '/', element: <LoginPage /> },
+  { path: '/uploadTax/step1', element: <Step1Mobile /> },
+  { path: '/uploadTax/step2', element: <Step2Mobile /> },
+  { path: '/uploadTax/step3/checking', element: <Step3Mobile /> },
   { path: '/complete', element: <Complete /> },
-  { path: '/login', element: <LoginPage /> }
+  { path: '/Home', element: <Home /> }
 ]);
 
 export default MobileRouter;

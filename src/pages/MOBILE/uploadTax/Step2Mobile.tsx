@@ -1,7 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Header from '../../../common/Header';
-import uploadIcon from '../../../../public/Icon/TaxUpload.svg';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
 import api from '../../../hooks/api';
 import queryString from 'query-string';

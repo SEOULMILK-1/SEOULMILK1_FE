@@ -21,9 +21,9 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen ">
-      <h1 className="text-xl font-semibold mb-4">세금계산서 업로드</h1>
+      <h1>세금계산서 업로드 홈</h1>
 
-      <label className="bg-green-500 text-white px-6 py-3 rounded-lg flex items-center gap-2 cursor-pointer">
+      <label className="bg-green-500 text-white px-6 py-3 ">
         사진 업로드
         <input
           type="file"
