@@ -5,6 +5,8 @@ interface PaymentData {
   paymentResolutionName: string;
   createdAt: string;
   paymentRecipient: string;
+  hqUserName: string;
+  suDeptName: string;
 }
 
 interface Props {
@@ -18,7 +20,7 @@ const PaymentChartContent = ({ data }: Props) => {
       {data.map((item) => (
         <div
           key={item.paymentResolutionId}
-          className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"
+          className="mx-[8px] flex w-[960px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"
           onClick={() =>
             navigate(`/payment/detail/${item.paymentResolutionId}`)
           }
@@ -26,13 +28,15 @@ const PaymentChartContent = ({ data }: Props) => {
           <div className="w-[350px] pl-5 text-sm font-medium text-gray-700 truncate">
             {item.paymentResolutionName}
           </div>
-          <div className="w-[170px] pl-5 text-sm font-medium text-gray-700">
+          <div className="w-[170px] pl-16 text-sm font-medium text-gray-700">
             {new Date(item.createdAt).toLocaleDateString()}
           </div>
-          <div className="w-[200px] pl-5 text-sm font-medium text-gray-700 truncate">
-            {item.paymentRecipient}
+          <div className="w-[200px] pl-20 text-sm font-medium text-gray-700 truncate">
+            {item.suDeptName}
           </div>
-          <div className="w-[350px] pl-5 text-sm font-medium text-gray-700 truncate"></div>
+          <div className="w-[350px] pl-28 text-sm font-medium text-gray-700 truncate">
+            {item.hqUserName}
+          </div>
         </div>
       ))}
     </div>

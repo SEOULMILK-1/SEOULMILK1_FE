@@ -53,7 +53,7 @@ const PaymentChart = () => {
         )}
       </div>
 
-      <ChartPagination />
+      {/* <ChartPagination /> */}
     </div>
   );
 };
