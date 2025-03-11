@@ -10,11 +10,11 @@ import api from '../../../hooks/api';
 const HQ_home = () => {
   const [isModal, setIsModal] = useState(false);
   const [dataLength, setDataLength] = useState(0);
+  const [writeDataLength, setWriteDataLength] = useState(0);
 
   const handleWritePayment = async () => {
     try {
       const token = localStorage.getItem('accesstoken');
-
       const response = await api.post('/hq/payment-resolution', {
         headers: {
           Authorization: `Bearer ${token}`
@@ -35,7 +35,13 @@ const HQ_home = () => {
           <div className="text-gray-800 font-2xl-bold">
             지급 대기 세금계산서
           </div>
-          <span className="text-gray-500 font-2xl-medium"> {dataLength} </span>
+          <span
+            className={` font-2xl-medium ${
+              dataLength ? 'text-primary-700' : 'text-gray-500'
+            }`}
+          >
+            {dataLength}
+          </span>
         </div>
 
         <div className="flex flex-row gap-4">
@@ -67,10 +73,16 @@ const HQ_home = () => {
       <div className="mt-[53px] flex flex-row">
         <div className="flex flex-row gap-2">
           <div className="text-gray-800 font-2xl-bold">작성된 지급결의서</div>
-          <span className="text-gray-500 font-2xl-medium"> 0 </span>
+          <span
+            className={` font-2xl-medium ${
+              writeDataLength ? 'text-primary-700' : 'text-gray-500'
+            }`}
+          >
+            {writeDataLength}
+          </span>
         </div>
       </div>
-      <WritePayment />
+      <WritePayment onWriteDataLength={setWriteDataLength} />
     </div>
   );
 };
