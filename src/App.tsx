@@ -8,9 +8,17 @@ const App = () => {
   const [isMobileView, setIsMobileView] = useState<boolean | null>(null);
 
   useEffect(() => {
-    setIsMobileView(isMobile);
-  }, []);
+    const updateView = () => {
+      setIsMobileView(isMobile);
+    };
 
+    updateView();
+    window.addEventListener('resize', updateView); // 화면 크기 변경 감지
+
+    return () => {
+      window.removeEventListener('resize', updateView);
+    };
+  }, []);
   if (isMobileView === null) {
     return <p></p>;
   }
