@@ -20,7 +20,7 @@ const SignupModal = () => {
 
         <button
           className="mt-14 flex w-[200px] h-14 px-7 justify-center items-center rounded-xl border border-solid border-primary-600 bg-white text-primary-600 font-xl-semibold"
-          onClick={() => navigate('/login')}
+          onClick={() => navigate('/')}
         >
           로그인하기
         </button>
