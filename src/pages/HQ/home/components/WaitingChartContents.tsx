@@ -3,10 +3,10 @@ import api from '../../../../hooks/api';
 
 interface WaitingtaxProps {
   ntsTaxId: number;
-  suDeptName: string;
   title: string;
-  createdAt: string;
-  csUserName: string;
+  taxDate: string;
+  csName: string;
+  csUser: string;
 }
 
 interface LenghProps {
@@ -27,8 +27,7 @@ const WaitingChartContents = ({ onDataLength }: LenghProps) => {
           }
         });
 
-        // console.log('11111', response.data);
-        // console.log('2222', response.data.result.responseList.length);
+        console.log('11111', response.data);
         setData(response.data.result.responseList);
         onDataLength(response.data.result.responseList.length);
       } catch (error) {
@@ -47,16 +46,16 @@ const WaitingChartContents = ({ onDataLength }: LenghProps) => {
             className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium cursor-pointer"
           >
             <div className="w-[200px] pl-5 font-sm-medium text-gray-800">
-              {item.suDeptName}
+              {item.csName}
             </div>
             <div className="w-[350px] pl-5 font-sm-medium text-gray-800">
               {item.title}
             </div>
             <div className="w-[170px] pl-5 font-sm-medium text-gray-800">
-              {item.createdAt}
+              {item.taxDate}
             </div>
-            <div className="w-[120px] pl-5 font-sm-medium text-gray-800">
-              {item.csUserName}
+            <div className="w-[120px] pl-6 font-sm-medium text-gray-800">
+              {item.csUser}
             </div>
           </div>
         ))
