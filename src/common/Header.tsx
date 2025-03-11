@@ -5,9 +5,15 @@ interface HeaderProps {
   title: string;
   Icon?: React.ComponentType;
   showStepProgress?: boolean;
+  children?: React.ReactNode;
 }
 
-const Header = ({ title, Icon, showStepProgress = false }: HeaderProps) => {
+const Header = ({
+  title,
+  Icon,
+  showStepProgress = false,
+  children
+}: HeaderProps) => {
   return (
     <>
       <div className="mt-8 flex items-center justify-between mb-4">
@@ -15,7 +21,7 @@ const Header = ({ title, Icon, showStepProgress = false }: HeaderProps) => {
           {Icon && <Icon />}
           <div className="text-gray-800 font-2xl-bold">{title}</div>
         </div>
-
+        {children}
         {showStepProgress && <StepProgress />}
       </div>
       <MainLine />

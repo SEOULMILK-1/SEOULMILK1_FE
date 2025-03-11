@@ -1,42 +1,13 @@
 import { useState, useEffect } from 'react';
-import Button from './Button';
-import ArrowIcon from '../../public/Icon/ArrowIcon';
-import StatusBadge, { Status } from './StatusBagde';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import api from '../hooks/api';
-
-interface TaxDetailResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  result: {
-    status: string;
-    title: string;
-    taxImageUrl: string;
-    issueId: string;
-    suId: string;
-    ipId: string;
-    taxDate: string;
-    chargeTotal: string;
-  };
-}
-
-interface TaxDetailModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  selectedItem: {
-    id: string;
-    status: string;
-    ntsTaxId: string;
-    team: string;
-    taxDate: string;
-    approvalNo: string;
-    supplier: string;
-    recipient: string;
-    dateFormatted: string;
-    amount: string;
-  } | null;
-}
+import { useNavigate} from 'react-router-dom';
+import api from '../../../../hooks/api';
+import StatusBadge, { Status } from '../../../../common/StatusBagde';
+import ArrowIcon from '../../../../../public/Icon/ArrowIcon';
+import Button from '../../../../common/Button';
+import {
+  TaxDetailModalProps,
+  TaxDetailResponse
+} from '../../../../types/taxDetails';
 
 const TaxDetailModal = ({
   isOpen,
@@ -44,7 +15,6 @@ const TaxDetailModal = ({
   selectedItem
 }: TaxDetailModalProps) => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -116,55 +86,6 @@ const TaxDetailModal = ({
     setIsImageModalOpen(false);
   };
 
-  const handleReupload = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (event: Event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        const imageUrl = URL.createObjectURL(file);
-        const currentPath = window.location.pathname;
-        const currentSearchParams = searchParams.toString();
-        const returnUrl = `${currentPath}${
-          currentSearchParams ? `?${currentSearchParams}` : ''
-        }`;
-
-        navigate(`/upload-tax/step1?taxId=${selectedItem?.id}`, {
-          state: {
-            selectedImage: imageUrl,
-            returnUrl: returnUrl
-          }
-        });
-      }
-    };
-    input.click();
-  };
-  const handleDataEdit = () => {
-    if (!selectedItem?.id) {
-      console.error('세금계산서 ID 없음!');
-      return;
-    }
-
-    const taxId = selectedItem.id || detailData?.issueId;
-
-    navigate(`/cs-tax/edit?taxId=${taxId}`, {
-      state: {
-        taxId,
-        ...selectedItem,
-        ...(detailData
-          ? {
-              approvalNo: detailData.issueId,
-              supplier: detailData.suId,
-              recipient: detailData.ipId,
-              date: detailData.taxDate,
-              amount: detailData.chargeTotal
-            }
-          : {})
-      }
-    });
-  };
-
   if (!isOpen || !selectedItem) return null;
 
   const getDisplayStatus = (apiStatus: string): Status => {
@@ -177,11 +98,15 @@ const TaxDetailModal = ({
     return statusMap[apiStatus] || (apiStatus as Status);
   };
 
-  const isRejected =
-    detailData?.status === 'REJECTED' || selectedItem.status === '반려됨';
   const displayStatus = detailData
     ? getDisplayStatus(detailData.status)
     : (selectedItem.status as Status);
+
+  const handleNavigateToPaymentDetail = () => {
+    if (selectedItem?.id) {
+      navigate(`/payment/detail/${selectedItem.id}`);
+    }
+  };
 
   return (
     <div
@@ -221,9 +146,16 @@ const TaxDetailModal = ({
             <div>
               <h2 className="flex text-center font-xl-semibold text-gray-800 mt-[12px]">
                 {detailData?.title ||
-                  `${selectedItem.team}_${selectedItem.taxDate
-                    .replace(/\./g, '_')
-                    .replace(/^(\d{4})_(\d{2})_(\d{2})$/, '$1년_$2월_$3일')}`}
+                  `${selectedItem.center}_${
+                    selectedItem.date
+                      ? selectedItem.date
+                          .replace(/\./g, '_')
+                          .replace(
+                            /^(\d{4})_(\d{2})_(\d{2})$/,
+                            '$1년_$2월_$3일'
+                          )
+                      : '날짜 없음'
+                  }`}
               </h2>
 
               <div
@@ -259,32 +191,23 @@ const TaxDetailModal = ({
               />
               <DetailField
                 label="작성일자"
-                value={detailData?.taxDate || selectedItem.taxDate}
+                value={detailData?.taxDate || selectedItem.date}
               />
               <DetailField
                 label="공급가액"
                 value={detailData?.chargeTotal || selectedItem.amount}
               />
             </div>
-
-            {isRejected && (
-              <div className="font-xl-semibold flex justify-between w-full p-4 bg-white sticky bottom-0 left-0 right-0 gap-4 ">
-                <Button
-                  className="text-warning-400 w-[168px] h-[56px] border border-warning-400"
-                  onClick={handleReupload}
-                >
-                  재업로드
-                </Button>
-                <Button
-                  className="bg-warning-400 text-white w-[168px] h-[56px]"
-                  onClick={handleDataEdit}
-                >
-                  데이터 수정
-                </Button>
-              </div>
-            )}
           </>
         )}
+      </div>
+      <div className="font-xl-semibold flex justify-between w-full p-4 bg-white sticky bottom-0 left-0 right-0 gap-4 ">
+        <Button
+          className="bg-warning-400 text-white w-[168px] h-[56px]"
+          onClick={handleNavigateToPaymentDetail}
+        >
+          데이터 수정
+        </Button>
       </div>
 
       {isImageModalOpen && (
