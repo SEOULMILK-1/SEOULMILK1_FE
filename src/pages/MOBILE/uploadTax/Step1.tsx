@@ -2,14 +2,21 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import ImageCrop from './ImageCrop';
-import api from '../../hooks/api';
+import api from '../../../hooks/api';
+import DuplicateTaxModal from '../../CS/TaxUpload/DuplicateTaxModal';
 
-const TaxUpload = () => {
+const Step1 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isDuplicateModalOpen, setIsDuplicateModalOpen] =
+    useState<boolean>(false);
+
+  const [duplicateTitle, setDuplicateTitle] = useState<string>('');
+  const [duplicateTaxDate, setDuplicateTaxDate] = useState<string>('');
+  const [duplicateId, setDuplicateId] = useState<string>('');
 
   useEffect(() => {
     if (location.state?.selectedImage) {
@@ -34,8 +41,38 @@ const TaxUpload = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      const { ntsTaxId } = res.data.result;
-      navigate(`/upload-tax/step2?taxId=${ntsTaxId}`, {
+      console.log('OCR 응답:', res.data.result);
+
+      const { ntsTaxId, issueId, status, title, issueDate } = res.data.result;
+
+      if (issueId === '이미 등록된 세금계산서입니다.') {
+        if (status === 'APPROVED') {
+          setDuplicateId(ntsTaxId.toString());
+          setDuplicateTitle(title || '세금계산서');
+          setDuplicateTaxDate(issueDate || '날짜 없음');
+          setIsDuplicateModalOpen(true);
+          return;
+        }
+        if (status === 'WAIT ' || 'REFUSED') {
+          //  2. 반려된 세금계산서인 경우, 삭제 요청 먼저
+          await api.delete(`/tax/${ntsTaxId}`);
+          console.log(`기존 반려된 세금계산서 삭제 완료: ${ntsTaxId}`);
+
+          // 3. 삭제 후 OCR 재요청
+          const res = await api.post('/tax/ocr', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+          console.log('삭제완료후 재요청 ocr 응답:', res.data.result);
+
+          // 4. 새로운 ID로 Step2 이동
+          navigate(`/uploadTax/step2?taxId=${ntsTaxId}`, {
+            state: { ocrData: res.data, selectedImage: croppedImage }
+          });
+          return;
+        }
+      }
+      // 중복이 아니면 정상적으로 step2 이동
+      navigate(`/uploadTax/step2?taxId=${ntsTaxId}`, {
         state: { ocrData: res.data, selectedImage: croppedImage }
       });
     } catch (error) {
@@ -70,8 +107,17 @@ const TaxUpload = () => {
           />
         )}
       </div>
+      {/* 중복일경우 모달 */}
+      {isDuplicateModalOpen && (
+        <DuplicateTaxModal
+          id={duplicateId}
+          title={duplicateTitle}
+          taxDate={duplicateTaxDate}
+          onClose={() => setIsDuplicateModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
 
-export default TaxUpload;
+export default Step1;
