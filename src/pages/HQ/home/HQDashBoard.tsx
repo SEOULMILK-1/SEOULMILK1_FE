@@ -17,10 +17,8 @@ const HQ_home = () => {
   const handleWritePayment = async () => {
     try {
       const token = localStorage.getItem('accesstoken');
-      const response = await api.post('/hq/payment-resolution', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      const response = await api.post(`/hq/payment-resolution`, null, {
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       console.log('일괄 작성 완료:', response.data);
