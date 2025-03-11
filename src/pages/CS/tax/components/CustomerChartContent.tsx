@@ -11,6 +11,9 @@ interface InvoiceData {
   title: string;
   date: string;
   center: string;
+  ntsTaxId: string;
+  team: string;
+  taxDate: string;
   approvalNo: string;
   supplier: string;
   recipient: string;
