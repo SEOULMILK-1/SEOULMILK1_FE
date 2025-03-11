@@ -17,28 +17,33 @@ export interface MenuItem {
 
 // 관리자 메뉴
 export const adminMenuItems: MenuItem[] = [
-  { name: '홈', path: '/', icon: <HomeGrayIcon />, selectedIcon: <HomeIcon /> },
+  {
+    name: '홈',
+    path: '/admin/home',
+    icon: <HomeGrayIcon />,
+    selectedIcon: <HomeIcon />
+  },
   {
     name: '게시판 관리',
-    path: '/admin-board',
+    path: '/admin/admin-board',
     icon: <SpeakerGray />,
     selectedIcon: <SpeakerGray color="#009856" />
   },
   {
     name: '유저 관리',
-    path: '/user-manage',
+    path: '/admin/user-manage',
     icon: <UserIcon />,
     selectedIcon: <UserIcon primaryColor="#009856" secondaryColor="#4CC584" />
   },
   {
     name: '세금계산서 조회',
-    path: '/admin-tax',
+    path: '/admin/admin-tax',
     icon: <TaxIconGray />,
     selectedIcon: <TaxIcon />
   },
   {
     name: '지급결의서 조회',
-    path: '/admin-payment',
+    path: '/admin/admin-payment',
     icon: <PaymentIcon />,
     selectedIcon: (
       <PaymentIcon
@@ -54,19 +59,19 @@ export const adminMenuItems: MenuItem[] = [
 export const HQMenuItems: MenuItem[] = [
   {
     name: '홈',
-    path: '/HQ-home',
+    path: '/hq/home',
     icon: <HomeGrayIcon />,
     selectedIcon: <HomeIcon />
   },
   {
     name: '세금계산서 조회',
-    path: '/tax',
+    path: '/hq/tax',
     icon: <TaxIconGray />,
     selectedIcon: <TaxIcon />
   },
   {
     name: '지급결의서 조회',
-    path: '/payment',
+    path: '/hq/payment',
     icon: <PaymentIcon />,
     selectedIcon: (
       <PaymentIcon
@@ -78,7 +83,7 @@ export const HQMenuItems: MenuItem[] = [
   },
   {
     name: '대리점 조회',
-    path: '/head-customer',
+    path: '/hq/head-customer',
     icon: <HQIcon />,
     selectedIcon: <SelectHQIon />
   }
@@ -88,13 +93,13 @@ export const HQMenuItems: MenuItem[] = [
 export const CSMenuItems: MenuItem[] = [
   {
     name: '홈',
-    path: '/cs-home',
+    path: '/cs/home',
     icon: <HomeGrayIcon />,
     selectedIcon: <HomeIcon />
   },
   {
     name: '세금계산서 조회',
-    path: '/cs-tax',
+    path: '/cs/tax',
     icon: <TaxIconGray />,
     selectedIcon: <TaxIcon />
   }
