@@ -63,7 +63,7 @@ const Step2Mobile = () => {
       const response = await api.post(`/tax/validate/${newTaxId}`);
       console.log('API 응답', response.data);
       if (response.data.isSuccess) {
-        navigate(`/checking`);
+        navigate(`/uploadTax/step3/checking`);
       } else {
         console.error('API 요청 실패', response.data.message);
       }

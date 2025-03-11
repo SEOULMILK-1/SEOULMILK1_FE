@@ -1,25 +1,17 @@
 import step3Icon from '../../../../public/Icon/홈택스.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
-import queryString from 'query-string';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const Step3Mobile = () => {
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const { taxId } = queryString.parse(location.search);
-
   useEffect(() => {
-    if (!taxId) {
-      return;
-    }
-
     const timer = setTimeout(() => {
       navigate(`/complete`);
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [taxId, navigate]);
+  }, [navigate]);
 
   return (
     <div className="mx-[94px]">
