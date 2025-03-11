@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 import HeadCustomer from '../pages/HQ/customer/HeadCustomer';
 import Tax from '../pages/HQ/tax';
@@ -26,9 +26,7 @@ import Step3 from '../pages/CS/TaxUpload/Step3';
 import EditTax from '../pages/CS/tax/EditTax';
 import PaymentDetail from '../pages/HQ/paymentDetail/PaymentDetail';
 
-//TODO: 직접 url수정으로 다른 role 페이지 이동 막기
-
-const router = createBrowserRouter([
+const WebRouter = createBrowserRouter([
   //관리자쪽 라우터 (ADMIN)
   {
     path: '/',
@@ -75,6 +73,4 @@ const router = createBrowserRouter([
   { path: '/cs/signup2', element: <CsSignup2 /> }
 ]);
 
-export default function Router() {
-  return <RouterProvider router={router} />;
-}
+export default WebRouter;
