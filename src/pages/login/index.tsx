@@ -43,13 +43,13 @@ function LoginPage() {
         console.log(role);
         if (role === 'CS_USER') {
           //대리점
-          navigate('/CS-home');
+          navigate('/cs');
         } else if (role === 'HQ_USER') {
           //본사
-          navigate('/HQ-home');
+          navigate('/hq');
         } else {
           //관리자
-          navigate('/');
+          navigate('/admin');
         }
       } else {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');

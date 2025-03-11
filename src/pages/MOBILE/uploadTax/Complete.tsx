@@ -1,12 +1,18 @@
 import Button from '../../../common/Button';
 import CompleteCheck from '../../../../public/Icon/CompleteCheck';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 function Complete() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4 py-6">
+    <motion.div
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+      className="flex flex-col items-center justify-center min-h-screen bg-white px-4 py-6"
+    >
       <div className="w-full max-w-[360px] flex flex-col items-center px-5">
         <div className="w-[64px] h-[64px] rounded-full bg-primary-700 flex items-center justify-center mb-4">
           <CompleteCheck />
@@ -21,22 +27,17 @@ function Complete() {
           </p>
         </div>
 
-        <div className="w-full grid grid-cols-2 mt-auto rounded-[12px] gap-[16px]">
+        <div className="w-full flex mt-auto rounded-[12px] text-center justify-center">
           <Button
-            className="w-[152px] border border-gray-400 h-12 font-xl-semibold  text-gray-500"
-            onClick={() => navigate('/home')}
-          >
-            목록
-          </Button>
-          <Button
-            className="w-[152px] h-12 font-xl-semibold bg-primary-700 text-white "
+            className="w-[160px] h-[56px] font-xl-semibold bg-white border border-primary-700 text-primary-600"
             onClick={() => navigate('/home')}
           >
             추가 업로드
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
+
 export default Complete;

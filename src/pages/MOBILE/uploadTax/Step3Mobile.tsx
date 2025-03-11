@@ -19,7 +19,7 @@ const Step3Mobile = () => {
         <img
           src={step3Icon}
           alt="세금계산서 검증"
-          className="w-[250px] h-[250px]"
+          className="w-[250px] h-[250px] stop-animation"
         />
         <div className="text-gray-600 font-md-medium whitespace-nowrap">
           홈택스를 통해서 검증하고 있어요

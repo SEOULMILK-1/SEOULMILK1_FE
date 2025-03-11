@@ -12,7 +12,7 @@ const App = () => {
   }, []);
 
   if (isMobileView === null) {
-    return <p>로딩 중...</p>;
+    return <p></p>;
   }
 
   return <RouterProvider router={isMobileView ? MobileRouter : WebRouter} />;
