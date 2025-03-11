@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FloatingLabelInput from './components/LabelInput';
 import RedLogo from '../../../public/Icon/RedLogoIcon';
 import Button from '../../common/Button';
@@ -38,7 +38,6 @@ function LoginPage() {
         } else {
           console.error('Access Token이 없음.');
         }
-
         const role = response.data.result?.role;
         localStorage.setItem('userRole', role);
 
@@ -60,7 +59,9 @@ function LoginPage() {
       setError('로그인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
     }
   };
-
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="w-[456px] mx-auto px-6 py-[40px] bg-white rounded-[32px] drop-shadow-elevation1 max-sm:min-h-screen flex flex-col justify-center">
