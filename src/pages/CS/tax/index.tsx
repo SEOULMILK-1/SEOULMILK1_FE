@@ -6,7 +6,6 @@ import SearchIcon from '../../../../public/Icon/SearchIcon';
 import ResetIcon from '../../../../public/Icon/ResetIcon';
 import CustomerChart from './components/CustomerChart';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
-import SelectCalendar from '../../../common/SelectCalendar';
 const CSTax = () => {
   return (
     <div className="mx-[94px] w-[960px]">
@@ -16,7 +15,7 @@ const CSTax = () => {
       <div className="flex items-center gap-4 text-gray-500">
         기간
         <SelectMonth />
-        <SelectCalendar />
+        {/* <SelectCalendar /> */}
       </div>
 
       <div className="flex items-center justify-between my-4">

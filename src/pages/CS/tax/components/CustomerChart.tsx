@@ -1,4 +1,3 @@
-import ChartPagination from '../../../../common/ChartPagination';
 import CustomerChartContent from './CustomerChartContent';
 import CustomerChartHeader from './CustomerChartHeader';
 
@@ -11,7 +10,7 @@ const CustomerChart = () => {
         <CustomerChartContent />
       </div>
 
-      <ChartPagination />
+      {/* <ChartPagination /> */}
     </div>
   );
 };

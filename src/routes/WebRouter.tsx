@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 import HeadCustomer from '../pages/HQ/customer/HeadCustomer';
 import Tax from '../pages/HQ/tax';
@@ -28,7 +28,7 @@ import PaymentDetail from '../pages/HQ/paymentDetail/PaymentDetail';
 
 // TODO: 직접 URL 수정으로 다른 role 페이지 이동 막기
 
-const router = createBrowserRouter([
+const WebRouter = createBrowserRouter([
   // 기본 경로를 로그인
   { path: '/', element: <LoginPage /> },
 
@@ -79,6 +79,4 @@ const router = createBrowserRouter([
   { path: '/cs/signup2', element: <CsSignup2 /> }
 ]);
 
-export default function Router() {
-  return <RouterProvider router={router} />;
-}
+export default WebRouter;
