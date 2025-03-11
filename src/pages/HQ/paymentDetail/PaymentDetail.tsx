@@ -2,7 +2,6 @@ import Header from '../../../common/Header';
 import ArrowIcon from '../../../../public/Icon/ArrowIcon';
 import Button from '../../../common/Button';
 import ChatLine from '../../../../public/Icon/ChartLine';
-import EditIcon from '../../../../public/Icon/EditIcon';
 import { useEffect, useState } from 'react';
 import api from '../../../hooks/api';
 import AccountEditModal from './AccountEditModal';
@@ -10,7 +9,7 @@ import PaymentDetailModal from './PaymentDetailModal';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { PaymentData } from '../../../types/paymentDetails';
 import PaymentInfo from './components/PaymentInfo';
-import TaxInvoiceItem from './components/TaxInvoiceItem';
+import TaxInvoiceList from './components/TaxInvoiceItem';
 
 const PaymentDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -165,24 +164,11 @@ const PaymentDetail = () => {
       </div>
 
       {/* 반영된 세금계산서 목록 */}
-      <div className="mb-8">
-        <h2 className="font-2xl-bold text-gray-800 mb-6">반영된 세금계산서</h2>
-        {paymentData?.paymentDetails &&
-        paymentData.paymentDetails.length > 0 ? (
-          paymentData.paymentDetails.map((tax, index) => (
-            <TaxInvoiceItem
-              key={index}
-              index={index}
-              tax={tax}
-              onClick={handleTaxItemClick}
-            />
-          ))
-        ) : (
-          <p className="text-center py-6 text-gray-500">
-            조회된 세금계산서가 없습니다.
-          </p>
-        )}
-      </div>
+      <TaxInvoiceList
+        paymentDetails={paymentData?.paymentDetails || []}
+        onTaxItemClick={handleTaxItemClick}
+      />
+
       <div className="flex justify-end">
         <Button
           size="sm"
