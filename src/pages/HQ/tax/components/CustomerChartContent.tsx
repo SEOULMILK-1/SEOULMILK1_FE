@@ -24,16 +24,15 @@ const CustomerChartContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const [page] = useState(1);
+  const [page] = useState(0);
   const size = 20;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/hq', {
+        const response = await api.get('/hq/search/tax', {
           params: { page, size }
         });
-
         if (response.data.isSuccess) {
           const transformedData = response.data.result.responseList.map(
             (item: any) => ({

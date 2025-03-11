@@ -4,12 +4,10 @@ import ChartPagination from '../../../../common/ChartPagination';
 import PaymentChartContent from './PaymentContent';
 import api from '../../../../hooks/api';
 
-
 const PaymentChart = () => {
   const [data, setData] = useState([]);
-  const [period, setPeriod] = useState<number | undefined>();
-  const [page, setPage] = useState(1);
-  const [size] = useState(10); // 한 페이지당 항목 개수
+  const [page, _] = useState(0);
+  const [size] = useState(10);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,7 +17,9 @@ const PaymentChart = () => {
       setError(null);
 
       try {
-        const response = await api.get(`/hq/payment-resolution/list/all`);
+        const response = await api.get(
+          `/hq/payment-resolution/list?page=${page}&size=${size}`
+        );
         if (response.data.isSuccess) {
           setData(response.data.result);
         } else {
@@ -33,7 +33,7 @@ const PaymentChart = () => {
     };
 
     fetchData();
-  }, [period, page, size]);
+  }, [page, size]);
 
   return (
     <div className="mt-4 flex h-[714px] flex-col border border-gray-300 bg-white rounded-3xl">

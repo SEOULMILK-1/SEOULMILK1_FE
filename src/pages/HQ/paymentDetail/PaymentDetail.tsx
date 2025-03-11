@@ -7,11 +7,14 @@ import { useEffect, useState } from 'react';
 import api from '../../../hooks/api';
 import AccountEditModal from './AccountEditModal';
 import PaymentDetailModal from './PaymentDetailModal';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { PaymentData } from '../../../types/paymentDetails';
+import PaymentInfo from './components/PaymentInfo';
+import TaxInvoiceItem from './components/TaxInvoiceItem';
 
 const PaymentDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bankName, setBankName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
@@ -98,7 +101,14 @@ const PaymentDetail = () => {
 
   return (
     <div className="mx-[94px] w-[960px]">
-      <Header title={paymentData?.name || 'N/A'} Icon={ArrowIcon}>
+      <Header
+        title={paymentData?.name || 'N/A'}
+        Icon={() => (
+          <div onClick={() => navigate(-1)} style={{ cursor: 'pointer' }}>
+            <ArrowIcon strokeColor="#3A404A" />
+          </div>
+        )}
+      >
         <div className="text-sm text-gray-500 flex gap-3">
           <p>작성일: {paymentData?.createdAt || 'N/A'}</p>{' '}
           <ChatLine className="mt-1" />
@@ -114,164 +124,65 @@ const PaymentDetail = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 ">
           <div>
-            <div className="grid grid-cols-2 border-b border-gray-100 bg-gray-50">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급 대상
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                {paymentData?.paymentRecipient || '-'}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 border-b border-gray-100">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급 대상 사업자 등록번호
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                {paymentData?.recipientBusinessNumber || '-'}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 border-b border-gray-100 bg-gray-50">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                정산 지급 총액
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                {paymentData?.totalPaymentAmount || '0'} 원
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 border-b border-gray-100">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급 방법
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                {paymentData?.paymentMethod}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 bg-gray-50">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급 계좌
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px] flex items-center gap-3">
-                <p>은행은? {paymentData?.paymentAccount}</p>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  <EditIcon />
-                </div>
-              </div>
-            </div>
+            <PaymentInfo
+              label="지급 대상"
+              value={paymentData?.paymentRecipient}
+            />
+            <PaymentInfo
+              label="사업자 등록번호"
+              value={paymentData?.recipientBusinessNumber}
+            />
+            <PaymentInfo
+              label="정산 지급 총액"
+              value={`${paymentData?.totalPaymentAmount || '0'} 원`}
+            />
+            <PaymentInfo label="지급 방법" value={paymentData?.paymentMethod} />
+            <PaymentInfo
+              label="지급 계좌"
+              value={paymentData?.paymentAccount}
+              isEditable
+              onEdit={() => setIsModalOpen(true)}
+            />
           </div>
 
           <div>
-            <div className="grid grid-cols-2  border-b border-gray-100 bg-gray-50">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급 주체
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                {paymentData?.paymentPrincipal}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 border-b border-gray-100">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급 주체 사업자 등록번호
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                {paymentData?.principalBusinessNumber}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 border-b border-gray-100 bg-gray-50">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                결제권자
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                -
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 border-b border-gray-100">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급결의서 작성일자
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                {paymentData?.createdAt}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 bg-gray-50">
-              <div className="text-gray-700 font-sm-semibold bg-gray-100 pl-[28px] py-[13.5px]">
-                지급 예정일
-              </div>
-              <div className="text-gray-700 font-sm-medium pl-[28px] py-[13.5px]">
-                -
-              </div>
-            </div>
+            <PaymentInfo
+              label="지급 주체"
+              value={paymentData?.paymentPrincipal}
+            />
+            <PaymentInfo
+              label="사업자 등록번호"
+              value={paymentData?.principalBusinessNumber}
+            />
+            <PaymentInfo label="결제권자" value="-" />
+            <PaymentInfo
+              label="지급결의서 작성일자"
+              value={paymentData?.createdAt}
+            />
+            <PaymentInfo label="지급 예정일" value="-" />
           </div>
         </div>
       </div>
 
-      {/* 반영된 세금계산서 */}
+      {/* 반영된 세금계산서 목록 */}
       <div className="mb-8">
         <h2 className="font-2xl-bold text-gray-800 mb-6">반영된 세금계산서</h2>
-
-        <div className="w-[960px] rounded-[24px] border border-gray-200 overflow-hidden">
-          <div className="flex items-center h-[42px] bg-gray-50 border-b border-gray-300 mt-[14px]  pl-2 pr-5">
-            <div className="pl-5 pr-5 text-gray-500 font-sm-medium w-[100px] ">
-              번호
-            </div>
-            <ChatLine />
-            <div className="pl-5 pr-5 text-gray-500 font-sm-medium w-[350px] ">
-              세금계산서 번호
-            </div>{' '}
-            <ChatLine />
-            <div className="pl-5 pr-5 text-gray-500 font-sm-medium w-[180px] ">
-              발행일
-            </div>{' '}
-            <ChatLine />
-            <div className="pl-5 pr-5 text-gray-500 font-sm-medium w-[200px] ">
-              공급가액
-            </div>
-          </div>
-
-          <div className="max-h-80 overflow-y-auto">
-            {paymentData?.paymentDetails &&
-            paymentData.paymentDetails.length > 0 ? (
-              paymentData.paymentDetails.map((tax, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center py-3 border-b border-gray-100 px-5 ${
-                    index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-                  } hover:bg-gray-100 rounded-[12px]`}
-                  onClick={() => handleTaxItemClick(tax)}
-                >
-                  <div className="w-[92px] px-5">{index + 1}</div>
-                  <div className="px-5 w-[350px]  overflow-hidden text-ellipsis">
-                    {tax.ntsTaxNum || '-'}
-                  </div>
-                  <div className="pl-5 pr-5 w-[180px] ">
-                    {tax.issueDate ? tax.issueDate.split(' ')[0] : '-'}
-                  </div>
-                  <div className="pl-5 pr-5 w-[200px] ">
-                    {tax.supplyAmount
-                      ? tax.supplyAmount.toLocaleString() + '원'
-                      : '-'}
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center py-6 text-gray-500">
-                조회된 세금계산서가 없습니다.
-              </p>
-            )}
-          </div>
-        </div>
+        {paymentData?.paymentDetails &&
+        paymentData.paymentDetails.length > 0 ? (
+          paymentData.paymentDetails.map((tax, index) => (
+            <TaxInvoiceItem
+              key={index}
+              index={index}
+              tax={tax}
+              onClick={handleTaxItemClick}
+            />
+          ))
+        ) : (
+          <p className="text-center py-6 text-gray-500">
+            조회된 세금계산서가 없습니다.
+          </p>
+        )}
       </div>
-
       <div className="flex justify-end">
         <Button
           size="sm"

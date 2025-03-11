@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import StatusBadge, { Status } from '../../../common/StatusBagde';
 import ArrowIcon from '../../../../public/Icon/ArrowIcon';
 import api from '../../../hooks/api';
