@@ -24,6 +24,7 @@ import Step1 from '../pages/CS/TaxUpload/Step1';
 import Step2 from '../pages/CS/TaxUpload/Step2';
 import Step3 from '../pages/CS/TaxUpload/Step3';
 import EditTax from '../pages/CS/tax/EditTax';
+import PaymentDetail from '../pages/HQ/paymentDetail/PaymentDetail';
 
 // TODO: 직접 URL 수정으로 다른 role 페이지 이동 막기
 
@@ -49,10 +50,11 @@ const router = createBrowserRouter([
     path: '/hq',
     element: <HQRootLayout />,
     children: [
-      { path: 'home', element: <HQ_home /> },
-      { path: 'head-customer', element: <HeadCustomer /> },
-      { path: 'tax', element: <Tax /> },
-      { path: 'payment', element: <Payment /> }
+      { path: '/HQ-home', element: <HQ_home /> },
+      { path: '/head-customer', element: <HeadCustomer /> },
+      { path: '/tax', element: <Tax /> },
+      { path: '/payment', element: <Payment /> }
+      { path: '/payment/detail/:id', element: <PaymentDetail /> }
     ]
   },
 
