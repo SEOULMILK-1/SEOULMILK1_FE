@@ -50,11 +50,11 @@ const router = createBrowserRouter([
     path: '/hq',
     element: <HQRootLayout />,
     children: [
-      { path: '/HQ-home', element: <HQ_home /> },
-      { path: '/head-customer', element: <HeadCustomer /> },
-      { path: '/tax', element: <Tax /> },
-      { path: '/payment', element: <Payment /> }
-      { path: '/payment/detail/:id', element: <PaymentDetail /> }
+      { path: 'home', element: <HQ_home /> },
+      { path: 'head-customer', element: <HeadCustomer /> },
+      { path: 'tax', element: <Tax /> },
+      { path: 'payment', element: <Payment /> },
+      { path: 'payment/detail/:id', element: <PaymentDetail /> }
     ]
   },
 
