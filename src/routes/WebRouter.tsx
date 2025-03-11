@@ -26,46 +26,52 @@ import Step3 from '../pages/CS/TaxUpload/Step3';
 import EditTax from '../pages/CS/tax/EditTax';
 import PaymentDetail from '../pages/HQ/paymentDetail/PaymentDetail';
 
+// TODO: 직접 URL 수정으로 다른 role 페이지 이동 막기
+
 const WebRouter = createBrowserRouter([
-  //관리자쪽 라우터 (ADMIN)
+  // 기본 경로를 로그인
+  { path: '/', element: <LoginPage /> },
+
+  // 관리자쪽 라우터 (ADMIN)
   {
-    path: '/',
+    path: '/Wadmin',
     element: <AdminRootLayout />,
     children: [
-      { path: '/', element: <DashBoard /> },
-      { path: '/user-manage', element: <UserManage /> },
-      { path: '/admin-board', element: <AdminBoard /> },
-      { path: '/admin-tax', element: <AdminTax /> },
-      { path: '/admin-payment', element: <AdminPayment /> }
+      { path: 'home', element: <DashBoard /> },
+      { path: 'user-manage', element: <UserManage /> },
+      { path: 'admin-board', element: <AdminBoard /> },
+      { path: 'admin-tax', element: <AdminTax /> },
+      { path: 'admin-payment', element: <AdminPayment /> }
     ]
   },
 
-  //본사쪽 라우터 (HQ - 직원)
+  // 본사쪽 라우터 (HQ - 직원)
   {
-    path: '/',
+    path: '/hq',
     element: <HQRootLayout />,
     children: [
-      { path: '/HQ-home', element: <HQ_home /> },
-      { path: '/head-customer', element: <HeadCustomer /> },
-      { path: '/tax', element: <Tax /> },
-      { path: '/payment', element: <Payment /> },
-      { path: '/payment/detail/:id', element: <PaymentDetail /> }
+      { path: 'home', element: <HQ_home /> },
+      { path: 'head-customer', element: <HeadCustomer /> },
+      { path: 'tax', element: <Tax /> },
+      { path: 'payment', element: <Payment /> },
+      { path: 'payment/detail/:id', element: <PaymentDetail /> }
     ]
   },
-  //대리점쪽 라우터(CS)
+
+  // 대리점쪽 라우터 (CS)
   {
-    path: '/',
+    path: '/cs',
     element: <CSRootLayout />,
     children: [
-      { path: '/CS-home', element: <CSHome /> },
-      { path: '/upload-tax/step1', element: <Step1 /> },
-      { path: '/upload-tax/step2', element: <Step2 /> },
-      { path: '/upload-tax/step3', element: <Step3 /> },
-      { path: '/CS-tax', element: <CSTax /> },
-      { path: '/CS-tax/edit', element: <EditTax /> }
+      { path: 'home', element: <CSHome /> },
+      { path: 'upload-tax/step1', element: <Step1 /> },
+      { path: 'upload-tax/step2', element: <Step2 /> },
+      { path: 'upload-tax/step3', element: <Step3 /> },
+      { path: 'tax', element: <CSTax /> },
+      { path: 'tax/edit', element: <EditTax /> }
     ]
   },
-  { path: '/login', element: <LoginPage /> },
+
   { path: '/signup', element: <Signup /> },
   { path: '/head/signup', element: <HeadSignup /> },
   { path: '/head/signup2', element: <Signup2 /> },
