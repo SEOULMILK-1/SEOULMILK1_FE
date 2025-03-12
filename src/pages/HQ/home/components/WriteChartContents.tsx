@@ -43,7 +43,7 @@ const WriteChartContents = ({ onWriteDataLength }: LenghProps) => {
         data.map((item, index) => (
           <div
             key={index}
-            className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"
+            className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium cursor-pointer"
           >
             <div className="w-[200px] pl-5 font-sm-medium text-gray-800">
               {item.suDeptName}
