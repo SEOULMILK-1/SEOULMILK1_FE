@@ -8,23 +8,42 @@ import HQAgencyModal from './components/HQAgencyModal';
 import api from '../../../hooks/api';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
 import PaymentIcon from '../../../../public/Icon/PaymentIcon';
+import Loading from '../../../../public/Icon/Loading';
+import CompleteCheck from '../../../../public/Icon/CompleteCheck';
 
 const HQ_home = () => {
   const [isModal, setIsModal] = useState(false);
   const [dataLength, setDataLength] = useState(0);
   const [writeDataLength, setWriteDataLength] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleWritePayment = async () => {
-    try {
-      const token = localStorage.getItem('accesstoken');
-      const response = await api.post(`/hq/payment-resolution`, null, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+    setIsLoading(true);
 
-      console.log('일괄 작성 완료:', response.data);
-    } catch (error) {
-      console.error('일괄 작성 요청 중 에러 발생:', error);
-    }
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.post(`/hq/payment-resolution`, null, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        console.log('일괄 작성 완료:', response.data);
+      } catch (error) {
+        console.error('일괄 작성 요청 중 에러 발생:', error);
+      }
+    };
+
+    setTimeout(async () => {
+      setIsLoading(false);
+      setIsCompleted(true);
+
+      setTimeout(async () => {
+        setIsCompleted(false);
+        await fetchData();
+        window.location.reload();
+      }, 2000);
+    }, 1500);
   };
 
   return (
@@ -85,6 +104,31 @@ const HQ_home = () => {
         </div>
       </div>
       <WritePayment onWriteDataLength={setWriteDataLength} />
+
+      {/* 로딩 팝업 */}
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent z-50">
+          <div className="flex flex-row gap-2 items-center justify-center text-center bg-gray-500 rounded-3xl drop-shadow-elevation2 px-6 py-3">
+            <Loading />
+            <p className="text-white font-xl-semibold">
+              {' '}
+              세금계산서를 작성 중이에요...
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 완료 팝업 */}
+      {isCompleted && (
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent z-50">
+          <div className="items-center flex flex-row gap-2 text-center bg-primary-400 bg-opacity-80 rounded-3xl backdrop-blur-lg drop-shadow-elevation2 px-6 py-3">
+            <CompleteCheck />
+            <p className="text-white font-xl-semibold">
+              총 {dataLength}건이 작성 완료되었어요!
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
