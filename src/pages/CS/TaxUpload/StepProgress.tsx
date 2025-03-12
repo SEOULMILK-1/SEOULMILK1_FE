@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const steps = [
   { step: 1, label: '이미지 편집', path: '/upload-tax/step1' },
@@ -8,8 +8,18 @@ const steps = [
 
 const StepProgress = () => {
   const location = useLocation();
-  const currentStep =
-    steps.findIndex((step) => step.path === location.pathname) + 1;
+  const [searchParams] = useSearchParams();
+  const taxId = searchParams.get('taxId');
+
+  let currentStep =
+    steps.findIndex((step) => location.pathname.includes(step.path)) + 1;
+  if (taxId) {
+    if (location.pathname.includes('/upload-tax/step3')) {
+      currentStep = 3;
+    } else {
+      currentStep = 2;
+    }
+  }
 
   return (
     <div className="flex items-center w-[500px] h-[40px] mr-[110px]">

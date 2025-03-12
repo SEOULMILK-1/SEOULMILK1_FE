@@ -72,7 +72,7 @@ const TaxDetailModal = ({
             headers: { Authorization: `Bearer ${token}` }
           }
         );
-
+        console.log(response);
         if (response.data.isSuccess) {
           setDetailData(response.data.result);
         } else {
@@ -182,7 +182,9 @@ const TaxDetailModal = ({
   };
 
   const isRejected =
-    detailData?.status === 'REJECTED' || selectedItem.status === '반려됨';
+    detailData?.status === 'REJECTED' ||
+    selectedItem.status === '반려됨' ||
+    detailData?.status === 'REFUSED';
   const displayStatus = detailData
     ? getDisplayStatus(detailData.status)
     : (selectedItem.status as Status);

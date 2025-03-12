@@ -1,27 +1,39 @@
 import { useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
 import WebRouter from './routes/WebRouter';
 import MobileRouter from './routes/MobileRouter';
 import { RouterProvider } from 'react-router-dom';
 
 const App = () => {
-  const [isMobileView, setIsMobileView] = useState<boolean | null>(null);
+  const [isMobileView, setIsMobileView] = useState<boolean>(
+    window.innerWidth <= 768
+  );
 
   useEffect(() => {
     const updateView = () => {
-      setIsMobileView(isMobile);
+      setIsMobileView(window.innerWidth <= 768);
     };
 
     updateView();
-    window.addEventListener('resize', updateView); // 화면 크기 변경 감지
+    window.addEventListener('resize', updateView);
 
     return () => {
       window.removeEventListener('resize', updateView);
     };
   }, []);
-  if (isMobileView === null) {
-    return <p></p>;
-  }
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsMobileView(window.innerWidth <= 768); 
+    };
+
+    window.addEventListener('popstate', handleRouteChange); 
+    window.addEventListener('pushstate', handleRouteChange); 
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('pushstate', handleRouteChange);
+    };
+  }, []);
 
   return <RouterProvider router={isMobileView ? MobileRouter : WebRouter} />;
 };
