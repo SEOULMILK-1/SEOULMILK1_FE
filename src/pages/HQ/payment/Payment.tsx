@@ -26,7 +26,7 @@ const Payment = () => {
         <div className="flex items-center gap-4 text-gray-500 whitespace-nowrap">
           기간
           <SelectMonth />
-          <SelectCalendar />
+          {/* <SelectCalendar /> */}
         </div>
         <div className="flex items-center gap-2 ml-[81px]">
           <Button
