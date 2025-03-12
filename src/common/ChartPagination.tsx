@@ -107,19 +107,19 @@ const ChartPagination = ({
           </div>
 
           <div
-            className={`rotate-180 cursor-pointer ${
-              currentPage === totalPages ? 'opacity-50' : ''
-            }`}
             onClick={() => onPageChange(currentPage + 1)}
+            className={`cursor-pointer rotate-180 ${
+              currentPage === 1 ? 'opacity-50' : ''
+            }`}
           >
             <ArrowIcon />
           </div>
 
           <div
-            className={`rotate-180 cursor-pointer ${
-              currentPage === totalPages ? 'opacity-50' : ''
-            }`}
             onClick={() => onPageChange(totalPages)}
+            className={`cursor-pointer rotate-180 ${
+              currentPage === 1 ? 'opacity-50' : ''
+            }`}
           >
             <TwoArrowIcon />
           </div>
