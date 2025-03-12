@@ -156,7 +156,7 @@ const CsSignup1 = () => {
         {idCheckMessage && (
           <p
             className={`font-md-medium ${
-              isIdValid ? 'text-primary-700' : 'text-warning-700'
+              isIdValid ? 'text-warning-700' : 'text-warning-700'
             }`}
           >
             {idCheckMessage}
