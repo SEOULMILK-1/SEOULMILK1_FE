@@ -5,12 +5,14 @@ interface CustomerChartProps {
   startDate: string | null;
   endDate: string | null;
   searchTriggered: boolean;
+  selectedStatus: string | null;
 }
 
 const CustomerChart = ({
   startDate,
   endDate,
-  searchTriggered
+  searchTriggered,
+  selectedStatus
 }: CustomerChartProps) => {
   return (
     <div className="mt-4 flex h-[714px] flex-col border border-gray-300 bg-white rounded-3xl">
@@ -21,6 +23,7 @@ const CustomerChart = ({
           startDate={startDate}
           endDate={endDate}
           searchTriggered={searchTriggered}
+          selectedStatus={selectedStatus}
         />
       </div>
 

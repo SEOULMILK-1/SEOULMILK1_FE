@@ -8,6 +8,7 @@ interface CustomerChartContentProps {
   startDate: string | null;
   endDate: string | null;
   searchTriggered: boolean;
+  selectedStatus: string | null;
 }
 
 interface InvoiceData {
@@ -25,6 +26,7 @@ interface InvoiceData {
   recipient: string;
   dateFormatted: string;
   amount: string;
+  originalStatus: string;
 }
 
 const statusMap: Record<string, Status> = {
@@ -36,7 +38,8 @@ const statusMap: Record<string, Status> = {
 const CustomerChartContent = ({
   startDate,
   endDate,
-  searchTriggered
+  searchTriggered,
+  selectedStatus
 }: CustomerChartContentProps) => {
   const [data, setData] = useState<InvoiceData[]>([]);
   const [filteredData, setFilteredData] = useState<InvoiceData[]>([]);
@@ -52,22 +55,33 @@ const CustomerChartContent = ({
   };
 
   useEffect(() => {
-    if (searchTriggered && startDate && endDate) {
+    if (searchTriggered) {
       let filtered = [...data];
 
-      const start = parseDate(startDate);
-      const end = parseDate(endDate);
+      if (startDate && endDate) {
+        const start = parseDate(startDate);
+        const end = parseDate(endDate);
 
-      filtered = filtered.filter((item) => {
-        const itemDate = parseDate(item.date);
-        return itemDate >= start && itemDate <= end;
-      });
+        filtered = filtered.filter((item) => {
+          const itemDate = parseDate(item.date);
+          return itemDate >= start && itemDate <= end;
+        });
+      }
+
+      if (selectedStatus && selectedStatus !== '선택') {
+        filtered = filtered.filter((item) => {
+          return (
+            item.originalStatus === selectedStatus ||
+            item.status === selectedStatus
+          );
+        });
+      }
 
       setFilteredData(filtered);
     } else {
       setFilteredData(data);
     }
-  }, [data, startDate, endDate, searchTriggered]);
+  }, [searchTriggered, data, startDate, endDate, selectedStatus]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,12 +100,16 @@ const CustomerChartContent = ({
               title: item.title,
               date: item.taxDate,
               center: item.team,
+              originalStatus: item.status,
               status: statusMap[item.status] || '대기중',
               dateFormatted: item.taxDate
             })
           );
 
           setData(transformedData);
+          if (!searchTriggered) {
+            setFilteredData(transformedData);
+          }
 
           const taxIdParam = searchParams.get('taxId');
           if (taxIdParam) {
@@ -112,7 +130,7 @@ const CustomerChartContent = ({
     };
 
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, searchTriggered]);
 
   const handleItemClick = (item: InvoiceData) => {
     setSelectedItem(item);
@@ -175,7 +193,7 @@ const CustomerChartContent = ({
       ) : (
         <div className="flex justify-center items-center h-full text-gray-500 font-medium">
           {data.length > 0
-            ? '선택한 날짜에 해당하는 데이터가 없습니다.'
+            ? '선택한 조건에 해당하는 데이터가 없습니다.'
             : '데이터를 불러오는 중입니다...'}
         </div>
       )}

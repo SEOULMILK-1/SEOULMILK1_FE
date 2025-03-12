@@ -14,6 +14,7 @@ const CSTax = () => {
   const [endDate, setEndDate] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string>('');
   const [searchTriggered, setSearchTriggered] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
 
   const handleSelectMonth = (start: string, end: string, label: string) => {
     setStartDate(start);
@@ -31,10 +32,15 @@ const CSTax = () => {
     }
   };
 
+  const handleStatusChange = (status: string) => {
+    setSelectedStatus(status);
+  };
+
   const handleReset = () => {
     setStartDate(null);
     setEndDate(null);
     setSelectedMonth('');
+    setSelectedStatus(null);
     setSearchTriggered(false);
   };
 
@@ -63,7 +69,11 @@ const CSTax = () => {
       <div className="flex items-center justify-between my-4">
         <div className="flex items-center gap-4 text-gray-500">
           상태
-          <StateDropdown />
+          <StateDropdown
+            selected={selectedStatus || '선택'}
+            onChange={handleStatusChange}
+            optionsToShow={['승인', '반려']}
+          />
         </div>
 
         <div className="flex items-center gap-2">
@@ -91,6 +101,7 @@ const CSTax = () => {
         startDate={startDate}
         endDate={endDate}
         searchTriggered={searchTriggered}
+        selectedStatus={selectedStatus}
       />
     </div>
   );
