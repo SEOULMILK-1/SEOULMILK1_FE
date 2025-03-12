@@ -88,9 +88,9 @@ const PaymentDatailModal = ({
 
   const getDisplayStatus = (apiStatus: string): Status => {
     const statusMap: Record<string, Status> = {
-      APPROVE: '승인됨',
-      REFUSED: '반려됨',
-      WAIT: '반려됨'
+      APPROVE: '승인',
+      REFUSED: '반려',
+      WAIT: '반려'
     };
 
     return statusMap[apiStatus] || (apiStatus as Status);
