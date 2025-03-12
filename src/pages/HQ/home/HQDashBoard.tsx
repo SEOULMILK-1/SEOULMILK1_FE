@@ -9,7 +9,7 @@ import api from '../../../hooks/api';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
 import PaymentIcon from '../../../../public/Icon/PaymentIcon';
 import Loading from '../../../../public/Icon/Loading';
-import CompleteCheck from '../../../../public/Icon/CompleteCheck';
+import ModalCompleteIcon from '../../../../public/Icon/ModalCompleteIcon';
 
 const HQ_home = () => {
   const [isModal, setIsModal] = useState(false);
@@ -122,7 +122,7 @@ const HQ_home = () => {
       {isCompleted && (
         <div className="fixed inset-0 flex items-center justify-center bg-transparent z-50">
           <div className="items-center flex flex-row gap-2 text-center bg-primary-400 bg-opacity-80 rounded-3xl backdrop-blur-lg drop-shadow-elevation2 px-6 py-3">
-            <CompleteCheck />
+            <ModalCompleteIcon />
             <p className="text-white font-xl-semibold">
               총 {dataLength}건이 작성 완료되었어요!
             </p>
