@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios'; // Axios 사용
 import ArrowIcon from '../../../public/Icon/ArrowIcon';
 import LogoutIcon from '../../../public/Icon/LogoutIcon';
 import EditIcon from '../../../public/Icon/EditIcon';
 import CheckIcon from '../../../public/Icon/CheckIcon';
 import ConfirmModal from '../ConfirmModal';
+import api from '../../hooks/api';
 interface SideModalProps {
   isOpen: boolean;
   onClose: () => void;
   role: 'admin' | 'HQ' | 'CS';
 }
+
 const BANKS = ['농협은행', '카카오뱅크', '토스뱅크'];
 
 const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
@@ -17,18 +20,21 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
-  // 임시 데이터
-  const [userId, setUserId] = useState('12345678');
-  const [department, setDepartMent] = useState('경영총괄팀');
-  const [email, setEmail] = useState('user@example.com');
-  const [phone, setPhone] = useState('010-1234-5678');
-  const [selectedBank, setSelectedBank] = useState('카카오뱅크');
-  const [accountNumber, setAccountNumber] = useState('3333-12-3456789');
+  // 사용자 정보 상태
+  const [userId, setUserId] = useState('');
+  const [name, setName] = useState('');
+  const [teamName, setTeamName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [selectedBank, setSelectedBank] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
 
+  // 사용자 정보 불러오기
   useEffect(() => {
     if (isOpen) {
       setIsOpening(true);
       document.body.style.overflow = 'hidden';
+      fetchUserData();
     } else {
       document.body.style.overflow = '';
     }
@@ -38,7 +44,43 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
     };
   }, [isOpen]);
 
-  //사이드 모달 닫기
+  const fetchUserData = async () => {
+    try {
+      const response = await api.get('/user/detail');
+      if (response.data.isSuccess) {
+        const userData = response.data.result;
+        console.log(userData);
+        setUserId(userData.userId);
+        setName(userData.name);
+        setTeamName(userData.teamName || '');
+        setEmail(userData.email || ''); 
+        setPhone(userData.phone || '');
+        setSelectedBank(userData.bank || '');
+        setAccountNumber(userData.account || '');
+      }
+    } catch (error) {
+      console.error('사용자 정보를 불러오는 중 오류 발생:', error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const updatedData = {
+        loginId: userId,
+        email,
+        phone,
+        bank: selectedBank,
+        account: accountNumber
+      };
+
+      await api.put('/user/update', updatedData);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('사용자 정보 업데이트 중 오류 발생:', error);
+    }
+  };
+
+  // 모달 닫기
   const handleClose = () => {
     if (isEditing) {
       setIsConfirmModalOpen(true);
@@ -52,12 +94,13 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
     }
   };
 
-  //confirm 모달 닫기
+  // 확인 모달 닫기
   const handleCancelConfirm = () => {
     setTimeout(() => {
       setIsConfirmModalOpen(false);
     }, 100);
   };
+
   const handleConfirmClose = () => {
     setIsConfirmModalOpen(false);
     setIsEditing(false);
@@ -73,12 +116,12 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
 
   return (
     <div
-      className={`fixed p-4 pr-0 inset-0 flex justify-end items-start z-50 transition-opacity duration-300 
+      className={`fixed p-4 pr-0 inset-0 flex justify-end items-start z-50 transition-opacity duration-300
     ${isOpening && !isClosing ? 'opacity-100' : 'opacity-0'}`}
       onClick={handleClose}
     >
       <div
-        className={`relative bg-white pt-8 px-6 pb-10 rounded-[24px] drop-shadow-elevation3 w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300 
+        className={`relative bg-white pt-8 px-6 pb-10 rounded-[24px] drop-shadow-elevation3 w-[400px] max-h-[1024px] h-full flex flex-col transform transition-transform duration-300
                 overflow-y-auto custom-scrollbar ${
                   isOpening && !isClosing ? 'translate-x-0' : 'translate-x-full'
                 }`}
@@ -123,7 +166,6 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
           </button>
         </div>
 
-        {/* form */}
         <div className="mt-[16px] space-y-4">
           <div>
             <label className="font-md-medium text-gray-500 ">아이디</label>
@@ -140,23 +182,7 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
               readOnly={!isEditing}
             />
           </div>
-          {role === 'HQ' && (
-            <div>
-              <label className=" font-md-medium text-gray-500">부서</label>
-              <input
-                role="text"
-                className={`w-full mt-[8px] p-4 h-[56px] rounded-[12px] text-gray-600 font-md-medium
-          ${
-            isEditing
-              ? 'bg-white text-gray-800 border border-gray-300  focus:ring-1 focus:ring-primary-500'
-              : 'bg-gray-100'
-          }`}
-                value={department}
-                onChange={(e) => setDepartMent(e.target.value)}
-                readOnly={!isEditing}
-              />
-            </div>
-          )}
+
           <div>
             <label className="font-md-medium text-gray-500">이메일</label>
             <input
@@ -168,8 +194,8 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
             : 'bg-gray-100'
         }`}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
               readOnly={!isEditing}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
@@ -183,8 +209,8 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
             : 'bg-gray-100'
         }`}
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
               readOnly={!isEditing}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
         </div>
@@ -199,8 +225,8 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
                 <select
                   className="w-full font-md-medium mt-[8px] px-4 py-3 h-[48px] rounded-[12px] border border-gray-300 appearance-none text-gray-700"
                   value={selectedBank}
-                  onChange={(e) => setSelectedBank(e.target.value)}
                   disabled={!isEditing}
+                  onChange={(e) => setSelectedBank(e.target.value)}
                 >
                   {BANKS.map((bank) => (
                     <option key={bank} value={bank}>
@@ -219,8 +245,8 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
             : 'bg-gray-100'
         }`}
                 value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
                 readOnly={!isEditing}
+                onChange={(e) => setAccountNumber(e.target.value)}
               />
             </div>
           </div>
@@ -230,7 +256,10 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
           {isEditing ? (
             <button
               className="w-[128px] px-[18px] py-[12px] justify-center flex items-center gap-[4px] border border-primary-700 text-primary-700 rounded-[12px] bg-white font-md-medium whitespace-nowrap"
-              onClick={() => setIsEditing(false)}
+              onClick={async () => {
+                await handleUpdate();
+                setIsEditing(false);
+              }}
             >
               <CheckIcon />
               수정완료

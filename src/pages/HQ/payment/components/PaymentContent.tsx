@@ -13,7 +13,7 @@ interface Props {
   data: PaymentData[];
 }
 
-const PaymentChartContent = ({ data }: Props) => {
+const PaymentChartContent = ({ data = [] }: Props) => {
   const navigate = useNavigate();
   return (
     <div className="w-full h-[584px] overflow-y-scroll custom-scrollbar">
@@ -22,7 +22,7 @@ const PaymentChartContent = ({ data }: Props) => {
           key={item.paymentResolutionId}
           className="mx-[8px] flex w-[960px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"
           onClick={() =>
-            navigate(`/payment/detail/${item.paymentResolutionId}`)
+            navigate(`/hq/payment/detail/${item.paymentResolutionId}`)
           }
         >
           <div className="w-[350px] pl-5 text-sm font-medium text-gray-700 truncate">
