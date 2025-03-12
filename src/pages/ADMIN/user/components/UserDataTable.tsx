@@ -143,7 +143,7 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
               <div className="w-[140px] px-5 py-2 items-center">
                 {row.isAssigned === '미등록' && (
                   <button
-                    className="flex w-[85px] h-[26px] gap-1 pl-2 pr-3 items-center justify-center rounded-lg bg-[#E6F1F7] text-[#2C72FF] font-xs-regular"
+                    className="flex w-[85px] h-[26px] gap-1 pl-2 pr-3 items-center justify-center rounded-lg bg-[#E6F1F7] text-[#2C72FF] font-xs-regular whitespace-nowrap"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleApproveUser(row.userId);

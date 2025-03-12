@@ -5,6 +5,8 @@ import EditIcon from '../../../public/Icon/EditIcon';
 import CheckIcon from '../../../public/Icon/CheckIcon';
 import ConfirmModal from '../ConfirmModal';
 import api from '../../hooks/api';
+import { useAuthStore } from '../../store/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 interface SideModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,10 +16,12 @@ interface SideModalProps {
 const BANKS = ['농협은행', '카카오뱅크', '토스뱅크'];
 
 const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
+  const navigate = useNavigate();
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const { clearAuthData } = useAuthStore();
 
   // 사용자 정보 상태
   const [userId, setUserId] = useState('');
@@ -65,7 +69,7 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
   const handleUpdate = async () => {
     try {
       const updatedData = {
-        loginId: userId || '', 
+        loginId: userId || '',
         email: email || '',
         phone: phone || '',
         bank: selectedBank || '',
@@ -113,6 +117,11 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
       setIsOpening(false);
       onClose();
     }, 300);
+  };
+  const handleLogout = () => {
+    localStorage.clear();
+    clearAuthData();
+    navigate('/');
   };
 
   if (!isOpen) return null;
@@ -269,7 +278,10 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
               수정완료
             </button>
           ) : (
-            <button className="w-[128px] px-[18px] py-[12px] justify-center flex items-center gap-[4px] border border-gray-500 text-gray-500 rounded-[12px] bg-white font-md-medium  whitespace-nowrap">
+            <button
+              className="w-[128px] px-[18px] py-[12px] justify-center flex items-center gap-[4px] border border-gray-500 text-gray-500 rounded-[12px] bg-white font-md-medium  whitespace-nowrap"
+              onClick={handleLogout}
+            >
               <LogoutIcon />
               로그아웃
             </button>

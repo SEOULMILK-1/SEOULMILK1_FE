@@ -17,7 +17,7 @@ const PaymentChartContent = ({ data = [] }: Props) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-[584px] overflow-y-scroll custom-scrollbar">
+    <div className="w-full h-[584px] overflow-y-scroll custom-scrollbar overflow-x-hidden">
       {data.map((item) => (
         <div
           key={item.paymentResolutionId}
@@ -29,6 +29,10 @@ const PaymentChartContent = ({ data = [] }: Props) => {
           <div className="w-[350px] pl-5 font-sm-medium text-gray-800 truncate">
             {item.paymentResolutionName}
           </div>
+          <div className="w-[170px] pl-5 text-sm font-medium text-gray-700 truncate">
+            {new Date(item.createdAt).toLocaleDateString()}
+          </div>
+      
           <div className="w-[170px] pl-5 font-sm-medium text-gray-800 tabular-nums">
             {item.createdAt}
           </div>

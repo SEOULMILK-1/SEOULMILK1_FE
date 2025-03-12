@@ -44,11 +44,15 @@ function LoginPage() {
         const role = response.data.result?.role;
         localStorage.setItem('userRole', role);
 
+        const isMobile = window.innerWidth <= 768;
+
         if (role === 'CS_USER') {
-          navigate('/cs/home');
+          navigate(isMobile ? '/cs' : '/cs/home');
         } else if (role === 'HQ_USER') {
+          //본사
           navigate('/hq/home');
         } else {
+          //관리자
           navigate('/admin/home');
         }
       } else {

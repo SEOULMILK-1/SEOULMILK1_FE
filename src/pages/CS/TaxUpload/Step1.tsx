@@ -5,12 +5,13 @@ import ImageCrop from './ImageCrop';
 import api from '../../../hooks/api';
 import ConfirmUpload from './ConfirmUpload';
 import DuplicateTaxModal from './DuplicateTaxModal';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const Step1 = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
@@ -30,6 +31,23 @@ const Step1 = () => {
       setCroppedImage(location.state.selectedImage);
     }
   }, [location.state]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageUrl = reader.result as string;
+        setSelectedImage(imageUrl);
+        setCroppedImage(imageUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleReuploadClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleUpload = async () => {
     if (!croppedImage) {
@@ -60,7 +78,7 @@ const Step1 = () => {
       const { ntsTaxId, issueId, status, title, issueDate } = res.data.result;
 
       if (issueId === '이미 등록된 세금계산서입니다.') {
-        if (status === 'APPROVED') {
+        if (status === 'APPROVE') {
           setDuplicateId(ntsTaxId.toString());
           setDuplicateTitle(title || '세금계산서');
           setDuplicateTaxDate(issueDate || '날짜 없음');
@@ -86,7 +104,7 @@ const Step1 = () => {
         }
       }
       // 중복이 아니면 정상적으로 step2 이동
-      navigate(`/upload-tax/step2?taxId=${ntsTaxId}`, {
+      navigate(`/cs/upload-tax/step2?taxId=${ntsTaxId}`, {
         state: { ocrData: res.data, selectedImage: croppedImage }
       });
     } catch (error) {
@@ -131,11 +149,17 @@ const Step1 = () => {
           setCroppedImage(croppedImg ?? selectedImage ?? null);
         }}
       />
-
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
       <div className="mt-[64px] flex gap-[24px] justify-center">
         <button
           className="font-md-medium w-[200px] h-[48px] text-center border border-primary-600 text-primary-600 px-6 py-3 rounded-[12px]"
-          onClick={() => setSelectedImage(undefined)}
+          onClick={handleReuploadClick}
         >
           다시 업로드
         </button>
