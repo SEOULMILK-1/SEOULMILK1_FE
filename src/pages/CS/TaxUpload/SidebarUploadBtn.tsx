@@ -17,7 +17,7 @@ const SidebarUploadButton = () => {
 
       reader.readAsDataURL(file);
       reader.onload = () => {
-        navigate('/upload-tax/step1', {
+        navigate('/cs/upload-tax/step1', {
           state: { selectedImage: reader.result }
         });
       };
@@ -39,7 +39,7 @@ const SidebarUploadButton = () => {
         accept="image/*"
         ref={fileInputRef}
         style={{ display: 'none' }}
-        onChange={handleFileChange} 
+        onChange={handleFileChange}
       />
     </div>
   );

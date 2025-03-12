@@ -4,11 +4,11 @@ import SearchIcon from '../../../../public/Icon/SearchIcon';
 import PaymentGray from '../../../../public/Icon/PaymentIcon';
 import Button from '../../../common/Button';
 import Header from '../../../common/Header';
-import SelectCalendar from '../../../common/SelectCalendar';
 import SelectMonth from '../../../common/SelectMonth';
 import PaymentChart from './components/PaymentChart';
 import Search from '../../../common/Search';
 import LocationIcon from '../../../../public/Icon/LocationIcon';
+import SelectCalendar from '../../../common/SelectCalendar';
 
 const Payment = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');

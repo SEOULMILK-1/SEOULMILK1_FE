@@ -13,7 +13,7 @@ interface Props {
   data: PaymentData[];
 }
 
-const PaymentChartContent = ({ data }: Props) => {
+const PaymentChartContent = ({ data = [] }: Props) => {
   const navigate = useNavigate();
 
   return (

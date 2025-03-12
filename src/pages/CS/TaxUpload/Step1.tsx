@@ -79,7 +79,7 @@ const Step1 = () => {
           console.log('삭제완료후 재요청 ocr 응답:', res.data.result);
 
           // 4. 새로운 ID로 Step2 이동
-          navigate(`/upload-tax/step2?taxId=${ntsTaxId}`, {
+          navigate(`/cs/upload-tax/step2?taxId=${ntsTaxId}`, {
             state: { ocrData: res.data, selectedImage: croppedImage }
           });
           return;

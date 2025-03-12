@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ImageCrop from './ImageCrop';
 import api from '../../../hooks/api';
 import DuplicateTaxModal from '../../CS/TaxUpload/DuplicateTaxModal';
+import ConfirmUpload from '../../CS/TaxUpload/ConfirmUpload';
 
 const Step1Mobile = () => {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ const Step1Mobile = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+
   const [isDuplicateModalOpen, setIsDuplicateModalOpen] =
     useState<boolean>(false);
 
@@ -46,7 +49,7 @@ const Step1Mobile = () => {
       const { ntsTaxId, issueId, status, title, issueDate } = res.data.result;
 
       if (issueId === '이미 등록된 세금계산서입니다.') {
-        if (status === 'APPROVED') {
+        if (status === 'APPROVE') {
           setDuplicateId(ntsTaxId.toString());
           setDuplicateTitle(title || '세금계산서');
           setDuplicateTaxDate(issueDate || '날짜 없음');
@@ -68,6 +71,7 @@ const Step1Mobile = () => {
           navigate(`/uploadTax/step2?taxId=${ntsTaxId}`, {
             state: { ocrData: res.data, selectedImage: croppedImage }
           });
+
           return;
         }
       }
@@ -107,6 +111,14 @@ const Step1Mobile = () => {
           />
         )}
       </div>
+      {/* 처음 사진업로드 확인모달 */}
+      {isModalOpen && (
+        <ConfirmUpload
+          title="여러 장의 세금계산서는 오류가 생겨요!"
+          message="한 장만 나오도록 사진을 잘라주세요."
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       {/* 중복일경우 모달 */}
       {isDuplicateModalOpen && (
         <DuplicateTaxModal

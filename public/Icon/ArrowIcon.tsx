@@ -1,8 +1,13 @@
 // < 이 아이콘
-const ArrowIcon = ({ strokeColor = '#DADFE7' }) => {
+interface ArrowIconProps {
+  strokeColor?: string;
+  className?: string;
+}
+
+const ArrowIcon = ({ strokeColor = '#DADFE7', className }: ArrowIconProps) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
+      className={className}
       width="24"
       height="24"
       viewBox="0 0 24 24"
