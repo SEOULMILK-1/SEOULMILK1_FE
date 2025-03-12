@@ -20,6 +20,8 @@ const ChartPagination = ({
 }: ChartPaginationProps) => {
   const [selectedPageSize, setSelectedPageSize] = useState(pageSize);
   const [totalPages, setTotalPages] = useState(1);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
     if (totalItems > 0 && pageSize > 0) {
@@ -29,45 +31,61 @@ const ChartPagination = ({
     }
   }, [totalItems, pageSize]);
 
-  const handlePageSizeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const newSize = Number(event.target.value);
-    setSelectedPageSize(newSize);
-    onPageSizeChange(newSize);
-
+  const handlePageSizeChange = (size: number) => {
+    setSelectedPageSize(size);
+    onPageSizeChange(size);
     onPageChange(1);
-  };
-
-  const handlePageChange = (page: number) => {
-    if (page < 1) return;
-    if (page > totalPages) return;
-    onPageChange(page);
+    setIsDropdownOpen(false);
+    setIsClicked(true);
   };
 
   return (
     <div className="flex w-[960px] h-[56px] px-5 justify-end items-center border-t border-gray-300">
       <div className="flex items-center gap-9">
         <span className="text-gray-500 font-sm-medium">페이지 당 행</span>
+
         <div className="relative py-[6px]">
-          <select
-            className="flex w-[84px] h-[34px] px-4 text-left rounded-xl border border-gray-300 text-gray-500 font-sm-medium appearance-none cursor-pointer"
-            value={selectedPageSize}
-            onChange={handlePageSizeChange}
+          <div
+            className={`flex w-[84px] h-[34px] font-sm-medium px-4 text-left rounded-xl cursor-pointer items-center justify-between border border-solid 
+              ${
+                isDropdownOpen || isClicked
+                  ? 'border-primary-700 text-primary-700'
+                  : 'border-gray-300 text-gray-500'
+              }`}
+            onClick={() => {
+              setIsDropdownOpen(!isDropdownOpen);
+              setIsClicked(true);
+            }}
           >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-          </select>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-            <UnderIcon />
+            <span>{selectedPageSize}</span>
+            <UnderIcon
+              fill={isDropdownOpen || isClicked ? '#009856' : '#B0B0B0'}
+            />
           </div>
+
+          {isDropdownOpen && (
+            <div className="absolute bottom-full w-[84px] py-2 px-1 bg-white flex flex-col rounded-xl drop-shadow-elevation1 z-50">
+              {[10, 20, 30, 40].map((size) => (
+                <div
+                  key={size}
+                  onClick={() => handlePageSizeChange(size)}
+                  className={`text-gray-500 font-sm-medium flex w-[76px] h-[34px] justify-center items-center rounded-lg px-4 py-2 cursor-pointer hover:bg-gray-100 
+                    ${
+                      selectedPageSize === size
+                        ? 'bg-primary-50 text-primary-600'
+                        : ''
+                    }`}
+                >
+                  {size}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-[29px]">
           <div
-            onClick={() => handlePageChange(1)}
+            onClick={() => onPageChange(1)}
             className={`cursor-pointer ${
               currentPage === 1 ? 'opacity-50' : ''
             }`}
@@ -76,7 +94,7 @@ const ChartPagination = ({
           </div>
 
           <div
-            onClick={() => handlePageChange(currentPage - 1)}
+            onClick={() => onPageChange(currentPage - 1)}
             className={`cursor-pointer ${
               currentPage === 1 ? 'opacity-50' : ''
             }`}
@@ -92,7 +110,7 @@ const ChartPagination = ({
             className={`rotate-180 cursor-pointer ${
               currentPage === totalPages ? 'opacity-50' : ''
             }`}
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => onPageChange(currentPage + 1)}
           >
             <ArrowIcon />
           </div>
@@ -101,7 +119,7 @@ const ChartPagination = ({
             className={`rotate-180 cursor-pointer ${
               currentPage === totalPages ? 'opacity-50' : ''
             }`}
-            onClick={() => handlePageChange(totalPages)}
+            onClick={() => onPageChange(totalPages)}
           >
             <TwoArrowIcon />
           </div>
