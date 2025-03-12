@@ -3,7 +3,7 @@ import SignupInput from '../../../HQ/signup/components/SignupInput';
 import SignupButton from '../../../HQ/signup/components/SignupButton';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useCsSignupStore } from '../../../../hooks/useCsSignupStore';
+import { useCsSignupStore } from '../../../../store/useCsSignupStore';
 
 interface FormState {
   name: string;
