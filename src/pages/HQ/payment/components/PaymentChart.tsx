@@ -17,10 +17,17 @@ const PaymentChart = () => {
       setError(null);
 
       try {
+        const token = localStorage.getItem('accesstoken');
         const response = await api.get(
-          `/hq/payment-resolution/list?page=${page}&size=${size}`
+          `/hq/payment-resolution/list?page=${page}&size=${size}`,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
         );
+
         if (response.data.isSuccess) {
+          console.log(response.data);
+
           setData(response.data.result);
         } else {
           setError('데이터를 불러오는 중 오류가 발생했습니다.');
