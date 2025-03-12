@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Header from '../../../common/Header';
 import SelectMonth from '../../../common/SelectMonth';
 import StateDropdown from '../../../common/StateDropdown';
@@ -6,7 +7,41 @@ import SearchIcon from '../../../../public/Icon/SearchIcon';
 import ResetIcon from '../../../../public/Icon/ResetIcon';
 import CustomerChart from './components/CustomerChart';
 import TaxIconGray from '../../../../public/Icon/TaxIconGray';
+import SelectCalendar from '../../../common/SelectCalendar';
+
 const CSTax = () => {
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<string>('');
+  const [searchTriggered, setSearchTriggered] = useState(false);
+
+  const handleSelectMonth = (start: string, end: string, label: string) => {
+    setStartDate(start);
+    setEndDate(end);
+    setSelectedMonth(label);
+  };
+
+  const handleSelectDate = (date: string, dateType: 'start' | 'end') => {
+    if (dateType === 'start') {
+      setStartDate(date);
+      setSelectedMonth('');
+    } else {
+      setEndDate(date);
+      setSelectedMonth('');
+    }
+  };
+
+  const handleReset = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedMonth('');
+    setSearchTriggered(false);
+  };
+
+  const handleSearch = () => {
+    setSearchTriggered(true);
+  };
+
   return (
     <div className="mx-[94px] w-[960px]">
       <Header title="세금계산서 조회" Icon={TaxIconGray} />
@@ -14,8 +49,15 @@ const CSTax = () => {
       <div className="flex flex-row gap-4 mb-4"></div>
       <div className="flex items-center gap-4 text-gray-500">
         기간
-        <SelectMonth />
-        {/* <SelectCalendar /> */}
+        <SelectMonth
+          selectedMonth={selectedMonth}
+          onSelectMonth={handleSelectMonth}
+        />
+        <SelectCalendar
+          selectedStartDate={startDate}
+          selectedEndDate={endDate}
+          onSelectDate={handleSelectDate}
+        />
       </div>
 
       <div className="flex items-center justify-between my-4">
@@ -28,6 +70,7 @@ const CSTax = () => {
           <Button
             size="sm"
             className="bg-transparent border border-primary-600 text-primary-500 flex items-center gap-1"
+            onClick={handleReset}
           >
             <ResetIcon />
             초기화
@@ -35,6 +78,7 @@ const CSTax = () => {
           <Button
             size="sm"
             className="flex items-center gap-1 text-white bg-primary-700"
+            onClick={handleSearch}
           >
             <SearchIcon />
             조회
@@ -43,7 +87,11 @@ const CSTax = () => {
       </div>
 
       {/* 표 */}
-      <CustomerChart />
+      <CustomerChart
+        startDate={startDate}
+        endDate={endDate}
+        searchTriggered={searchTriggered}
+      />
     </div>
   );
 };
