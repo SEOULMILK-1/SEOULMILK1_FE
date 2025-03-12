@@ -4,11 +4,19 @@ import StateDropdownIcon from '../../public/Icon/StateDropdownIcon';
 interface DropdownProps {
   selected?: string;
   onChange?: (state: string) => void;
+  optionsToShow?: string[];
 }
 
-const StateDropdown = ({ selected = '선택', onChange }: DropdownProps) => {
+const StateDropdown = ({
+  selected = '선택',
+  onChange,
+  optionsToShow
+}: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const options = ['반영', '미반영'];
+  const allOptions = ['반영', '미반영', '승인', '반려'];
+  const options = optionsToShow
+    ? allOptions.filter((opt) => optionsToShow.includes(opt))
+    : allOptions;
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = (event: MouseEvent) => {

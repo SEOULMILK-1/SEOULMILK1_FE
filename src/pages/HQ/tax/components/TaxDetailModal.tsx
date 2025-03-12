@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../../../../hooks/api';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import ArrowIcon from '../../../../../public/Icon/ArrowIcon';
@@ -90,9 +90,9 @@ const TaxDetailModal = ({
 
   const getDisplayStatus = (apiStatus: string): Status => {
     const statusMap: Record<string, Status> = {
-      APPROVE: '승인됨',
-      REFUSED: '반려됨',
-      WAIT: '반려됨'
+      APPROVE: '승인',
+      REFUSED: '반려',
+      WAIT: '반려'
     };
 
     return statusMap[apiStatus] || (apiStatus as Status);

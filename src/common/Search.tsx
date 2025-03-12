@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, JSX } from 'react';
+import { useState, useEffect, ChangeEvent, JSX } from 'react';
 import GraySearchIcon from '../../public/Icon/GraySearchIcon';
 import { LoginDeleteIcon } from '../../public/Icon/LoginDeleteIcon';
 import SearchButton from './SearchButton';
@@ -9,6 +9,8 @@ interface SearchBarProps {
   showSearchButton?: boolean;
   defaultSearchIcon?: JSX.Element;
   activeSearchIcon?: JSX.Element;
+  value?: string;
+  reset?: boolean;
 }
 
 const Search = ({
@@ -16,9 +18,17 @@ const Search = ({
   placeholderName,
   showSearchButton = true,
   defaultSearchIcon = <GraySearchIcon />,
-  activeSearchIcon = <GraySearchIcon fillColor="#1aba6e" />
+  activeSearchIcon = <GraySearchIcon fillColor="#1aba6e" />,
+  value,
+  reset = false
 }: SearchBarProps) => {
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>(value || '');
+
+  useEffect(() => {
+    if (reset) {
+      setInputValue('');
+    }
+  }, [reset]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

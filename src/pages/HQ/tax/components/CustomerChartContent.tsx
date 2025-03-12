@@ -49,11 +49,14 @@ const CustomerChartContent = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('accesstoken');
+
         const response = await api.get('/hq/search/tax', {
           params: {
             page: currentPage - 1,
             size: pageSize
           },
+          headers: { Authorization: `Bearer ${token}` }
         });
         if (response.data.isSuccess) {
           const transformedData = response.data.result.responseList.map(
@@ -66,9 +69,9 @@ const CustomerChartContent = ({
           );
 
           setData(transformedData);
-            
-        setData(response.data.result.responseList);
-        onTotalItemsChange(response.data.result.totalElements);
+
+          setData(response.data.result.responseList);
+          onTotalItemsChange(response.data.result.totalElements);
 
           const taxIdParam = searchParams.get('taxId');
           if (taxIdParam) {
@@ -83,7 +86,6 @@ const CustomerChartContent = ({
         } else {
           console.error('API 요청 실패:', response.data.message);
         }
-    
       } catch (error) {
         console.error('API 요청 중 오류 발생:', error);
       }
