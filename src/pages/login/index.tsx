@@ -40,10 +40,10 @@ function LoginPage() {
         const role = response.data.result?.role;
         localStorage.setItem('userRole', role);
 
-        console.log(role);
+        const isMobile = window.innerWidth <= 768;
+
         if (role === 'CS_USER') {
-          //대리점
-          navigate('/cs');
+          navigate(isMobile ? '/home' : '/cs/home');
         } else if (role === 'HQ_USER') {
           //본사
           navigate('/hq');
