@@ -35,3 +35,12 @@ textarea:focus {
   outline: none;
   box-shadow: none;
 }
+
+/* svg 애니메이션 비활성화 */
+.stop-animation {
+  animation: none !important;
+}
+
+.stop-animation * {
+  animation: none !important;
+}

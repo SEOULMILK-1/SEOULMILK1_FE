@@ -15,9 +15,9 @@ const Step3 = () => {
     if (!taxId) {
       return;
     }
-    
+
     const timer = setTimeout(() => {
-      navigate(`/cs-tax?taxId=${taxId}`);
+      navigate(`/cs/tax?taxId=${taxId}`);
     }, 3000);
 
     return () => clearTimeout(timer);

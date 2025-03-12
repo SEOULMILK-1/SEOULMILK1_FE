@@ -7,6 +7,7 @@ import LoginFooter from './components/LoginFooter';
 import ApprovalModal from './components/ApprovalModal';
 import api from '../../hooks/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/useAuthStore';
 
 function LoginPage() {
   const [loginId, setLoginId] = useState('');
@@ -14,9 +15,8 @@ function LoginPage() {
   const [error, setError] = useState('');
   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { setAuthData, fetchUserInfo } = useAuthStore();
   const isButtonDisabled = !loginId || !password;
-
   const handleLogin = async () => {
     try {
       const response = await api.post('/auth/login', {
@@ -32,9 +32,13 @@ function LoginPage() {
 
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken);
-          console.log('Access Token 저장', accessToken);
+
+          await setAuthData(accessToken);
+          await fetchUserInfo();
         } else {
-          console.error('Access Token이 없음.');
+          console.error(' Access Token이 없음.');
+          setError('인증 토큰이 없습니다. 다시 로그인해 주세요.');
+          return;
         }
 
         const role = response.data.result?.role;
@@ -43,7 +47,7 @@ function LoginPage() {
         const isMobile = window.innerWidth <= 768;
 
         if (role === 'CS_USER') {
-          navigate(isMobile ? '/home' : '/cs/home');
+          navigate(isMobile ? '/cs' : '/cs/home');
         } else if (role === 'HQ_USER') {
           //본사
           navigate('/hq');
@@ -55,6 +59,7 @@ function LoginPage() {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');
       }
     } catch (error) {
+      console.error(' 로그인 요청 실패:', error);
       setError('로그인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
     }
   };
@@ -74,6 +79,7 @@ function LoginPage() {
           />
           <FloatingLabelInput
             placeholder="비밀번호"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

@@ -130,7 +130,7 @@ const TaxDetailModal = ({
           currentSearchParams ? `?${currentSearchParams}` : ''
         }`;
 
-        navigate(`/upload-tax/step1?taxId=${selectedItem?.id}`, {
+        navigate(`/cs/upload-tax/step1?taxId=${selectedItem?.id}`, {
           state: {
             selectedImage: imageUrl,
             returnUrl: returnUrl
@@ -148,7 +148,7 @@ const TaxDetailModal = ({
 
     const taxId = selectedItem.id || detailData?.issueId;
 
-    navigate(`/cs-tax/edit?taxId=${taxId}`, {
+    navigate(`/cs/tax/edit?taxId=${taxId}`, {
       state: {
         taxId,
         ...selectedItem,
@@ -220,10 +220,7 @@ const TaxDetailModal = ({
 
             <div>
               <h2 className="flex text-center font-xl-semibold text-gray-800 mt-[12px]">
-                {detailData?.title ||
-                  `${selectedItem.team}_${selectedItem.taxDate
-                    .replace(/\./g, '_')
-                    .replace(/^(\d{4})_(\d{2})_(\d{2})$/, '$1년_$2월_$3일')}`}
+                {detailData?.title}
               </h2>
 
               <div

@@ -67,15 +67,7 @@ function UserSideModal() {
           </div>
         </div>
       )}
-      {/* {isConfirmOpen && (
-        <ConfirmModal
-          onClose={() => setIsConfirmOpen(false)}
-          onDelete={() => {
-            setIsConfirmOpen(false);
-            setIsOpen(false);
-          }}
-        />
-      )} */}
+      
       {isConfirmOpen && (
         <ConfirmModal
           isOpen={isConfirmOpen}
