@@ -37,7 +37,10 @@ const CustomerChartContent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/cs/search/tax');
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.get('/cs/search/tax', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
         if (response.data.isSuccess) {
           const transformedData = response.data.result.responseList.map(
