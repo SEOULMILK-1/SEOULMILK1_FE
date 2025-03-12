@@ -36,7 +36,7 @@ const Step3 = () => {
         <img
           src={step3Icon}
           alt="세금계산서 검증"
-          className="w-[250px] h-[250px]"
+          className="w-[250px] h-[250px] animate-[bounceEffect_3s_ease-in-out]"
         />
         <div className="text-gray-600 font-2xl-medium">
           홈택스를 통해서 검증하고 있어요

@@ -21,7 +21,7 @@ const Step3Mobile = () => {
           alt="세금계산서 검증"
           className="w-[250px] h-[250px] stop-animation"
         />
-        <div className="text-gray-600 font-md-medium whitespace-nowrap">
+        <div className="text-gray-600 font-md-medium whitespace-nowrap animate-[bounceEffect_3s_ease-in-out]">
           홈택스를 통해서 검증하고 있어요
         </div>
       </div>

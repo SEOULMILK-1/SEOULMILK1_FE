@@ -21,7 +21,7 @@ const DuplicateTaxModal = ({
       if (isMobile) {
         navigate('/cs');
       } else {
-        navigate(`/cs-tax?taxId=${id}`);
+        navigate(`/cs/tax?taxId=${id}`);
       }
     }
     onClose();

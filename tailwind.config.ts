@@ -48,6 +48,18 @@ module.exports = {
         'elevation2': '0 4px 24px rgba(0, 0, 0, 0.06)',
         'elevation3': '0 4px 24px rgba(0, 0, 0, 0.08)'
       }
+    },
+    animation: {
+      bounceEffect: 'bounceEffect 3s ease-in-out'
+    },
+    keyframes: {
+      bounceEffect: {
+        '0%, 100%': { transform: 'translateY(0)' },
+        '20%': { transform: 'translateY(-10px)' },
+        '40%': { transform: 'translateY(0)' },
+        '60%': { transform: 'translateY(-5px)' },
+        '80%': { transform: 'translateY(0)' }
+      }
     }
   },
   plugins: [
