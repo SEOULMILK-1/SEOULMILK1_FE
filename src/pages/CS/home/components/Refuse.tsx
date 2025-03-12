@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../../../../hooks/api';
 import RefuseHeader from './RefuseHeader';
+import TaxRefuseIcon from '../../../../../public/Icon/TaxRefuseIcon';
 
 interface RefuseProps {
   ntsTaxId: number;
@@ -32,7 +33,8 @@ const Refuse = () => {
 
   return (
     <div>
-      <div className="mt-[37px] flex flex-row gap-2">
+      <div className="mt-[37px] flex flex-row gap-2 items-center">
+        <TaxRefuseIcon />
         <span className="text-gray-800 font-2xl-bold">반려</span>
         <span className="text-gray-500 font-2xl-medium">{data.length}</span>
       </div>
