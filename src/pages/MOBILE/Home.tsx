@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MobileUpload from '../../../public/Icon/MobileUpload';
 import MobileCamera from '../../../public/Icon/MobileCamera';
@@ -14,8 +14,24 @@ const Home = () => {
   console.log('Zustand 상태:', { user });
   const navigate = useNavigate();
   const [_, setSelectedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null); 
+  const cameraInputRef = useRef<HTMLInputElement | null>(null); 
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+        navigate('/uploadtax/step1', {
+          state: { selectedImage: reader.result }
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCameraCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -49,6 +65,7 @@ const Home = () => {
             type="file"
             accept="image/*"
             className="hidden"
+            ref={fileInputRef} 
             onChange={handleFileChange}
           />
           <div className="text-white font-md-semibold">
@@ -60,10 +77,15 @@ const Home = () => {
           </div>
         </label>
 
-        <button
-          className="w-[169px] h-[138px] py-3 pl-4 bg-primary-50 text-primary-600 rounded-xl flex flex-col justify-between aspect-square cursor-pointer"
-          onClick={() => navigate('/camera')}
-        >
+        <label className="w-[169px] h-[138px] py-3 pl-4 bg-primary-50 text-primary-600 rounded-xl flex flex-col justify-between aspect-square cursor-pointer">
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment" 
+            className="hidden"
+            ref={cameraInputRef} 
+            onChange={handleCameraCapture}
+          />
           <div className="text-left font-md-semibold">
             세금계산서 <br />
             촬영
@@ -71,7 +93,7 @@ const Home = () => {
           <div className="self-end pb-4">
             <MobileCamera />
           </div>
-        </button>
+        </label>
       </div>
 
       <div className="space-y-4">
