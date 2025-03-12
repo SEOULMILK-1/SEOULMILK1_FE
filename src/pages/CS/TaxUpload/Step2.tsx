@@ -78,7 +78,7 @@ const Step2 = () => {
   return (
     <div className="px-[94px] mx-auto">
       <Header
-        title="세금계산서 업로드"
+        title="정보 수정"
         showStepProgress={true}
         Icon={() => (
           <img src={uploadIcon} alt="세금계산서 업로드" className="w-6 h-6" />

@@ -14,8 +14,8 @@ const Home = () => {
   console.log('Zustand 상태:', { user });
   const navigate = useNavigate();
   const [_, setSelectedImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null); 
-  const cameraInputRef = useRef<HTMLInputElement | null>(null); 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const cameraInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -65,7 +65,7 @@ const Home = () => {
             type="file"
             accept="image/*"
             className="hidden"
-            ref={fileInputRef} 
+            ref={fileInputRef}
             onChange={handleFileChange}
           />
           <div className="text-white font-md-semibold">
@@ -81,9 +81,9 @@ const Home = () => {
           <input
             type="file"
             accept="image/*"
-            capture="environment" 
+            capture="environment"
             className="hidden"
-            ref={cameraInputRef} 
+            ref={cameraInputRef}
             onChange={handleCameraCapture}
           />
           <div className="text-left font-md-semibold">
@@ -99,7 +99,7 @@ const Home = () => {
       <div className="space-y-4">
         <button
           className="w-[353px] flex font-md-medium items-center justify-between p-4 bg-gray-100 rounded-[12px] text-gray-600"
-          disabled
+          onClick={() => navigate('/tax')}
         >
           <div className="flex items-center gap-2">
             <TaxIconGray />
