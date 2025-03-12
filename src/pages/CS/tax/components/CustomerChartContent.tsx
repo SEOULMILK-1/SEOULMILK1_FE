@@ -9,6 +9,9 @@ interface CustomerChartContentProps {
   endDate: string | null;
   searchTriggered: boolean;
   selectedStatus: string | null;
+  currentPage: number;
+  pageSize: number;
+  setTotalItems: (total: number) => void;
 }
 
 interface InvoiceData {
@@ -39,7 +42,10 @@ const CustomerChartContent = ({
   startDate,
   endDate,
   searchTriggered,
-  selectedStatus
+  selectedStatus,
+  currentPage,
+  pageSize,
+  setTotalItems
 }: CustomerChartContentProps) => {
   const [data, setData] = useState<InvoiceData[]>([]);
   const [filteredData, setFilteredData] = useState<InvoiceData[]>([]);
@@ -55,43 +61,19 @@ const CustomerChartContent = ({
   };
 
   useEffect(() => {
-    if (searchTriggered) {
-      let filtered = [...data];
-
-      if (startDate && endDate) {
-        const start = parseDate(startDate);
-        const end = parseDate(endDate);
-
-        filtered = filtered.filter((item) => {
-          const itemDate = parseDate(item.date);
-          return itemDate >= start && itemDate <= end;
-        });
-      }
-
-      if (selectedStatus && selectedStatus !== '선택') {
-        filtered = filtered.filter((item) => {
-          return (
-            item.originalStatus === selectedStatus ||
-            item.status === selectedStatus
-          );
-        });
-      }
-
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(data);
-    }
-  }, [searchTriggered, data, startDate, endDate, selectedStatus]);
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('accesstoken');
+        const params: Record<string, any> = {
+          page: currentPage - 1,
+          size: pageSize
+        };
+
         const response = await api.get('/cs/search/tax', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
+          params
         });
 
-        console.log(response.data);
         if (response.data.isSuccess) {
           const transformedData = response.data.result.responseList.map(
             (item: any) => ({
@@ -107,7 +89,32 @@ const CustomerChartContent = ({
           );
 
           setData(transformedData);
-          if (!searchTriggered) {
+          setTotalItems(response.data.result.totalElements);
+
+          if (searchTriggered) {
+            let filtered = [...transformedData];
+
+            if (startDate && endDate) {
+              const start = parseDate(startDate);
+              const end = parseDate(endDate);
+
+              filtered = filtered.filter((item) => {
+                const itemDate = parseDate(item.date);
+                return itemDate >= start && itemDate <= end;
+              });
+            }
+
+            if (selectedStatus && selectedStatus !== '선택') {
+              filtered = filtered.filter((item) => {
+                return (
+                  item.originalStatus === selectedStatus ||
+                  item.status === selectedStatus
+                );
+              });
+            }
+
+            setFilteredData(filtered);
+          } else {
             setFilteredData(transformedData);
           }
 
@@ -130,7 +137,16 @@ const CustomerChartContent = ({
     };
 
     fetchData();
-  }, [searchParams, searchTriggered]);
+  }, [
+    startDate,
+    endDate,
+    selectedStatus,
+    currentPage,
+    pageSize,
+    searchTriggered,
+    searchParams,
+    setTotalItems
+  ]);
 
   const handleItemClick = (item: InvoiceData) => {
     setSelectedItem(item);
@@ -160,7 +176,7 @@ const CustomerChartContent = ({
     };
 
     handleRedirectFromEdit();
-  }, [location.pathname, data]);
+  }, [location.pathname, data, isModalOpen, searchParams]);
 
   return (
     <div className="h-[602px] w-[960px] overflow-y-auto overflow-x-hidden custom-scrollbar">
