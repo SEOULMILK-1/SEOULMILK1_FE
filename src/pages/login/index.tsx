@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import { useState } from 'react';
 import FloatingLabelInput from './components/LabelInput';
 import RedLogo from '../../../public/Icon/RedLogoIcon';
 import Button from '../../common/Button';
@@ -45,11 +45,11 @@ function LoginPage() {
         localStorage.setItem('userRole', role);
 
         if (role === 'CS_USER') {
-          navigate('/cs');
+          navigate('/cs/home');
         } else if (role === 'HQ_USER') {
-          navigate('/hq');
+          navigate('/hq/home');
         } else {
-          navigate('/admin');
+          navigate('/admin/home');
         }
       } else {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');
