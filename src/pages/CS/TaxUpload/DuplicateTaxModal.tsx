@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import WarningIcon from '../../../../public/Icon/WarningIcon';
+import { isMobile } from 'react-device-detect';
 
 interface DuplicateTaxModalProps {
   title: string;
@@ -15,14 +16,16 @@ const DuplicateTaxModal = ({
   onClose
 }: DuplicateTaxModalProps) => {
   const navigate = useNavigate();
-
   const handleConfirm = () => {
     if (id) {
-      navigate(`/cs-tax?taxId=${id}`);
+      if (isMobile) {
+        navigate('/cs');
+      } else {
+        navigate(`/cs-tax?taxId=${id}`);
+      }
     }
     onClose();
   };
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
       <div className="w-[328px] bg-white rounded-[20px] drop-shadow-elevation2 flex flex-col">

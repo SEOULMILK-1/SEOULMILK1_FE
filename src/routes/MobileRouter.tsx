@@ -13,7 +13,7 @@ const MobileRouter = createBrowserRouter([
   { path: '/uploadTax/step2', element: <Step2Mobile /> },
   { path: '/uploadTax/step3/checking', element: <Step3Mobile /> },
   { path: '/complete', element: <Complete /> },
-  { path: '/Home', element: <Home /> }
+  { path: '/cs', element: <Home /> }
 ]);
 
 export default MobileRouter;

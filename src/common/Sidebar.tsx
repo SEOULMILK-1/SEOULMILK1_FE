@@ -12,12 +12,16 @@ import {
   HQMenuItems
 } from '../routes/SidebarRouter';
 import SidebarUploadButton from '../pages/CS/TaxUpload/SidebarUploadBtn';
+import { useAuthStore } from '../store/useAuthStore';
 
 interface RoleProps {
   type: 'admin' | 'HQ' | 'CS';
 }
 
 const Sidebar = ({ type }: RoleProps) => {
+  const { user } = useAuthStore();
+  console.log('Zustand 상태:', { user });
+
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedMenu, setSelectedMenu] = useState<string>('홈');
@@ -84,7 +88,8 @@ const Sidebar = ({ type }: RoleProps) => {
             className={`flex gap-1 ${type === 'CS' ? 'flex-col' : 'flex-row'}`}
           >
             <div className="text-gray-800 font-xl-bold">
-              김구름 <span className="text-gray-800 font-xl-regular">님</span>
+              {user?.name}{' '}
+              <span className="text-gray-800 font-xl-regular">님</span>
             </div>
 
             {type === 'admin' && (
@@ -99,7 +104,7 @@ const Sidebar = ({ type }: RoleProps) => {
             )}
             {type === 'CS' && (
               <div className="text-gray-500 font-md-regular mt-[4px]">
-                서울우유태평고객센터
+                {user?.teamName}
               </div>
             )}
           </div>

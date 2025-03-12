@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import PaymentChartHeader from './PaymentChartHeader';
-import ChartPagination from '../../../../common/ChartPagination';
 import PaymentChartContent from './PaymentContent';
 import api from '../../../../hooks/api';
 
@@ -21,7 +20,7 @@ const PaymentChart = () => {
           `/hq/payment-resolution/list?page=${page}&size=${size}`
         );
         if (response.data.isSuccess) {
-          setData(response.data.result);
+          setData(response.data.result.results || []);
         } else {
           setError('데이터를 불러오는 중 오류가 발생했습니다.');
         }

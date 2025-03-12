@@ -3,7 +3,6 @@ import SearchIcon from '../../../../public/Icon/SearchIcon';
 import PaymentGray from '../../../../public/Icon/PaymentIcon';
 import Button from '../../../common/Button';
 import Header from '../../../common/Header';
-import SelectCalendar from '../../../common/SelectCalendar';
 import SelectMonth from '../../../common/SelectMonth';
 import PaymentChart from './components/PaymentChart';
 
