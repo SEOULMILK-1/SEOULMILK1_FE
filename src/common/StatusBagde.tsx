@@ -1,11 +1,11 @@
 const statusStyles = {
   반영: 'bg-primary-50 text-primary-600 ',
   미반영: 'bg-gray-200 text-gray-500',
-  승인됨: 'bg-primary-50 text-primary-600 ',
-  반려됨: 'bg-warning-50 text-warning-700'
+  승인: 'bg-primary-50 text-primary-600 ',
+  반려: 'bg-warning-50 text-warning-700'
 };
 
-export type Status = '승인됨' | '반려됨' | '반영' | '미반영';
+export type Status = '승인' | '반려' | '반영' | '미반영';
 
 interface StatusBadgeProps {
   status: Status;

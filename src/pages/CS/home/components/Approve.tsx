@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ApproveHeader from './ApproveHeader';
 import api from '../../../../hooks/api';
+import TaxApproveIcon from '../../../../../public/Icon/TaxApproveIcon';
 
 interface ApproveProps {
   ntsTaxId: number;
@@ -31,7 +32,8 @@ const Approve = () => {
   }, []);
   return (
     <div>
-      <div className="mt-12 flex flex-row gap-2">
+      <div className="mt-12 flex flex-row gap-2 items-center">
+        <TaxApproveIcon />
         <span className="text-gray-800 font-2xl-bold"> 승인 </span>
         <span className="text-gray-500 font-2xl-medium"> {data.length} </span>
       </div>

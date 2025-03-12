@@ -3,7 +3,7 @@ import CircleNumber from './CircleNumber';
 import SignupInput from './SignupInput';
 import SignupButton from './SignupButton';
 import { useState } from 'react';
-import { useSignupStore } from '../../../../hooks/useSignupStore';
+import { useSignupStore } from '../../../../store/useSignupStore';
 import api from '../../../../hooks/api';
 
 interface FormState {

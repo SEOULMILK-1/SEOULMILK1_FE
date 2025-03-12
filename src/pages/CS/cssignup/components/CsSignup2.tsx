@@ -6,7 +6,7 @@ import SignupModal from '../../../HQ/signup/components/SignupModal';
 import { useState } from 'react';
 import Check from '../../../../../public/Icon/Check';
 import AgreeModal from '../../../../common/AgreeModal';
-import { useCsSignupStore } from '../../../../hooks/useCsSignupStore';
+import { useCsSignupStore } from '../../../../store/useCsSignupStore';
 import api from '../../../../hooks/api';
 import CsDropDown from './CsDropDown';
 
