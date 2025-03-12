@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../hooks/api';
 import ArrowIcon from '../../../public/Icon/ArrowIcon';
-import StatusBadge, { Status } from '../../common/StatusBagde';
 import Button from '../../common/Button';
 
 interface TaxDetailResponse {
