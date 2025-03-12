@@ -4,6 +4,7 @@ import SignupButton from '../../../HQ/signup/components/SignupButton';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useCsSignupStore } from '../../../../store/useCsSignupStore';
+import api from '../../../../hooks/api';
 
 interface FormState {
   name: string;
@@ -21,6 +22,8 @@ interface Errors {
 
 const CsSignup1 = () => {
   const navigate = useNavigate();
+  const [idCheckMessage, setIdCheckMessage] = useState<string>('');
+  const [isIdValid, setIsIdValid] = useState<boolean>(false);
   const { setSignupData } = useCsSignupStore();
   const [formState, setFormState] = useState<FormState>({
     name: '',
@@ -75,6 +78,10 @@ const CsSignup1 = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
+    if (e.target.name === 'loginId') {
+      setIsIdValid(false);
+      setIdCheckMessage('');
+    }
   };
 
   const handleSubmit = (): void => {
@@ -88,6 +95,25 @@ const CsSignup1 = () => {
     }
   };
 
+  const handleValidateId = async () => {
+    try {
+      const response = await api.get(
+        `/auth/validation/login-id?loginId=${formState.loginId}`
+      );
+
+      if (response.data && response.data.result === '가입 가능한 사번입니다.') {
+        setIdCheckMessage('사용 가능한 아이디입니다.');
+        setIsIdValid(true);
+      } else {
+        setIdCheckMessage('이미 사용 중인 아이디입니다.');
+        setIsIdValid(false);
+      }
+    } catch (error) {
+      setIdCheckMessage('아이디 중복 체크에 실패했습니다.');
+      setIsIdValid(false);
+      console.error(error);
+    }
+  };
   return (
     <div className="flex flex-col w-[480px] py-[42px] px-8 justify-center items-start gap-8 rounded-[32px] bg-white drop-shadow-elevation1">
       <div className="flex flex-col gap-4">
@@ -115,10 +141,27 @@ const CsSignup1 = () => {
             value={formState.loginId}
             onChange={handleChange}
           />
-          <button className="flex w-[80px] whitespace-nowrap px-7 h-14 justify-center items-center gap-[10px] rounded-xl bg-gray-200 text-gray-400 text-center font-md-medium">
+
+          <button
+            onClick={handleValidateId}
+            className={`flex w-[80px] whitespace-nowrap px-7 h-14 justify-center items-center gap-[10px] rounded-xl text-center font-md-medium ${
+              formState.loginId
+                ? 'bg-primary-700 text-white'
+                : 'bg-gray-200 text-gray-400'
+            } text-center font-md-medium`}
+          >
             확인
           </button>
         </div>
+        {idCheckMessage && (
+          <p
+            className={`font-md-medium ${
+              isIdValid ? 'text-primary-700' : 'text-warning-700'
+            }`}
+          >
+            {idCheckMessage}
+          </p>
+        )}
         {errors.loginId && (
           <p className="text-warning-700 font-sm-regular">{errors.loginId}</p>
         )}
