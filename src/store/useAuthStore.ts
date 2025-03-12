@@ -39,7 +39,7 @@ export const useAuthStore = create<AuthState>()(
             console.error( response.data.message);
           }
         } catch (error) {
-          console.error('❌ 유저 정보 가져오기 실패', error);
+          console.error('유저 정보 가져오기 실패', error);
         }
       },
 
