@@ -37,7 +37,7 @@ const PaymentChart = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPayments = async () => {
       setLoading(true);
       setError(null);
 
@@ -45,29 +45,33 @@ const PaymentChart = ({
         const token = localStorage.getItem('accesstoken');
         const response = await api.get('/hq/payment-resolution/list', {
           params: {
-            page: currentPage - 1,
-            size: pageSize
+            page: isFilterApplied ? 0 : currentPage - 1,
+            size: isFilterApplied ? 1000 : pageSize
           },
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log(response.data);
-        console.log(response.data.result.total);
+
         setData(response.data.result.results);
-        setTotalItems(response.data.result.total);
-      } catch (err) {
+        if (!isFilterApplied) {
+          setFilteredData(response.data.result.results);
+          setTotalItems(response.data.result.total);
+        }
+      } catch {
         setError('서버 요청 중 문제가 발생했습니다.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, [currentPage, pageSize]);
+    fetchPayments();
+  }, [currentPage, pageSize, isFilterApplied]);
 
   useEffect(() => {
-    let filtered = data;
+    if (!isFilterApplied) return;
 
-    if (isFilterApplied) {
+    const filterPayments = () => {
+      let filtered = data;
+
       if (searchTerm) {
         filtered = filtered.filter((item) =>
           item.paymentResolutionName
@@ -88,27 +92,35 @@ const PaymentChart = ({
       if (selectedMonth) {
         const monthsAgo = new Date();
         monthsAgo.setMonth(monthsAgo.getMonth() - parseInt(selectedMonth));
-        filtered = filtered.filter((item) => {
-          const itemDate = new Date(item.createdAt);
-          return itemDate >= monthsAgo;
-        });
+        filtered = filtered.filter(
+          (item) => new Date(item.createdAt) >= monthsAgo
+        );
       }
-    } else {
-      filtered = data;
-    }
 
-    setFilteredData(filtered);
-    setTotalItems(filtered.length);
-  }, [searchTerm, startDate, endDate, selectedMonth, data, isFilterApplied]);
+      setTotalItems(filtered.length);
+      setFilteredData(
+        filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+      );
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+      if (
+        currentPage > Math.ceil(filtered.length / pageSize) &&
+        filtered.length > 0
+      ) {
+        setCurrentPage(1);
+      }
+    };
 
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setCurrentPage(1);
-  };
+    filterPayments();
+  }, [
+    searchTerm,
+    startDate,
+    endDate,
+    selectedMonth,
+    data,
+    isFilterApplied,
+    currentPage,
+    pageSize
+  ]);
 
   return (
     <div className="mt-4 flex h-[714px] flex-col border border-gray-300 bg-white rounded-3xl">
@@ -132,8 +144,8 @@ const PaymentChart = ({
         totalItems={totalItems}
         pageSize={pageSize}
         currentPage={currentPage}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
+        onPageChange={setCurrentPage}
+        onPageSizeChange={setPageSize}
       />
     </div>
   );

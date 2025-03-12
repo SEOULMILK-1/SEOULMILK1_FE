@@ -16,9 +16,11 @@ const Payment = () => {
   const [endDate, setEndDate] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string>('');
   const [isFilterApplied, setIsFilterApplied] = useState<boolean>(false);
+  const [resetSearch, setResetSearch] = useState<boolean>(false);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
+    setIsFilterApplied(true);
   };
 
   const handleSelectMonth = (
@@ -29,6 +31,7 @@ const Payment = () => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSelectedMonth(label);
+    setIsFilterApplied(false);
   };
 
   const handleSelectDate = (date: string, dateType: 'start' | 'end') => {
@@ -39,16 +42,13 @@ const Payment = () => {
     }
   };
 
-  const handleSearchButtonClick = () => {
-    setIsFilterApplied(true);
-  };
-
   const handleResetButtonClick = () => {
     setSearchTerm('');
     setStartDate(null);
     setEndDate(null);
     setSelectedMonth('');
     setIsFilterApplied(false);
+    setResetSearch(true);
   };
 
   return (
@@ -59,17 +59,21 @@ const Payment = () => {
         <div className="flex items-center mt-8 text-gray-500">지점</div>
         <Search
           placeholderName="대리점 검색..."
-          showSearchButton={false}
+          showSearchButton={true}
           defaultSearchIcon={<LocationIcon />}
           activeSearchIcon={<LocationIcon fillColor="#3A404A" />}
           onSearch={handleSearch}
+          reset={resetSearch}
         />
       </div>
 
       <div className="flex flex-row w-full">
         <div className="flex items-center gap-4 text-gray-500 whitespace-nowrap">
           기간
-          <SelectMonth onSelectMonth={handleSelectMonth} />
+          <SelectMonth
+            selectedMonth={selectedMonth}
+            onSelectMonth={handleSelectMonth}
+          />
           <SelectCalendar
             selectedStartDate={startDate}
             selectedEndDate={endDate}
@@ -88,7 +92,7 @@ const Payment = () => {
           <Button
             size="xs"
             className="flex items-center gap-1 text-white bg-primary-700"
-            onClick={handleSearchButtonClick}
+            onClick={() => handleSearch(searchTerm)}
           >
             <SearchIcon />
             조회
