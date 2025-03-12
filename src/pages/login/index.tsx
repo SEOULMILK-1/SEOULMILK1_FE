@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import FloatingLabelInput from './components/LabelInput';
 import RedLogo from '../../../public/Icon/RedLogoIcon';
 import Button from '../../common/Button';

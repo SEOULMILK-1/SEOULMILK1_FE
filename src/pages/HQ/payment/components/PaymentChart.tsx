@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import PaymentChartHeader from './PaymentChartHeader';
-import ChartPagination from '../../../../common/ChartPagination';
 import PaymentChartContent from './PaymentContent';
 import api from '../../../../hooks/api';
 
