@@ -62,7 +62,7 @@ const Step2 = () => {
       console.log('API 응답', response.data);
 
       if (response.data.isSuccess) {
-        navigate(`/upload-tax/step3?taxId=${newTaxId}`, {
+        navigate(`/cs/upload-tax/step3?taxId=${newTaxId}`, {
           state: { validationData: response.data.result }
         });
       } else {

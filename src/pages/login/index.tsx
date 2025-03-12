@@ -50,10 +50,10 @@ function LoginPage() {
           navigate(isMobile ? '/cs' : '/cs/home');
         } else if (role === 'HQ_USER') {
           //본사
-          navigate('/hq');
+          navigate('/hq/home');
         } else {
           //관리자
-          navigate('/admin');
+          navigate('/admin/home');
         }
       } else {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');
