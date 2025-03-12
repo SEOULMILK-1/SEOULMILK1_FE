@@ -102,7 +102,7 @@ const EditTax = () => {
       console.log('검증 API 응답:', validateResponse.data);
 
       if (validateResponse.data.isSuccess) {
-        navigate(`/upload-tax/step3?taxId=${taxId}`, {
+        navigate(`/cs/upload-tax/step3?taxId=${taxId}`, {
           state: { validationData: validateResponse.data.result }
         });
       } else {

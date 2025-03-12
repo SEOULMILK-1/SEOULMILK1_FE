@@ -17,7 +17,6 @@ function LoginPage() {
   const navigate = useNavigate();
   const { setAuthData, fetchUserInfo } = useAuthStore();
   const isButtonDisabled = !loginId || !password;
-
   const handleLogin = async () => {
     try {
       const response = await api.post('/auth/login', {
@@ -30,38 +29,37 @@ function LoginPage() {
       if (response.data) {
         const accessToken =
           response.headers['authorization']?.split('Bearer ')[1];
-        setAuthData(accessToken);
-        await fetchUserInfo();
+
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken);
-          console.log('Access Token 저장', accessToken);
+
+          await setAuthData(accessToken);
+          await fetchUserInfo();
         } else {
-          console.error('Access Token이 없음.');
+          console.error(' Access Token이 없음.');
+          setError('인증 토큰이 없습니다. 다시 로그인해 주세요.');
+          return;
         }
+
         const role = response.data.result?.role;
         localStorage.setItem('userRole', role);
 
-        console.log(role);
         if (role === 'CS_USER') {
-          //대리점
           navigate('/cs');
         } else if (role === 'HQ_USER') {
-          //본사
           navigate('/hq');
         } else {
-          //관리자
           navigate('/admin');
         }
       } else {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');
       }
     } catch (error) {
+      console.error(' 로그인 요청 실패:', error);
       setError('로그인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
     }
   };
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="w-[456px] mx-auto px-6 py-[40px] bg-white rounded-[32px] drop-shadow-elevation1 max-sm:min-h-screen flex flex-col justify-center">

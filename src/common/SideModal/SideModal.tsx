@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios'; // Axios 사용
 import ArrowIcon from '../../../public/Icon/ArrowIcon';
 import LogoutIcon from '../../../public/Icon/LogoutIcon';
 import EditIcon from '../../../public/Icon/EditIcon';
@@ -50,10 +49,10 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
       if (response.data.isSuccess) {
         const userData = response.data.result;
         console.log(userData);
-        setUserId(userData.userId);
+        setUserId(userData.loginId);
         setName(userData.name);
         setTeamName(userData.teamName || '');
-        setEmail(userData.email || ''); 
+        setEmail(userData.email || '');
         setPhone(userData.phone || '');
         setSelectedBank(userData.bank || '');
         setAccountNumber(userData.account || '');
@@ -66,14 +65,18 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
   const handleUpdate = async () => {
     try {
       const updatedData = {
-        loginId: userId,
-        email,
-        phone,
-        bank: selectedBank,
-        account: accountNumber
+        loginId: userId || '', 
+        email: email || '',
+        phone: phone || '',
+        bank: selectedBank || '',
+        account: accountNumber || ''
       };
-
-      await api.put('/user/update', updatedData);
+      console.log('📩 업데이트 요청 데이터:', updatedData);
+      await api.put('/user/update', updatedData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       setIsEditing(false);
     } catch (error) {
       console.error('사용자 정보 업데이트 중 오류 발생:', error);
@@ -140,7 +143,8 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
           <div
             className={`flex gap-1 ${role === 'CS' ? 'flex-col' : 'flex-row'} `}
           >
-            <div className="text-gray-800 font-xl-bold ">김구름 </div>
+            <div className="text-gray-800 font-xl-bold ">{name}</div>
+
             {role === 'admin' && (
               <span className="flex gap-[8px] px-[10px] py-[2px] justify-center items-center rounded-3xl bg-primary-50 text-primary-600 font-xs-semibold">
                 관리자
@@ -153,7 +157,7 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
             )}
             {role === 'CS' && (
               <div className="text-gray-500 font-md-regular mt-[4px]">
-                서울우유태평고객센터
+                {teamName}
               </div>
             )}
           </div>
