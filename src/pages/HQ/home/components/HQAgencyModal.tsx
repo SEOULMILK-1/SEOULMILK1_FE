@@ -1,24 +1,78 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DeleteXIcon from '../../../../../public/Icon/DeleteXIcon';
 import TagIcon from '../../../../../public/Icon/TagIcon';
+import api from '../../../../hooks/api';
+
+interface AgencyProps {
+  csId: number;
+  csName: string;
+}
 
 const HQAgencyModal = ({ onClose }: { onClose: () => void }) => {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<AgencyProps[]>([]);
   const [inputValue, setInputValue] = useState('');
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.get('/hq/manage/cs', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log('태그데이터', response.data);
+
+        setTags(response.data.result.responseList || []);
+      } catch (error) {
+        console.error('태그데이터 불러오기 에러', error);
+        setTags([]);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputValue.trim()) {
       e.preventDefault();
-      if (!tags.includes(inputValue.trim())) {
-        setTags([...tags, inputValue.trim()]);
+      const newTag = inputValue.trim();
+
+      try {
+        const requestData = { teamIds: [newTag] };
+        console.log('보낼 데이터:', requestData);
+
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.post('/hq/manage/cs', requestData, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log('응답 데이터:', response.data);
+
+        setTags(response.data.teamIds || []);
+        setInputValue('');
+      } catch (error: any) {
+        console.error('태그 추가 에러', error.response?.data || error.message);
       }
-      setTimeout(() => setInputValue(''), 0);
     }
   };
 
-  const removeTag = (tag: string) => {
-    setTags(tags.filter((t) => t !== tag));
+  const removeTag = async (csId: number) => {
+    try {
+      const token = localStorage.getItem('accesstoken');
+      await api.delete(`/hq/manage/cs/${csId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log('삭제완료');
+      setTags((prevTags) => prevTags.filter((t) => t.csId !== csId));
+    } catch (error) {
+      console.error('삭제에러', error);
+    }
   };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
       <div className="flex w-[480px] px-8 py-[42px] flex-col justify-center items-start gap-2 rounded-[32px] bg-white drop-shadow-elevation1">
@@ -42,15 +96,16 @@ const HQAgencyModal = ({ onClose }: { onClose: () => void }) => {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
         />
+
         {tags.length > 0 && (
           <div className="flex flex-wrap items-start gap-3 mt-4">
-            {tags.map((tag, index) => (
+            {tags.map((tag) => (
               <div
-                key={index}
+                key={tag.csId}
                 className="flex h-8 items-center pl-3 pr-2 py-1 rounded-lg bg-primary-50 text-primary-700 font-md-medium"
               >
-                {tag}
-                <button onClick={() => removeTag(tag)} className="ml-2">
+                {tag.csName}
+                <button onClick={() => removeTag(tag.csId)} className="ml-2">
                   <TagIcon />
                 </button>
               </div>
