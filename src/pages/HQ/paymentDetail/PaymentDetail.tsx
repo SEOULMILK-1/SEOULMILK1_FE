@@ -26,7 +26,10 @@ const PaymentDetail = () => {
   useEffect(() => {
     const fetchPaymentDetails = async () => {
       try {
-        const response = await api.get(`/hq/payment-resolution/${id}`);
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.get(`/hq/payment-resolution/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         if (response.data.isSuccess) {
           setPaymentData(response.data.result);
           setBankName(response.data.result.bank);
