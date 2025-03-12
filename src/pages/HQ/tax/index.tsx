@@ -112,6 +112,7 @@ const Tax = () => {
           <StateDropdown
             selected={dropdownState}
             onChange={handleStateChange}
+            optionsToShow={['반영', '미반영']}
           />
         </div>
 
