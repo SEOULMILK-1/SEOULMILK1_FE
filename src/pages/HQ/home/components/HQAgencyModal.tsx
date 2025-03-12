@@ -12,24 +12,24 @@ const HQAgencyModal = ({ onClose }: { onClose: () => void }) => {
   const [tags, setTags] = useState<AgencyProps[]>([]);
   const [inputValue, setInputValue] = useState('');
 
+  const fetchTags = async () => {
+    try {
+      const token = localStorage.getItem('accesstoken');
+      const response = await api.get('/hq/manage/cs', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log('태그데이터', response.data);
+
+      setTags(response.data.result.responseList || []);
+    } catch (error) {
+      console.error('태그데이터 불러오기 에러', error);
+      setTags([]);
+    }
+  };
+
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const token = localStorage.getItem('accesstoken');
-        const response = await api.get('/hq/manage/cs', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        console.log('태그데이터', response.data);
-
-        setTags(response.data.result.responseList || []);
-      } catch (error) {
-        console.error('태그데이터 불러오기 에러', error);
-        setTags([]);
-      }
-    };
-
     fetchTags();
   }, []);
 
@@ -39,7 +39,7 @@ const HQAgencyModal = ({ onClose }: { onClose: () => void }) => {
       const newTag = inputValue.trim();
 
       try {
-        const requestData = { teamIds: [newTag] };
+        const requestData = { csNames: [newTag] };
         console.log('보낼 데이터:', requestData);
 
         const token = localStorage.getItem('accesstoken');
@@ -49,11 +49,10 @@ const HQAgencyModal = ({ onClose }: { onClose: () => void }) => {
           }
         });
         console.log('응답 데이터:', response.data);
-
-        setTags(response.data.teamIds || []);
+        await fetchTags();
         setInputValue('');
-      } catch (error: any) {
-        console.error('태그 추가 에러', error.response?.data || error.message);
+      } catch (error) {
+        console.error('태그 추가 에러', error);
       }
     }
   };
