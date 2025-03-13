@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ChartPagination from '../../../../common/ChartPagination';
 import CustomerChartContent from './CustomerChartContent';
 import CustomerChartHeader from './CustomerChartHeader';
@@ -11,6 +11,12 @@ const CustomerChart = ({ searchTerm }: CustomerChartProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
+
+  useEffect(() => {
+    if (currentPage > Math.ceil(totalItems / pageSize)) {
+      setCurrentPage(1);
+    }
+  }, [totalItems, pageSize, currentPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

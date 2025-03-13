@@ -16,7 +16,6 @@ import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
 import CSTax from '../pages/CS/tax';
 import Payment from '../pages/HQ/payment/Payment';
 import HQ_home from '../pages/HQ/home/HQDashBoard';
-import { AdminBoard } from '../pages/ADMIN/board';
 import { CSHome } from '../pages/CS/home';
 import Step1 from '../pages/CS/TaxUpload/Step1';
 import Step2 from '../pages/CS/TaxUpload/Step2';
@@ -25,6 +24,7 @@ import EditTax from '../pages/CS/tax/EditTax';
 import PaymentDetail from '../pages/HQ/paymentDetail/PaymentDetail';
 import AdminTax from '../pages/ADMIN/tax';
 import AdminPayment from '../pages/ADMIN/payment';
+import AdminPaymentDetail from '../pages/ADMIN/paymentDetail/AdminPaymentDetail';
 
 // TODO: 직접 URL 수정으로 다른 role 페이지 이동 막기
 
@@ -39,9 +39,9 @@ const WebRouter = createBrowserRouter([
     children: [
       { path: 'home', element: <DashBoard /> },
       { path: 'user-manage', element: <UserManage /> },
-      { path: 'admin-board', element: <AdminBoard /> },
       { path: 'admin-tax', element: <AdminTax /> },
-      { path: 'admin-payment', element: <AdminPayment /> }
+      { path: 'admin-payment', element: <AdminPayment /> },
+      { path: 'admin-payment/detail/:id', element: <AdminPaymentDetail /> }
     ]
   },
 

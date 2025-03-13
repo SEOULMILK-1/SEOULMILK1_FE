@@ -28,7 +28,6 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
@@ -36,8 +35,8 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
         const token = localStorage.getItem('accesstoken');
         const response = await api.get('/admin/user', {
           params: {
-            page: currentPage - 1,
-            size: pageSize
+            page: 0,
+            size: 10000
           },
           headers: {
             Authorization: `Bearer ${token}`
@@ -45,14 +44,13 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
         });
 
         setData(response.data.result.responseList);
-        setTotalItems(response.data.result.totalElements);
       } catch (error) {
         console.error('유저 데이터 불러오기 실패:', error);
       }
     };
 
     getData();
-  }, [currentPage, pageSize]);
+  }, []);
 
   useEffect(() => {
     if (!searchTerm.trim()) {
@@ -68,6 +66,11 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
       );
     }
   }, [searchTerm, data]);
+
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handlePageSizeChange = (size: number) => {
@@ -108,12 +111,12 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
       <UserDataTableHeader />
 
       <div className="flex-grow mx-2 overflow-y-scroll custom-scrollbar">
-        {filteredData.length === 0 ? (
-          <div className="text-center text-gray-500 py-4">
+        {paginatedData.length === 0 ? (
+          <div className="text-center text-gray-500 ml-[400px]">
             데이터가 없습니다.
           </div>
         ) : (
-          filteredData.map((row) => (
+          paginatedData.map((row) => (
             <div
               key={row.userId}
               className="flex w-[932px] h-[42px] items-center hover:bg-gray-100 rounded-xl cursor-pointer"
@@ -160,7 +163,7 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
       </div>
 
       <ChartPagination
-        totalItems={totalItems}
+        totalItems={filteredData.length}
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChange={handlePageChange}

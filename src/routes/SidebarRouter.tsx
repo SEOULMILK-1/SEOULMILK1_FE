@@ -22,12 +22,7 @@ export const adminMenuItems: MenuItem[] = [
     icon: <HomeGrayIcon />,
     selectedIcon: <HomeIcon />
   },
-  // {
-  //   name: '게시판 관리',
-  //   path: '/admin/admin-board',
-  //   icon: <SpeakerGray />,
-  //   selectedIcon: <SpeakerGray color="#009856" />
-  // },
+
   {
     name: '유저 관리',
     path: '/admin/user-manage',

@@ -32,8 +32,8 @@ const CustomerChartContent = ({
 
         const response = await api.get('/hq/search/cs/info', {
           params: {
-            page: currentPage - 1,
-            size: pageSize
+            page: 0,
+            size: 10000
           },
           headers: {
             Authorization: `Bearer ${token}`
@@ -41,14 +41,13 @@ const CustomerChartContent = ({
         });
         const result = response.data.result.responseList;
         setData(result);
-        onTotalItemsChange(response.data.result.totalElements);
       } catch (error) {
         console.error('데이터 연결에 에러가 발생했습니다.', error);
       }
     };
 
     getData();
-  }, [currentPage, pageSize, onTotalItemsChange]);
+  }, []);
 
   useEffect(() => {
     const filtered = data.filter(
@@ -59,11 +58,17 @@ const CustomerChartContent = ({
         item.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
-  }, [data]);
+    onTotalItemsChange(filtered.length);
+  }, [data, searchTerm, onTotalItemsChange]);
+
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="h-[660px] w-[960px] overflow-y-scroll custom-scrollbar">
-      {filteredData.map((item, index) => (
+      {paginatedData.map((item, index) => (
         <div
           key={index}
           onClick={() => setSelectedList(index)}
