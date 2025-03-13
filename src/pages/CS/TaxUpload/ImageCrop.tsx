@@ -231,6 +231,49 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
     const croppedImage = canvas.toDataURL('image/png');
     onCropComplete(croppedImage);
   };
+  const getTransformedImage = () => {
+    if (!imgRef.current || !previewCanvasRef.current) return;
+
+    const canvas = previewCanvasRef.current;
+    const image = imgRef.current;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+
+    const isRotated90or270 = Math.abs(rotation % 180) === 90;
+    canvas.width = isRotated90or270
+      ? imageSize.naturalHeight
+      : imageSize.naturalWidth;
+    canvas.height = isRotated90or270
+      ? imageSize.naturalWidth
+      : imageSize.naturalHeight;
+
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.scale(flipX, flipY);
+
+    ctx.drawImage(
+      image,
+      -imageSize.naturalWidth / 2,
+      -imageSize.naturalHeight / 2,
+      imageSize.naturalWidth,
+      imageSize.naturalHeight
+    );
+
+    ctx.restore();
+
+    // 회전된 상태의 이미지 Base64 변환 후 반환
+    return canvas.toDataURL('image/png');
+  };
+  useEffect(() => {
+    if (rotation !== 0 || flipX !== 1 || flipY !== 1) {
+      const transformedImage = getTransformedImage();
+      if (transformedImage) {
+        onCropComplete(transformedImage);
+      }
+    }
+  }, [rotation, flipX, flipY]);
 
   useEffect(() => {
     if (completedCrop) {
