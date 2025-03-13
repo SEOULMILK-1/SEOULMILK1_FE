@@ -123,7 +123,6 @@ const Step1 = () => {
           <img src={uploadIcon} alt="세금계산서 업로드" className="w-6 h-6" />
         )}
       />
-
       {/* 처음 사진업로드 확인모달 */}
       {isModalOpen && (
         <ConfirmUpload
@@ -132,7 +131,6 @@ const Step1 = () => {
           onClose={() => setIsModalOpen(false)}
         />
       )}
-
       {/* 중복일경우 모달 */}
       {isDuplicateModalOpen && (
         <DuplicateTaxModal
@@ -142,13 +140,12 @@ const Step1 = () => {
           onClose={() => setIsDuplicateModalOpen(false)}
         />
       )}
-
-      <ImageCrop
-        initialImage={selectedImage}
-        onCropComplete={(croppedImg) => {
-          setCroppedImage(croppedImg ?? selectedImage ?? null);
-        }}
-      />
+      <div className="mr-20">
+        <ImageCrop
+          initialImage={selectedImage}
+          onCropComplete={(croppedImg) => setCroppedImage(croppedImg)}
+        />
+      </div>
       <input
         type="file"
         accept="image/*"
