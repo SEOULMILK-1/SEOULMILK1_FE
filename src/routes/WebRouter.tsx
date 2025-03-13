@@ -24,6 +24,7 @@ import EditTax from '../pages/CS/tax/EditTax';
 import PaymentDetail from '../pages/HQ/paymentDetail/PaymentDetail';
 import AdminTax from '../pages/ADMIN/tax';
 import AdminPayment from '../pages/ADMIN/payment';
+import AdminPaymentDetail from '../pages/ADMIN/paymentDetail/AdminPaymentDetail';
 
 // TODO: 직접 URL 수정으로 다른 role 페이지 이동 막기
 
@@ -39,7 +40,8 @@ const WebRouter = createBrowserRouter([
       { path: 'home', element: <DashBoard /> },
       { path: 'user-manage', element: <UserManage /> },
       { path: 'admin-tax', element: <AdminTax /> },
-      { path: 'admin-payment', element: <AdminPayment /> }
+      { path: 'admin-payment', element: <AdminPayment /> },
+      { path: 'admin-payment/detail/:id', element: <AdminPaymentDetail /> }
     ]
   },
 

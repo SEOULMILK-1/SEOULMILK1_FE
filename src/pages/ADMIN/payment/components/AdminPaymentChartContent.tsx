@@ -23,7 +23,7 @@ const AdminPaymentChartContent = ({ data = [] }: Props) => {
           key={item.paymentResolutionId}
           className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium cursor-pointer"
           onClick={() =>
-            navigate(`/hq/payment/detail/${item.paymentResolutionId}`)
+            navigate(`/admin/admin-payment/detail/${item.paymentResolutionId}`)
           }
         >
           <div className="w-[200px] pl-5 font-sm-medium text-gray-800 truncate">
