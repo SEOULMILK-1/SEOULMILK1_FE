@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import api from '../../../../hooks/api';
 import { useSearchParams } from 'react-router-dom';
-import TaxDetailModal from '../../../../common/TaxDetailModal';
+import AdminTaxDetailModal from './AdminTaxDetailModal';
 
 interface InvoiceData {
   id: string;
@@ -177,7 +177,7 @@ const AdminChartContent = ({
             : ''}
         </div>
       )}
-      <TaxDetailModal
+      <AdminTaxDetailModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         selectedItem={selectedItem}
