@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import api from '../../../../hooks/api';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import TaxDetailModal from './TaxDetailModal';
 
 interface InvoiceData {
