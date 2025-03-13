@@ -16,7 +16,6 @@ import CsSignup2 from '../pages/CS/cssignup/components/CsSignup2';
 import CSTax from '../pages/CS/tax';
 import Payment from '../pages/HQ/payment/Payment';
 import HQ_home from '../pages/HQ/home/HQDashBoard';
-import { AdminBoard } from '../pages/ADMIN/board';
 import { CSHome } from '../pages/CS/home';
 import Step1 from '../pages/CS/TaxUpload/Step1';
 import Step2 from '../pages/CS/TaxUpload/Step2';
@@ -39,7 +38,6 @@ const WebRouter = createBrowserRouter([
     children: [
       { path: 'home', element: <DashBoard /> },
       { path: 'user-manage', element: <UserManage /> },
-      { path: 'admin-board', element: <AdminBoard /> },
       { path: 'admin-tax', element: <AdminTax /> },
       { path: 'admin-payment', element: <AdminPayment /> }
     ]
