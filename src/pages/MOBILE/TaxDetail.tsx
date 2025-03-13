@@ -85,11 +85,13 @@ const TaxDetailPage = () => {
 
   return (
     <div className="w-full h-full fixed inset-0 bg-white flex flex-col p-6 overflow-auto">
-      <div className="flex items-center mb-4">
-        <button onClick={handleBack} className="mr-4">
-          <ArrowIcon strokeColor={'#949BA7'} />
+      <div className="flex items-center mb-4 text-center">
+        <button onClick={handleBack}>
+          <ArrowIcon strokeColor={'#3A404A'} />
         </button>
-        <h1 className="text-lg font-bold">세금계산서 상세 정보</h1>
+        <h1 className="flex-1 text-center mr-2 text-gray-800 font-xl-bold ">
+          세금계산서 상세 정보
+        </h1>
       </div>
 
       {loading && <p className="text-gray-600 text-center mt-4">로딩 중...</p>}
@@ -97,7 +99,6 @@ const TaxDetailPage = () => {
 
       {detailData && (
         <>
-        
           <div
             className="w-full h-60 border rounded-xl flex items-center justify-center cursor-pointer"
             onClick={() => window.open(detailData.taxImageUrl, '_blank')}
