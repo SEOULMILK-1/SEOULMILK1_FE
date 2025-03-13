@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import api from '../../../../hooks/api';
-
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import TaxDetailModal from '../../../../common/TaxDetailModal';
 
 interface InvoiceData {
@@ -41,49 +40,39 @@ const AdminChartContent = ({
   searchKeyword
 }: CustomerChartContentProps) => {
   const [data, setData] = useState<InvoiceData[]>([]);
+  const [filteredData, setFilteredData] = useState<InvoiceData[]>([]);
   const [selectedItem, setSelectedItem] = useState<InvoiceData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
-  const [isFiltering, setIsFiltering] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('accesstoken');
-
         const response = await api.get('/admin/search/tax', {
           params: {
-            page: currentPage - 1,
-            size: pageSize
+            page: 0,
+            size: 10000
           },
           headers: { Authorization: `Bearer ${token}` }
         });
+
+        console.log(response.data);
+
         if (response.data.isSuccess) {
           const transformedData = response.data.result.responseList.map(
             (item: any) => ({
-              id: item.ntsTaxId ? String(item.ntsTaxId) : '',
-              title: item.title || '제목 없음',
-              date: item.taxDate || '날짜 없음',
-              center: item.csName || '센터 없음'
+              ntsTaxId: item.ntsTaxId || '',
+              status: item.status as Status,
+              title: item.title || '',
+              taxDate: item.taxDate || '',
+              team: item.team || '',
+              center: item.csName || ''
             })
           );
 
           setData(transformedData);
-
-          setData(response.data.result.responseList);
-          onTotalItemsChange(response.data.result.totalElements);
-
-          const taxIdParam = searchParams.get('taxId');
-          if (taxIdParam) {
-            const itemToSelect = transformedData.find(
-              (item: InvoiceData) => item.id === taxIdParam
-            );
-            if (itemToSelect) {
-              setSelectedItem(itemToSelect);
-              setIsModalOpen(true);
-            }
-          }
+          onTotalItemsChange(transformedData.length);
         } else {
           console.error('API 요청 실패:', response.data.message);
         }
@@ -93,14 +82,48 @@ const AdminChartContent = ({
     };
 
     fetchData();
-  }, [currentPage, pageSize, onTotalItemsChange]);
+  }, []);
 
   useEffect(() => {
-    const hasFilters = Boolean(
-      selectedStatus || startDate || endDate || searchKeyword
-    );
-    setIsFiltering(hasFilters);
-  }, [selectedStatus, startDate, endDate, searchKeyword]);
+    const parseDate = (dateString: string): Date => {
+      if (!dateString) return new Date(0);
+      const [year, month, day] = dateString.split('.').map(Number);
+      return new Date(year, month - 1, day);
+    };
+
+    let result = data;
+
+    if (selectedStatus) {
+      result = result.filter((item) => item.status === selectedStatus);
+    }
+    if (startDate || endDate) {
+      result = result.filter((item) => {
+        const itemDate = parseDate(item.taxDate);
+        return (
+          (!startDate || itemDate >= parseDate(startDate)) &&
+          (!endDate || itemDate <= parseDate(endDate))
+        );
+      });
+    }
+    if (searchKeyword.trim()) {
+      const keyword = searchKeyword.toLowerCase();
+      result = result.filter(
+        (item) =>
+          item.title.toLowerCase().includes(keyword) ||
+          item.team.toLowerCase().includes(keyword)
+      );
+    }
+
+    setFilteredData(result);
+    onTotalItemsChange(result.length);
+  }, [
+    selectedStatus,
+    startDate,
+    endDate,
+    searchKeyword,
+    data,
+    onTotalItemsChange
+  ]);
 
   const handleItemClick = (item: InvoiceData) => {
     setSelectedItem(item);
@@ -111,62 +134,20 @@ const AdminChartContent = ({
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
-
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.delete('taxId');
     setSearchParams(newSearchParams);
   };
-  useEffect(() => {
-    const taxIdParam = searchParams.get('taxId');
-    if (taxIdParam && !isModalOpen) {
-      const item = data.find((item) => item.id === taxIdParam);
-      if (item) {
-        setSelectedItem(item);
-        setIsModalOpen(true);
-      }
-    }
-  }, [location.pathname, data]);
 
-  const parseDate = (dateString: string): Date => {
-    if (!dateString) return new Date(0);
-    const [year, month, day] = dateString.split('.').map(Number);
-    return new Date(year, month - 1, day);
-  };
-
-  const filteredData = isFiltering
-    ? data.filter((item) => {
-        if (selectedStatus && item.status !== selectedStatus) {
-          return false;
-        }
-
-        if (startDate || endDate) {
-          const itemDate = parseDate(item.taxDate);
-
-          if (startDate && itemDate < parseDate(startDate)) {
-            return false;
-          }
-
-          if (endDate && itemDate > parseDate(endDate)) {
-            return false;
-          }
-        }
-
-        if (searchKeyword && searchKeyword.trim() !== '') {
-          const keyword = searchKeyword.toLowerCase();
-          return (
-            item.title.toLowerCase().includes(keyword) ||
-            item.team.toLowerCase().includes(keyword)
-          );
-        }
-
-        return true;
-      })
-    : data;
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="h-[538px] w-[960px] overflow-y-scroll custom-scrollbar cursor-pointer">
-      {filteredData.length > 0 ? (
-        filteredData.map((item, index) => (
+      {paginatedData.length > 0 ? (
+        paginatedData.map((item, index) => (
           <div
             key={index}
             className="mx-[8px] flex w-[932px] h-[42px] items-center rounded-[12px] hover:bg-gray-100 font-sm-medium"
@@ -181,7 +162,7 @@ const AdminChartContent = ({
             <div className="w-[200px] pl-6 text-sm font-medium text-gray-700">
               {item.team}
             </div>
-            <div className="w-[358px] pl-6 text-sm font-medium text-gray-700 ">
+            <div className="w-[358px] pl-6 text-sm font-medium text-gray-700">
               {item.title}
             </div>
             <div className="w-[170px] pl-7 text-sm font-medium text-gray-700 tabular-nums">
@@ -191,7 +172,9 @@ const AdminChartContent = ({
         ))
       ) : (
         <div className="flex justify-center items-center h-full text-gray-500">
-          {isFiltering ? '결과가 없습니다.' : ''}
+          {selectedStatus || startDate || endDate || searchKeyword
+            ? '데이터가 없습니다.'
+            : ''}
         </div>
       )}
       <TaxDetailModal
