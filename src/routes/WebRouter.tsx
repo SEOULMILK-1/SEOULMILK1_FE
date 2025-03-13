@@ -17,14 +17,14 @@ import CSTax from '../pages/CS/tax';
 import Payment from '../pages/HQ/payment/Payment';
 import HQ_home from '../pages/HQ/home/HQDashBoard';
 import { AdminBoard } from '../pages/ADMIN/board';
-import { AdminTax } from '../pages/ADMIN/tax';
-import { AdminPayment } from '../pages/ADMIN/payment';
 import { CSHome } from '../pages/CS/home';
 import Step1 from '../pages/CS/TaxUpload/Step1';
 import Step2 from '../pages/CS/TaxUpload/Step2';
 import Step3 from '../pages/CS/TaxUpload/Step3';
 import EditTax from '../pages/CS/tax/EditTax';
 import PaymentDetail from '../pages/HQ/paymentDetail/PaymentDetail';
+import AdminTax from '../pages/ADMIN/tax';
+import AdminPayment from '../pages/ADMIN/payment';
 
 // TODO: 직접 URL 수정으로 다른 role 페이지 이동 막기
 

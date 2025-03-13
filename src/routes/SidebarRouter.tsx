@@ -1,6 +1,5 @@
 import HomeGrayIcon from '../../public/Icon/HomeGrayIcon';
 import HomeIcon from '../../public/Icon/HomeIcon';
-import SpeakerGray from '../../public/Icon/SpeakerGray';
 import TaxIconGray from '../../public/Icon/TaxIconGray';
 import TaxIcon from '../../public/Icon/TaxIcon';
 import HQIcon from '../../public/Icon/CustomerIcon';
@@ -23,12 +22,12 @@ export const adminMenuItems: MenuItem[] = [
     icon: <HomeGrayIcon />,
     selectedIcon: <HomeIcon />
   },
-  {
-    name: '게시판 관리',
-    path: '/admin/admin-board',
-    icon: <SpeakerGray />,
-    selectedIcon: <SpeakerGray color="#009856" />
-  },
+  // {
+  //   name: '게시판 관리',
+  //   path: '/admin/admin-board',
+  //   icon: <SpeakerGray />,
+  //   selectedIcon: <SpeakerGray color="#009856" />
+  // },
   {
     name: '유저 관리',
     path: '/admin/user-manage',

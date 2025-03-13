@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SettingIcon from '../../public/Icon/SettingIcon';
 import LogoGray from '../../public/Icon/LogoGray';
-import NoticeBoard from './NoticeBoard';
 import AdminSideModal from './SideModal/AdminSideModal';
 import HQSideModal from './SideModal/HQSideModal';
 import CSSideModal from './SideModal/CSSideModal';
@@ -81,8 +80,8 @@ const Sidebar = ({ type }: RoleProps) => {
     }
   };
   return (
-    <div className="w-60 flex flex-col gap-4">
-      <aside className="h-[685px] bg-white flex flex-col gap-4 py-2 rounded-3xl">
+    <div className="flex flex-col gap-4">
+      <aside className="w-60 h-[992px] bg-white flex flex-col gap-4 py-2 rounded-3xl">
         <div className="flex justify-between items-center px-5 py-4">
           <div
             className={`flex gap-1 ${type === 'CS' ? 'flex-col' : 'flex-row'}`}
@@ -143,8 +142,6 @@ const Sidebar = ({ type }: RoleProps) => {
         </div>
       </aside>
 
-      {/* 공지사항 */}
-      <NoticeBoard />
       {isModalOpen && getModalComponent()}
     </div>
   );

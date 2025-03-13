@@ -54,7 +54,7 @@ const SelectMonth = ({
       {options.map((option) => (
         <button
           key={option.label}
-          className={`flex-1 px-[12px] py-[6px] rounded-[8px] text-gray-400 font-md-medium transition-all ${
+          className={`flex-1 px-[12px] py-[6px] rounded-[8px] text-gray-500 font-md-medium transition-all ${
             selected === option.label ? 'bg-green-100 text-green-600' : ''
           }`}
           onClick={() => handleSelectMonth(option)}

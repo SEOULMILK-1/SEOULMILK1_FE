@@ -8,6 +8,8 @@ import ApprovalModal from './components/ApprovalModal';
 import api from '../../hooks/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
+import ShowEyeIcon from '../../../public/Icon/ShowEyeIcon';
+import NoShowEyeIcon from '../../../public/Icon/NoShowEyeIcon';
 
 function LoginPage() {
   const [loginId, setLoginId] = useState('');
@@ -16,6 +18,8 @@ function LoginPage() {
   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
   const navigate = useNavigate();
   const { setAuthData, fetchUserInfo } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
+
   const isButtonDisabled = !loginId || !password;
   const handleLogin = async () => {
     try {
@@ -58,9 +62,13 @@ function LoginPage() {
       } else {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(' 로그인 요청 실패:', error);
-      setError('로그인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
+      if (error.response?.status === 400) {
+        setIsApprovalModalOpen(true);
+      } else {
+        setError('로그인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
+      }
     }
   };
 
@@ -77,12 +85,22 @@ function LoginPage() {
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
           />
-          <FloatingLabelInput
-            placeholder="비밀번호"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="relative">
+            <FloatingLabelInput
+              placeholder="비밀번호"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              showDeleteButton={false}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-4 right-4 flex items-center"
+            >
+              {showPassword ? <ShowEyeIcon /> : <NoShowEyeIcon />}
+            </button>
+          </div>
         </div>
 
         {error && <ErrorMessage message={error} />}
