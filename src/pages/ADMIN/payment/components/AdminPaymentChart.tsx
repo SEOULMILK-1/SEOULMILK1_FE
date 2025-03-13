@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import PaymentChartHeader from './PaymentChartHeader';
-import PaymentChartContent from './PaymentContent';
 import api from '../../../../hooks/api';
 import ChartPagination from '../../../../common/ChartPagination';
+import AdminPaymentChartHeader from './AdminPaymentChartHeader';
+import AdminPaymentChartContent from './AdminPaymentChartContent';
 
 interface PaymentData {
   paymentResolutionId: number;
@@ -21,7 +21,7 @@ interface PaymentChartProps {
   isFilterApplied: boolean;
 }
 
-const PaymentChart = ({
+const AdminPaymentChart = ({
   searchTerm,
   startDate,
   endDate,
@@ -43,7 +43,7 @@ const PaymentChart = ({
 
       try {
         const token = localStorage.getItem('accesstoken');
-        const response = await api.get('/hq/payment-resolution/list', {
+        const response = await api.get('/admin/list', {
           params: {
             page: isFilterApplied ? 0 : currentPage - 1,
             size: isFilterApplied ? 1000 : pageSize
@@ -51,6 +51,7 @@ const PaymentChart = ({
           headers: { Authorization: `Bearer ${token}` }
         });
 
+        console.log('ddd', response.data);
         setData(response.data.result.results);
         if (!isFilterApplied) {
           setFilteredData(response.data.result.results);
@@ -124,7 +125,7 @@ const PaymentChart = ({
 
   return (
     <div className="mt-4 flex h-[714px] flex-col border border-gray-300 bg-white rounded-3xl">
-      <PaymentChartHeader />
+      <AdminPaymentChartHeader />
 
       <div className="flex-grow">
         {loading ? (
@@ -136,7 +137,7 @@ const PaymentChart = ({
             지급결의서가 없습니다.
           </p>
         ) : (
-          <PaymentChartContent data={filteredData} />
+          <AdminPaymentChartContent data={filteredData} />
         )}
       </div>
 
@@ -151,4 +152,4 @@ const PaymentChart = ({
   );
 };
 
-export default PaymentChart;
+export default AdminPaymentChart;

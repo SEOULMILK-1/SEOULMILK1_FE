@@ -13,7 +13,7 @@ interface Props {
   data: PaymentData[];
 }
 
-const PaymentChartContent = ({ data = [] }: Props) => {
+const AdminPaymentChartContent = ({ data = [] }: Props) => {
   const navigate = useNavigate();
 
   return (
@@ -46,4 +46,4 @@ const PaymentChartContent = ({ data = [] }: Props) => {
   );
 };
 
-export default PaymentChartContent;
+export default AdminPaymentChartContent;

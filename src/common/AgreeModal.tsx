@@ -21,7 +21,7 @@ const AgreeModal = ({ onClose }: ModalProps) => {
           </button>
         </div>
 
-        <div className="text-gray-800 text-ellipsis overflow-y-scroll">
+        <div className="text-gray-800 text-ellipsis overflow-y-scroll custom-scrollbar">
           <p>
             <p>
               서울우유협동조합(이하 '회사')은 자동화 프로그램 서비스 제공을 위해
