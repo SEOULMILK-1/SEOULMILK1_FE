@@ -128,7 +128,7 @@ const AdminChartContent = ({
   const handleItemClick = (item: InvoiceData) => {
     setSelectedItem(item);
     setIsModalOpen(true);
-    setSearchParams({ taxId: item.id });
+    setSearchParams({ taxId: item.ntsTaxId });
   };
 
   const handleCloseModal = () => {
