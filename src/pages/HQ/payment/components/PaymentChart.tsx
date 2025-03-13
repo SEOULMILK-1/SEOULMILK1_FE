@@ -133,7 +133,7 @@ const PaymentChart = ({
           <p className="text-center text-red-500">{error}</p>
         ) : filteredData.length === 0 ? (
           <p className="text-center py-6 text-gray-500">
-            조회된 데이터가 없습니다.
+            지급결의서가 없습니다.
           </p>
         ) : (
           <PaymentChartContent data={filteredData} />
