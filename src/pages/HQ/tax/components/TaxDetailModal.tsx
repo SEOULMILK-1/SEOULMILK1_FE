@@ -93,9 +93,9 @@ const TaxDetailModal = ({
 
   const getDisplayStatus = (apiStatus: string): Status => {
     const statusMap: Record<string, Status> = {
-      APPROVE: '승인',
-      REFUSED: '반려',
-      WAIT: '반려'
+      APPROVE: '반영',
+      REFUSED: '미반영',
+      WAIT: '미반영'
     };
 
     return statusMap[apiStatus] || (apiStatus as Status);
@@ -108,7 +108,7 @@ const TaxDetailModal = ({
   const handlePaymentDetail = () => {
     const taxId = selectedItem?.id || taxIdFromUrl;
     if (!taxId) {
-      console.error('지급결의서 이동 실패! taxId가 없음.');
+      console.error('지급결의서 이동 실패 taxId가 없음.');
       return;
     }
     navigate(`/hq/payment/detail/${taxId}`);
