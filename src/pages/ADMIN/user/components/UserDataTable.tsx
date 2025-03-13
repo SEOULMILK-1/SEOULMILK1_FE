@@ -112,7 +112,7 @@ const UserDataTable = ({ searchTerm }: UserDataTableProps) => {
 
       <div className="flex-grow mx-2 overflow-y-scroll custom-scrollbar">
         {paginatedData.length === 0 ? (
-          <div className="text-center text-gray-500 py-4">
+          <div className="text-center text-gray-500 ml-[400px]">
             데이터가 없습니다.
           </div>
         ) : (
