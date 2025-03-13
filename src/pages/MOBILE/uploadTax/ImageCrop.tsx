@@ -118,13 +118,13 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
 
   // 크롭 영역을 업데이트하는 함수
   const updateCropArea = (_aspectRatio: number) => {
-    let cropSize = 100; // 기본 크롭 크기 (%)
+    let cropSize = 80; 
     const isRotated90or270 = Math.abs(rotation % 180) === 90;
 
     if (isRotated90or270) {
       cropSize = 70; // 회전 시 크롭 영역을 작게 설정
     } else {
-      cropSize = 100; // 기본 크기 유지
+      cropSize = 80; 
     }
     // 마지막 completedCrop 정보가 있으면 비율만 유지하면서 위치 조정
     if (completedCrop) {
