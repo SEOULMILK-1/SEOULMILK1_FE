@@ -85,7 +85,7 @@ const ChartPagination = ({
 
         <div className="flex items-center gap-[29px]">
           <div
-            onClick={() => onPageChange(1)}
+            onClick={() => currentPage > 1 && onPageChange(1)}
             className={`cursor-pointer ${
               currentPage === 1 ? 'opacity-50' : ''
             }`}
@@ -94,7 +94,7 @@ const ChartPagination = ({
           </div>
 
           <div
-            onClick={() => onPageChange(currentPage - 1)}
+            onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
             className={`cursor-pointer ${
               currentPage === 1 ? 'opacity-50' : ''
             }`}
@@ -107,18 +107,20 @@ const ChartPagination = ({
           </div>
 
           <div
-            onClick={() => onPageChange(currentPage + 1)}
+            onClick={() =>
+              currentPage < totalPages && onPageChange(currentPage + 1)
+            }
             className={`cursor-pointer rotate-180 ${
-              currentPage === 1 ? 'opacity-50' : ''
+              currentPage === totalPages ? 'opacity-50 pointer-events-none' : ''
             }`}
           >
             <ArrowIcon />
           </div>
 
           <div
-            onClick={() => onPageChange(totalPages)}
+            onClick={() => currentPage < totalPages && onPageChange(totalPages)}
             className={`cursor-pointer rotate-180 ${
-              currentPage === 1 ? 'opacity-50' : ''
+              currentPage === totalPages ? 'opacity-50 pointer-events-none' : ''
             }`}
           >
             <TwoArrowIcon />
