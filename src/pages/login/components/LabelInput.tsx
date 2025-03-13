@@ -7,6 +7,7 @@ interface LabelInputProps {
   className?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  showDeleteButton?: boolean;
 }
 
 const LabelInput = ({
@@ -14,7 +15,8 @@ const LabelInput = ({
   type = 'text',
   className = '',
   value,
-  onChange
+  onChange,
+  showDeleteButton = true
 }: LabelInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const id = useId();
@@ -47,7 +49,7 @@ const LabelInput = ({
         className={`
           font-md-medium w-full h-[59px] px-[16px] py-[16px] border rounded-[12px] 
           focus:ring-1 focus:ring-primary-500 focus:outline-none transition-all
-          ${isFocused || value ? 'pt-[26.5px] pb-[8.5px]' : ''}
+          ${isFocused || value ? 'pt-[26.5px] pb-[8.5px] pr-[40px]' : ''}
           ${className}
         `}
       />
@@ -64,7 +66,7 @@ const LabelInput = ({
       >
         {placeholder}
       </label>
-      {value && value.length > 0 && (
+      {showDeleteButton && value && value.length > 0 && (
         <button
           type="button"
           onClick={handleClear}
