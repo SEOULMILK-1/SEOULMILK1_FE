@@ -85,7 +85,7 @@ const Step1 = () => {
           setIsDuplicateModalOpen(true);
           return;
         }
-        if (status === 'WAIT ' || 'REFUSED') {
+        if (status === 'WAIT' || 'REFUSED') {
           //  2. 반려된 세금계산서인 경우, 삭제 요청 먼저
           await api.delete(`/tax/${ntsTaxId}`);
           console.log(`기존 반려된 세금계산서 삭제 완료: ${ntsTaxId}`);
