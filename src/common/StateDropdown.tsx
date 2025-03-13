@@ -45,9 +45,9 @@ const StateDropdown = ({
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-between w-[104px] px-3 py-2 border rounded-lg bg-white drop-shadow-elevation2 transition-all ${
+        className={`flex items-center justify-between w-[104px] h-12 px-4 py-3 border rounded-xl bg-white border-solid transition-all ${
           selected === '선택'
-            ? 'border-gray-400 text-gray-500'
+            ? 'border-gray-300 text-gray-500'
             : 'border-primary-700 text-primary-700'
         } ${isOpen ? 'border-primary-700' : ''}`}
       >
