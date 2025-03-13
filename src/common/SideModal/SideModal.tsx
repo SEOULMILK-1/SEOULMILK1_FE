@@ -75,12 +75,14 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
         bank: selectedBank || '',
         account: accountNumber || ''
       };
-      console.log('📩 업데이트 요청 데이터:', updatedData);
+      console.log(' 업데이트 요청 데이터:', updatedData);
       await api.put('/user/update', updatedData, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
+      await fetchUserData();
+
       setIsEditing(false);
     } catch (error) {
       console.error('사용자 정보 업데이트 중 오류 발생:', error);
@@ -185,11 +187,8 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
             <input
               role="text"
               className={`w-full mt-[8px] p-4 h-[56px] rounded-[12px] text-gray-600 font-md-medium
-        ${
-          isEditing
-            ? 'bg-white text-gray-800 border border-gray-300 focus:ring-1 focus:ring-primary-500'
-            : 'bg-gray-100 '
-        }`}
+        bg-gray-100 
+        `}
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               readOnly={!isEditing}
