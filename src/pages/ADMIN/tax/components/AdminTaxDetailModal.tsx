@@ -49,14 +49,14 @@ const AdminTaxDetailModal = ({
 
   useEffect(() => {
     const fetchTaxDetail = async () => {
-      if (!isOpen || !selectedItem?.id) return;
+      if (!isOpen || !selectedItem?.ntsTaxId) return;
 
       setLoading(true);
       setError(null);
 
       try {
         const response = await api.get<TaxDetailResponse>(
-          `/admin/tax/${selectedItem.id}`
+          `/admin/tax/${selectedItem.ntsTaxId}`
         );
         console.log('111', response.data);
         if (response.data.isSuccess) {

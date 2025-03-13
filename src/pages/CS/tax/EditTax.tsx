@@ -32,7 +32,12 @@ const EditTax = () => {
 
     const fetchTaxDetails = async () => {
       try {
-        const response = await api.get(`/cs/tax/${taxId}`);
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.get(`/cs/tax/${taxId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         console.log('세금계산서 데이터:', response.data);
 
         if (response.data.isSuccess) {

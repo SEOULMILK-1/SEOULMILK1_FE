@@ -7,13 +7,12 @@ import ConfirmModal from '../ConfirmModal';
 import api from '../../hooks/api';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
+import BankDropdown from '../BankDropdown';
 interface SideModalProps {
   isOpen: boolean;
   onClose: () => void;
   role: 'admin' | 'HQ' | 'CS';
 }
-
-const BANKS = ['농협은행', '카카오뱅크', '토스뱅크'];
 
 const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
   const navigate = useNavigate();
@@ -29,7 +28,7 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
   const [teamName, setTeamName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [selectedBank, setSelectedBank] = useState('');
+  const [selectedBank, setSelectedBank] = useState('은행 선택');
   const [accountNumber, setAccountNumber] = useState('');
 
   // 사용자 정보 불러오기
@@ -72,7 +71,7 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
         loginId: userId || '',
         email: email || '',
         phone: phone || '',
-        bank: selectedBank || '',
+        bank: selectedBank === '은행 선택' ? '' : selectedBank,
         account: accountNumber || ''
       };
       console.log(' 업데이트 요청 데이터:', updatedData);
@@ -233,21 +232,18 @@ const SideModal = ({ isOpen, onClose, role }: SideModalProps) => {
               사업자 계좌 (지급 요청 계좌)
             </h3>
             <div className="mt-2 space-y-3">
-              <div className="relative">
-                <select
-                  className="w-full font-md-medium mt-[8px] px-4 py-3 h-[48px] rounded-[12px] border border-gray-300 appearance-none text-gray-700"
+              {isEditing ? (
+                <BankDropdown
+                  selected={selectedBank}
+                  onChange={(bank) => setSelectedBank(bank)}
+                />
+              ) : (
+                <input
+                  className="w-full p-4 h-[56px] rounded-[12px] text-gray-600 font-md-medium bg-gray-100"
                   value={selectedBank}
-                  disabled={!isEditing}
-                  onChange={(e) => setSelectedBank(e.target.value)}
-                >
-                  {BANKS.map((bank) => (
-                    <option key={bank} value={bank}>
-                      {bank}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
+                  readOnly
+                />
+              )}
               <input
                 role="text"
                 className={`w-full mt-[8px] p-4 h-[56px] rounded-[12px] text-gray-600 font-md-medium

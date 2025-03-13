@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../../../../hooks/api';
 import RefuseHeader from './RefuseHeader';
 import TaxRefuseIcon from '../../../../../public/Icon/TaxRefuseIcon';
+import { useNavigate } from 'react-router-dom';
 
 interface RefuseProps {
   ntsTaxId: number;
@@ -12,7 +13,7 @@ interface RefuseProps {
 
 const Refuse = () => {
   const [data, setData] = useState<RefuseProps[]>([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -62,6 +63,8 @@ const Refuse = () => {
                       className="flex w-[85px] h-[26px] gap-1 pl-2 pr-3 items-center justify-center rounded-lg bg-[#E6F1F7] text-[#2C72FF] font-xs-regular"
                       onClick={(e) => {
                         e.stopPropagation();
+                        navigate(`/cs/tax/edit?taxId=${item.ntsTaxId}`);
+                        console.log(`taxid::::::${item.ntsTaxId}`);
                       }}
                     >
                       수정하기
