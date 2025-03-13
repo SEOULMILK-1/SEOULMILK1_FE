@@ -3,7 +3,6 @@ import ArrowIcon from '../../../../public/Icon/ArrowIcon';
 import ChatLine from '../../../../public/Icon/ChartLine';
 import { useEffect, useState } from 'react';
 import api from '../../../hooks/api';
-import AccountEditModal from './AccountEditModal';
 import PaymentDetailModal from './AdminPaymentDetailModal';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { PaymentData } from '../../../types/paymentDetails';
@@ -13,9 +12,6 @@ import TaxInvoiceList from './components/TaxInvoiceItem';
 const AdminPaymentDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bankName, setBankName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
   const [paymentData, setPaymentData] = useState<PaymentData>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,8 +26,6 @@ const AdminPaymentDetail = () => {
       });
       if (response.data.isSuccess) {
         setPaymentData(response.data.result);
-        setBankName(response.data.result.bank);
-        setAccountNumber(response.data.result.account);
       } else {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
       }
@@ -97,7 +91,6 @@ const AdminPaymentDetail = () => {
         <div className="text-sm text-gray-500 flex gap-3">
           <p>작성일: {paymentData?.createdAt || 'N/A'}</p>{' '}
           <ChatLine className="mt-1" />
-          {/* <p>문서번호: {paymentData?.paymentResolutionId || 'N/A'}</p> */}
         </div>
       </Header>
 
@@ -125,8 +118,6 @@ const AdminPaymentDetail = () => {
             <PaymentInfo
               label="지급 계좌"
               value={paymentData?.paymentAccount}
-              isEditable
-              onEdit={() => setIsModalOpen(true)}
             />
           </div>
 
@@ -149,7 +140,6 @@ const AdminPaymentDetail = () => {
         </div>
       </div>
 
-      {/* 반영된 세금계산서 목록 */}
       <TaxInvoiceList
         paymentDetails={paymentData?.paymentDetails || []}
         onTaxItemClick={handleTaxItemClick}
@@ -161,14 +151,6 @@ const AdminPaymentDetail = () => {
           selectedItem={selectedTaxItem}
         />
       )}
-      <AccountEditModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-        initialBank={bankName}
-        initialAccount={accountNumber}
-      />
     </div>
   );
 };

@@ -34,7 +34,9 @@ const AdminPaymentDatailModal = ({
       console.log(`${selectedItem}`);
 
       try {
-        const response = await api.get<TaxDetailResponse>(`/cs/tax/${ntsId}`);
+        const response = await api.get<TaxDetailResponse>(
+          `/admin/tax/${ntsId}`
+        );
 
         if (response.data.isSuccess) {
           setDetailData(response.data.result);
