@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Modal from '../../../common/Modal';
 import api from '../../../hooks/api';
 
@@ -17,68 +18,66 @@ const AccountEditModal = ({
   initialAccount,
   onUpdate
 }: AccountEditModalProps) => {
+  const { id } = useParams();
   const [bankName, setBankName] = useState(initialBank);
   const [accountNumber, setAccountNumber] = useState(initialAccount);
-  const [userInfo, setUserInfo] = useState<{
-    loginId: string;
-    email: string;
-    phone: string | null;
-    bank: string;
-    account: string;
-  } | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await api.get('/user/detail');
-        if (response.data.isSuccess) {
-          console.log('사용자 정보 불러오기 성공:', response.data.result);
-          setUserInfo(response.data.result);
-        } else {
-          console.error(' 사용자 정보 불러오기 실패:', response.data.message);
-        }
-      } catch (error) {
-        console.error(' 서버 요청 실패:', error);
-      }
-    };
-
     if (isOpen) {
-      fetchUserInfo();
+      fetchPaymentDetails();
     }
   }, [isOpen]);
 
+  const fetchPaymentDetails = async () => {
+    try {
+      const token = localStorage.getItem('accesstoken');
+      const response = await api.get(`/hq/payment-resolution/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.data.isSuccess) {
+        const { bank, account } = response.data.result;
+        setBankName(bank ?? initialBank);
+        setAccountNumber(account ?? initialAccount);
+      } else {
+        console.error('데이터 로드 실패:', response.data.message);
+      }
+    } catch (error) {
+      console.error('서버 요청 실패:', error);
+    }
+  };
+
   const handleUpdateAccount = async () => {
-    if (!userInfo || isUpdating) return;
+    if (isUpdating) return;
 
     setIsUpdating(true);
 
     try {
       const payload = {
-        loginId: userInfo.loginId,
-        email: userInfo.email?.trim() || 'default@example.com', // NULL 방지
-        phone: userInfo.phone?.trim() || '',
+        id,
         bank: bankName,
-        account: accountNumber
+        accountNumber: accountNumber
       };
-      console.log('보낼 데이터:', payload); // 실제 요청 데이터 확인
-
-      await api.put('/user/update', payload, {
+      await api.patch('/hq/payment-resolution', payload, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
-      console.log('계좌 정보 업데이트 성공');
 
       onUpdate(bankName, accountNumber);
       onClose();
     } catch (error) {
-      console.error('계좌 정보 업데이트 실패:', error);
     } finally {
       setIsUpdating(false);
     }
   };
 
+  const handleClose = () => {
+    setBankName(initialBank);
+    setAccountNumber(initialAccount);
+    onClose();
+  };
   const isModified =
     bankName !== initialBank || accountNumber !== initialAccount;
 
@@ -93,7 +92,7 @@ const AccountEditModal = ({
 
         <input
           type="text"
-          className="w-full p-4 border border-gray-300 rounded-[12px] my-2 font-md-medium text-gray-600"
+          className="w-full p-4 border border-gray-300 rounded-[12px] my-2 font-md-medium text-gray-800 focus:ring-1 focus:ring-primary-500"
           value={bankName}
           onChange={(e) => setBankName(e.target.value)}
           placeholder="은행명 입력"
@@ -101,16 +100,21 @@ const AccountEditModal = ({
 
         <input
           type="text"
-          className="w-full p-4 border border-gray-300 rounded-[12px] mb-[30px] font-md-medium text-gray-600"
+          className="w-full p-4 border border-gray-300 rounded-[12px] mb-[30px] font-md-medium text-gray-800 focus:ring-1 focus:ring-primary-500"
           value={accountNumber}
-          onChange={(e) => setAccountNumber(e.target.value)}
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            // 숫자와 "-"만 허용하는 정규식
+            const filteredValue = inputValue.replace(/[^0-9-]/g, '');
+            setAccountNumber(filteredValue);
+          }}
           placeholder="계좌번호 입력"
         />
 
         <div className="flex justify-between gap-4 mt-6 font-xl-semibold">
           <button
             className="w-full h-[56px] py-2 bg-gray-200 text-gray-600 rounded-[12px]"
-            onClick={onClose}
+            onClick={handleClose}
           >
             취소
           </button>

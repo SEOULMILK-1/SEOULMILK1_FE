@@ -22,32 +22,33 @@ const PaymentDetail = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTaxItem, setSelectedTaxItem] = useState<any | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [reloadTrigger, setReloadTrigger] = useState(0);
+
+  const fetchPaymentDetails = async () => {
+    try {
+      const token = localStorage.getItem('accesstoken');
+      const response = await api.get(`/hq/payment-resolution/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.isSuccess) {
+        setPaymentData(response.data.result);
+        setBankName(response.data.result.bank);
+        setAccountNumber(response.data.result.account);
+      } else {
+        setError('데이터를 불러오는 중 오류가 발생했습니다.');
+      }
+    } catch (err) {
+      setError('서버 요청 중 문제가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchPaymentDetails = async () => {
-      try {
-        const token = localStorage.getItem('accesstoken');
-        const response = await api.get(`/hq/payment-resolution/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (response.data.isSuccess) {
-          setPaymentData(response.data.result);
-          setBankName(response.data.result.bank);
-          setAccountNumber(response.data.result.account);
-        } else {
-          setError('데이터를 불러오는 중 오류가 발생했습니다.');
-        }
-      } catch (err) {
-        setError('서버 요청 중 문제가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (id) {
       fetchPaymentDetails();
     }
-  }, [id]);
+  }, [id, reloadTrigger]);
 
   useEffect(() => {
     const taxId = searchParams.get('ntsId');
@@ -193,12 +194,15 @@ const PaymentDetail = () => {
       )}
       <AccountEditModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
         initialBank={bankName}
         initialAccount={accountNumber}
         onUpdate={(newBank, newAccount) => {
           setBankName(newBank);
           setAccountNumber(newAccount);
+          setReloadTrigger((prev) => prev + 1);
         }}
       />
     </div>
