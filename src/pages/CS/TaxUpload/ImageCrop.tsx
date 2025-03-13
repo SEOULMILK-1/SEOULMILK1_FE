@@ -346,7 +346,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
             <div className="w-px h-8 bg-gray-400"></div>
             <button
               onClick={resetImage}
-              className="h-10 w-[120px] font-md-semibold px-4 py-2 text-red-500 bg-warning-50 rounded-[12px] flex items-center justify-center gap-2 whitespace-nowrap"
+              className="h-10 w-[120px] font-md-semibold px-4 py-[6px] text-red-500 bg-warning-50 rounded-[12px] flex items-center justify-center gap-2 whitespace-nowrap"
             >
               <ResetIcon color="#FF433C" />
               <span>원본으로</span>

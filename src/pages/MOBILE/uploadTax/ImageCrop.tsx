@@ -282,7 +282,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
                 onComplete={(c) => setCompletedCrop(c)}
                 className="relative z-20"
                 style={{
-                  maxHeight: '180%',
+                  maxHeight: '100%',
                   maxWidth: '100%',
                   marginBottom: '50px'
                 }}
@@ -322,7 +322,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
 
       <div className="flex justify-center mt-2 mb-4">
         <button
-          className="w-[110px] h-[45px] font-semibold bg-warning-50 text-warning-300 px-3 rounded-[16px] flex items-center gap-2 whitespace-nowrap"
+          className="w-[110px] h-[45px] font-semibold bg-warning-50 text-warning-300 px-3 py- rounded-[16px] flex items-center gap-2 whitespace-nowrap"
           onClick={resetImage}
         >
           <ResetIcon color="#FF433C" />
