@@ -5,6 +5,7 @@ import ImageCrop from './ImageCrop';
 import api from '../../../hooks/api';
 import DuplicateTaxModal from '../../CS/TaxUpload/DuplicateTaxModal';
 import ConfirmUpload from '../../CS/TaxUpload/ConfirmUpload';
+import ArrowIcon from '../../../../public/Icon/ArrowIcon';
 
 const Step1Mobile = () => {
   const navigate = useNavigate();
@@ -88,14 +89,13 @@ const Step1Mobile = () => {
 
   return (
     <div className="flex flex-col items-center h-screen bg-black text-white">
-      <div className="w-full flex items-center justify-between p-4">
+      <div className="w-full flex items-center justify-between p-4 text-center ">
+        <button onClick={() => navigate(-1)} className="text-white text-2xl">
+          <ArrowIcon strokeColor="white" />
+        </button>
+        <h2 className="font-xl-bold">이미지 편집</h2>
         <button
-          onClick={() => navigate(-1)}
-          className="text-white text-2xl"
-        ></button>
-        <h2 className="text-lg font-semibold">이미지 편집</h2>
-        <button
-          className="bg-green-600 px-4 py-2 rounded-lg text-white font-medium"
+          className="bg-green-600 px-4 py-2 rounded-[8px] text-white font-sm-medium"
           onClick={handleUpload}
           disabled={!croppedImage || isUploading}
         >

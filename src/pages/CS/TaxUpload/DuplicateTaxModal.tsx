@@ -20,9 +20,9 @@ const DuplicateTaxModal = ({
   const handleConfirm = () => {
     if (id) {
       if (isMobileView) {
-        navigate('/cs'); 
+        navigate(`/cs/tax/${id}`);
       } else {
-        navigate(`/cs/tax?taxId=${id}`); 
+        navigate(`/cs/tax?taxId=${id}`);
       }
     }
     onClose();

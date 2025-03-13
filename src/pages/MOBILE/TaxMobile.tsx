@@ -66,13 +66,16 @@ const CSTaxMobile = () => {
     fetchData();
   }, []);
 
+  const handleBack = () => {
+    navigate(-1);
+  };
   return (
-    <div className="w-full max-w-[400px] mx-auto p-4">
+    <div className="w-full max-w-[400px] mx-auto p-6">
       <div className=" flex items-center mb-4">
-        <div className="flex items-center gap-2">
-          <ArrowIcon strokeColor="#3A404A" />
-        </div>
-        <div className="flex-1 text-center text-gray-800 font-xl-bold">
+        <button onClick={handleBack} className="">
+          <ArrowIcon strokeColor={'#3A404A'} />
+        </button>
+        <div className="flex-1 text-center  text-gray-800 font-xl-bold">
           세금 계산서 조회
         </div>
         <div className="w-8"></div>
