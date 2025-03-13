@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import api from '../../../../hooks/api';
-import { useSearchParams } from 'react-router-dom';
-import TaxDetailModal from '../../../../common/TaxDetailModal';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import TaxDetailModal from './TaxDetailModal';
 
 interface InvoiceData {
   id: string;
@@ -60,12 +60,11 @@ const CustomerChartContent = ({
         if (response.data.isSuccess) {
           const transformedData = response.data.result.responseList.map(
             (item: any) => ({
-              ntsTaxId: item.ntsTaxId || '',
-              status: item.status as Status,
-              title: item.title || '',
+              id: item.ntsTaxId !== undefined ? String(item.ntsTaxId) : null,
+              title: item.title || '제목 없음',
               taxDate: item.taxDate || '',
               team: item.team || '',
-              center: item.csName || ''
+              status: item.status as Status
             })
           );
 
@@ -124,9 +123,13 @@ const CustomerChartContent = ({
   ]);
 
   const handleItemClick = (item: InvoiceData) => {
+    if (!item.ntsTaxId) {
+      console.error('선택한 항목의 ID가 없습니다:', item);
+      return;
+    }
     setSelectedItem(item);
     setIsModalOpen(true);
-    setSearchParams({ taxId: item.id });
+    setSearchParams({ taxId: item.ntsTaxId });
   };
 
   const handleCloseModal = () => {

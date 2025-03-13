@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../../../../hooks/api';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import ArrowIcon from '../../../../../public/Icon/ArrowIcon';
@@ -15,6 +15,7 @@ const TaxDetailModal = ({
   selectedItem
 }: TaxDetailModalProps) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isClosing, setIsClosing] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -23,22 +24,24 @@ const TaxDetailModal = ({
   const [detailData, setDetailData] = useState<
     TaxDetailResponse['result'] | null
   >(null);
+  const taxIdFromUrl = searchParams.get('taxId');
 
   useEffect(() => {
     const fetchTaxDetail = async () => {
-      if (!isOpen || !selectedItem?.id) {
-        console.log(' selectedItem 또는 id가 없습니다.');
+      const taxId = selectedItem?.id || taxIdFromUrl;
+      if (!isOpen || !taxId) {
+        console.log(' taxId가 없습니다.');
         return;
       }
-
       setLoading(true);
       setError(null);
 
       try {
-        const response = await api.get<TaxDetailResponse>(
-          `/cs/tax/${selectedItem.id}`
-        );
-
+        const token = localStorage.getItem('accesstoken');
+        const response = await api.get<TaxDetailResponse>(`/cs/tax/${taxId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        console.log(response);
         if (response.data.isSuccess) {
           setDetailData(response.data.result);
         } else {
@@ -55,7 +58,7 @@ const TaxDetailModal = ({
     };
 
     fetchTaxDetail();
-  }, [isOpen, selectedItem]);
+  }, [isOpen, selectedItem, taxIdFromUrl]);
 
   useEffect(() => {
     if (isOpen) {
@@ -90,9 +93,9 @@ const TaxDetailModal = ({
 
   const getDisplayStatus = (apiStatus: string): Status => {
     const statusMap: Record<string, Status> = {
-      APPROVE: '승인',
-      REFUSED: '반려',
-      WAIT: '반려'
+      APPROVE: '반영',
+      REFUSED: '미반영',
+      WAIT: '미반영'
     };
 
     return statusMap[apiStatus] || (apiStatus as Status);
@@ -102,12 +105,14 @@ const TaxDetailModal = ({
     ? getDisplayStatus(detailData.status)
     : (selectedItem.status as Status);
 
-  const handleNavigateToPaymentDetail = () => {
-    if (selectedItem?.id) {
-      navigate(`/payment/detail/${selectedItem.id}`);
+  const handlePaymentDetail = () => {
+    const taxId = selectedItem?.id || taxIdFromUrl;
+    if (!taxId) {
+      console.error('지급결의서 이동 실패 taxId가 없음.');
+      return;
     }
+    navigate(`/hq/payment/detail/${taxId}`);
   };
-
   return (
     <div
       className={`fixed p-4 pr-0 inset-0 flex justify-end items-start z-50 transition-opacity duration-300 
@@ -145,17 +150,7 @@ const TaxDetailModal = ({
 
             <div>
               <h2 className="flex text-center font-xl-semibold text-gray-800 mt-[12px]">
-                {detailData?.title ||
-                  `${selectedItem.center}_${
-                    selectedItem.date
-                      ? selectedItem.date
-                          .replace(/\./g, '_')
-                          .replace(
-                            /^(\d{4})_(\d{2})_(\d{2})$/,
-                            '$1년_$2월_$3일'
-                          )
-                      : '날짜 없음'
-                  }`}
+                {detailData?.title}
               </h2>
 
               <div
@@ -198,16 +193,17 @@ const TaxDetailModal = ({
                 value={detailData?.chargeTotal || selectedItem.amount}
               />
             </div>
+
+            <div className="font-xl-semibold flex justify-between w-full p-4 bg-white sticky bottom-0 left-0 right-0 gap-4 ">
+              <Button
+                className="bg-primary-700 text-white w-[168px] h-[56px]"
+                onClick={handlePaymentDetail}
+              >
+                지급결의서 보기
+              </Button>
+            </div>
           </>
         )}
-      </div>
-      <div className="font-xl-semibold flex justify-between w-full p-4 bg-white sticky bottom-0 left-0 right-0 gap-4 ">
-        <Button
-          className="bg-warning-400 text-white w-[168px] h-[56px]"
-          onClick={handleNavigateToPaymentDetail}
-        >
-          데이터 수정
-        </Button>
       </div>
 
       {isImageModalOpen && (

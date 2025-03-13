@@ -7,6 +7,7 @@ import ConfirmUpload from './ConfirmUpload';
 import DuplicateTaxModal from './DuplicateTaxModal';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import ConfirmModal from '../../../common/ConfirmModal';
 
 const Step1 = () => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const Step1 = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
   const [isDuplicateModalOpen, setIsDuplicateModalOpen] =
     useState<boolean>(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const [duplicateTitle, setDuplicateTitle] = useState<string>('');
   const [duplicateTaxDate, setDuplicateTaxDate] = useState<string>('');
@@ -73,7 +76,15 @@ const Step1 = () => {
       const res = await api.post('/tax/ocr', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      console.log('OCR 응답:', res.data.result);
+
+      console.log('OCR 응답:', res.data);
+
+      if (!res.data.isSuccess) {
+        console.error('서버 오류 발생:', res.data.message);
+        setErrorMessage('파일 업로드 중 오류가 발생했어요');
+        setIsErrorModalOpen(true);
+        return;
+      }
 
       const { ntsTaxId, issueId, status, title, issueDate } = res.data.result;
 
@@ -94,6 +105,7 @@ const Step1 = () => {
           const res = await api.post('/tax/ocr', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           });
+
           console.log('삭제완료후 재요청 ocr 응답:', res.data.result);
 
           // 4. 새로운 ID로 Step2 이동
@@ -103,15 +115,32 @@ const Step1 = () => {
           return;
         }
       }
+
       // 중복이 아니면 정상적으로 step2 이동
       navigate(`/cs/upload-tax/step2?taxId=${ntsTaxId}`, {
         state: { ocrData: res.data, selectedImage: croppedImage }
       });
     } catch (error) {
       console.error('OCR 업로드 실패', error);
+      setErrorMessage('파일 업로드 중 오류가 발생했습니다.');
+      setIsErrorModalOpen(true);
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleErrorConfirm = () => {
+    setIsErrorModalOpen(false);
+    setSelectedImage(undefined);
+    setCroppedImage(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+      fileInputRef.current.click();
+    }
+  };
+  const handleErrorClose = () => {
+    setIsErrorModalOpen(false); 
   };
 
   return (
@@ -138,6 +167,19 @@ const Step1 = () => {
           title={duplicateTitle}
           taxDate={duplicateTaxDate}
           onClose={() => setIsDuplicateModalOpen(false)}
+        />
+      )}
+      {/* 서버 오류 모달 */}
+      {isErrorModalOpen && (
+        <ConfirmModal
+          isOpen={isErrorModalOpen}
+          onClose={handleErrorClose}
+          onConfirm={handleErrorConfirm}
+          title="업로드에 실패했어요"
+          description={errorMessage}
+          confirmText="재업로드"
+          cancelText="돌아가기"
+          isPrimary={true}
         />
       )}
       <div className="mr-20">
