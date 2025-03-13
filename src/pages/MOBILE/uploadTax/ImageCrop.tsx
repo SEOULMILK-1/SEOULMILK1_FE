@@ -118,8 +118,14 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
 
   // 크롭 영역을 업데이트하는 함수
   const updateCropArea = (_aspectRatio: number) => {
-    const cropSize = 100; // 기본 크롭 크기 (%)
+    let cropSize = 100; // 기본 크롭 크기 (%)
+    const isRotated90or270 = Math.abs(rotation % 180) === 90;
 
+    if (isRotated90or270) {
+      cropSize = 70; // 회전 시 크롭 영역을 작게 설정
+    } else {
+      cropSize = 100; // 기본 크기 유지
+    }
     // 마지막 completedCrop 정보가 있으면 비율만 유지하면서 위치 조정
     if (completedCrop) {
       // 기존 크롭 영역 중심점 계산
@@ -146,13 +152,12 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
         y
       });
     } else {
-      // 초기 설정인 경우 중앙에 배치
       setCrop({
         unit: '%',
-        width: 100,
-        height: 100,
-        x: 0,
-        y: 0
+        width: cropSize,
+        height: cropSize,
+        x: (100 - cropSize) / 2,
+        y: (100 - cropSize) / 2
       });
     }
   };
@@ -264,9 +269,7 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
 
   return (
     <div className="relative flex flex-col items-center w-full h-full bg-black overflow-hidden">
-      {/* Header */}
-
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col ">
         {selectedImage && (
           <div
             ref={cropContainerRef}
@@ -279,8 +282,9 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
                 onComplete={(c) => setCompletedCrop(c)}
                 className="relative z-20"
                 style={{
-                  maxHeight: '100%',
-                  maxWidth: '100%'
+                  maxHeight: '180%',
+                  maxWidth: '100%',
+                  marginBottom: '50px'
                 }}
               >
                 <img
@@ -289,10 +293,12 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
                   alt="Upload"
                   className="object-contain"
                   style={{
+                    // padding: '18px',
                     width:
                       imageSize.width > 0 ? `${imageSize.width}px` : 'auto',
                     height:
                       imageSize.height > 0 ? `${imageSize.height}px` : 'auto',
+                    maxHeight: '85vh',
                     transform: `rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
                     transition: 'transform 0.3s ease'
                   }}
@@ -314,9 +320,9 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
         )}
       </div>
 
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mt-2 mb-4">
         <button
-          className="absolute bottom-[92px] w-[110px] h-[45px] whitespace-nowrap font-sm-semibold bg-warning-50 text-warning-300 px-3  rounded-[16px] flex items-center gap-2"
+          className="w-[110px] h-[45px] font-semibold bg-warning-50 text-warning-300 px-3 rounded-[16px] flex items-center gap-2"
           onClick={resetImage}
         >
           <ResetIcon color="#FF433C" />
@@ -324,8 +330,8 @@ const ImageCrop = ({ initialImage, onCropComplete }: ImageCropProps) => {
         </button>
       </div>
 
-      <div className="flex justify-center mb-8">
-        <div className="absolute bottom-0 w-[208px] h-[56px] bg-white px-4 py-3 rounded-[24px] flex justify-around items-center mb-[24px] gap-6">
+      <div className="relative flex justify-center pb-6">
+        <div className="w-[208px] h-[56px] bg-white px-4 py-3 rounded-[24px] flex justify-around items-center gap-6">
           <button onClick={rotateLImage} className="text-gray-500">
             <Rotation1 size={24} />
           </button>
