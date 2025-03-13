@@ -29,7 +29,7 @@ const AdminChartHeader = () => {
         <ChartLine />
       </div>
       <div className="w-[170px] h-[42px] pl-5 mt-6 text-gray-500 font-sm-medium">
-        등록일자
+        발행일
       </div>
     </div>
   );
