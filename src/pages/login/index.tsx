@@ -58,9 +58,13 @@ function LoginPage() {
       } else {
         setError('아이디 또는 비밀번호가 잘못되었습니다.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(' 로그인 요청 실패:', error);
-      setError('로그인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
+      if (error.response?.status === 400) {
+        setIsApprovalModalOpen(true);
+      } else {
+        setError('로그인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
+      }
     }
   };
 
