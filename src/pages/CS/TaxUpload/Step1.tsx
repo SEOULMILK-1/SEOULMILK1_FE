@@ -7,6 +7,7 @@ import ConfirmUpload from './ConfirmUpload';
 import DuplicateTaxModal from './DuplicateTaxModal';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import ConfirmModal from '../../../common/ConfirmModal';
 
 const Step1 = () => {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ const Step1 = () => {
 
       if (!res.data.isSuccess) {
         console.error('서버 오류 발생:', res.data.message);
-        setErrorMessage(res.data.message || '알 수 없는 오류가 발생했습니다.');
+        setErrorMessage('파일 업로드 중 오류가 발생했어요');
         setIsErrorModalOpen(true);
         return;
       }
@@ -128,15 +129,18 @@ const Step1 = () => {
     }
   };
 
-  const handleErrorModalClose = () => {
+  const handleErrorConfirm = () => {
     setIsErrorModalOpen(false);
     setSelectedImage(undefined);
     setCroppedImage(null);
 
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''; 
+      fileInputRef.current.value = '';
       fileInputRef.current.click();
     }
+  };
+  const handleErrorClose = () => {
+    setIsErrorModalOpen(false); 
   };
 
   return (
@@ -167,11 +171,15 @@ const Step1 = () => {
       )}
       {/* 서버 오류 모달 */}
       {isErrorModalOpen && (
-        <ConfirmUpload
-          title="업로드 실패"
-          message={`${errorMessage} `}
-          onClose={handleErrorModalClose}
-          buttonText="다시 시도할게요"
+        <ConfirmModal
+          isOpen={isErrorModalOpen}
+          onClose={handleErrorClose}
+          onConfirm={handleErrorConfirm}
+          title="업로드에 실패했어요"
+          description={errorMessage}
+          confirmText="재업로드"
+          cancelText="돌아가기"
+          isPrimary={true}
         />
       )}
       <div className="mr-20">
