@@ -26,19 +26,17 @@ const PaymentChartContent = ({ data = [] }: Props) => {
             navigate(`/hq/payment/detail/${item.paymentResolutionId}`)
           }
         >
-          <div className="w-[350px] pl-5 font-sm-medium text-gray-800 truncate">
-            {item.paymentResolutionName}
-          </div>
-          <div className="w-[170px] pl-5 text-sm font-medium text-gray-700 truncate">
-            {new Date(item.createdAt).toLocaleDateString()}
-          </div>
-      
-          <div className="w-[170px] pl-5 font-sm-medium text-gray-800 tabular-nums">
-            {item.createdAt}
-          </div>
           <div className="w-[200px] pl-5 font-sm-medium text-gray-800 truncate">
             {item.suDeptName}
           </div>
+          <div className="w-[350px] pl-5 font-sm-medium text-gray-800 truncate">
+            {item.paymentResolutionName}
+          </div>
+
+          <div className="w-[170px] pl-5 font-sm-medium text-gray-800 tabular-nums">
+            {item.createdAt}
+          </div>
+
           <div className="w-[120px] pl-7 font-sm-medium text-gray-800 truncate">
             {item.hqUserName}
           </div>
