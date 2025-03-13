@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import StatusBadge, { Status } from '../../../../common/StatusBagde';
 import api from '../../../../hooks/api';
-import TaxDetailModal from './TaxDetailModal';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import TaxDetailModal from './TaxDetailModal';
 
 interface InvoiceData {
   id: string;
@@ -61,10 +61,11 @@ const CustomerChartContent = ({
         if (response.data.isSuccess) {
           const transformedData = response.data.result.responseList.map(
             (item: any) => ({
-              id: item.ntsTaxId ? String(item.ntsTaxId) : '',
+              id: item.ntsTaxId !== undefined ? String(item.ntsTaxId) : null,
               title: item.title || '제목 없음',
-              date: item.taxDate || '날짜 없음',
-              center: item.csName || '센터 없음'
+              taxDate: item.taxDate || '',
+              team: item.team || '',
+              status: item.status as Status
             })
           );
 
@@ -102,9 +103,13 @@ const CustomerChartContent = ({
   }, [selectedStatus, startDate, endDate, searchKeyword]);
 
   const handleItemClick = (item: InvoiceData) => {
+    if (!item.ntsTaxId) {
+      console.error('선택한 항목의 ID가 없습니다:', item);
+      return;
+    }
     setSelectedItem(item);
     setIsModalOpen(true);
-    setSearchParams({ taxId: item.id });
+    setSearchParams({ taxId: item.ntsTaxId });
   };
 
   const handleCloseModal = () => {

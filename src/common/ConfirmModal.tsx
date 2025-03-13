@@ -7,6 +7,7 @@ interface ConfirmModalProps {
   description?: string;
   confirmText?: string;
   cancelText?: string;
+  isPrimary?: boolean; 
 }
 
 function ConfirmModal({
@@ -16,14 +17,15 @@ function ConfirmModal({
   title = '확인',
   description = '정말로 진행하시겠습니까?',
   confirmText = '확인',
-  cancelText = '취소'
+  cancelText = '취소',
+  isPrimary = false 
 }: ConfirmModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center">
-      <div className="bg-white w-[328px] rounded-[16px] shadow-lg gap-[4px] drop-shadow-elevation2">
-        <p className=" font-xl-semibold mt-[40px] text-center text-gray-800">
+    <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-[9999]">
+      <div className="bg-white w-[328px] rounded-[16px] shadow-lg gap-[4px] drop-shadow-elevation2 z-[10000]">
+        <p className="font-xl-semibold mt-[40px] text-center text-gray-800">
           {title}
         </p>
         <p className="text-gray-500 font-md-medium mt-[4px] mb-[40px] text-center">
@@ -37,7 +39,11 @@ function ConfirmModal({
             {cancelText}
           </button>
           <button
-            className="w-[164px] h-[56px] bg-warning-400 text-white rounded-br-[16px] font-md-semibold"
+            className={`w-[164px] h-[56px] text-white rounded-br-[16px] font-md-semibold transition ${
+              isPrimary
+                ? 'bg-primary-600 hover:bg-primary-700' 
+                : 'bg-warning-400 hover:bg-warning-500' 
+            }`}
             onClick={onConfirm}
           >
             {confirmText}
