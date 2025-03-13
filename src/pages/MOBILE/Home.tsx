@@ -72,7 +72,7 @@ const Home = () => {
             세금계산서 <br />
             업로드
           </div>
-          <div className="self-end mb-4 right-0">
+          <div className="self-end mr-4 right-4">
             <MobileUpload />
           </div>
         </label>
@@ -90,7 +90,7 @@ const Home = () => {
             세금계산서 <br />
             촬영
           </div>
-          <div className="self-end pb-4">
+          <div className="self-end mr-4 right-4">
             <MobileCamera />
           </div>
         </label>

@@ -97,14 +97,18 @@ const EditTaxMobile = () => {
       setIsSubmitting(false);
     }
   };
-
+  const handleBack = () => {
+    navigate(-1);
+  };
   return (
     <div className="w-full max-w-[400px] mx-auto p-6">
-      <div className="flex items-center mb-4">
-        <button onClick={() => navigate(-1)} className="mr-4">
-          <ArrowIcon strokeColor="#949BA7" />
+      <div className="flex items-center mb-4 text-center">
+        <button onClick={handleBack}>
+          <ArrowIcon strokeColor={'#3A404A'} />
         </button>
-        <h1 className="text-lg font-bold">세금계산서 수정</h1>
+        <h1 className="flex-1 text-center mr-2 text-gray-800 font-xl-bold ">
+          세금계산서 수정
+        </h1>
       </div>
 
       {loading && <p className="text-gray-600 text-center py-10">로딩 중...</p>}

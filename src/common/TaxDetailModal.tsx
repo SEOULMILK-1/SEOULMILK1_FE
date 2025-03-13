@@ -184,7 +184,8 @@ const TaxDetailModal = ({
   const isRejected =
     detailData?.status === 'REJECTED' ||
     selectedItem.status === '반려됨' ||
-    detailData?.status === 'REFUSED';
+    detailData?.status === 'REFUSED' ||
+    detailData?.status === 'WAIT';
   const displayStatus = detailData
     ? getDisplayStatus(detailData.status)
     : (selectedItem.status as Status);
